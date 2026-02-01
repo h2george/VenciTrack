@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// Authentication & User Management
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String
+  company       String?
+  phone         String?
+  role          String    @default("USER")
+  plan          String    @default("FREE")
+  status        String    @default("ACTIVE")
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  subjects      Subject[]
+  documents     Document[]
+  documentTypes DocumentType[]
+  sessions      Session[]
+  auditLogs     AuditLog[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+// ============================================
+// Document Management
+// ============================================
+
+model DocumentType {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  category    String
+  isGlobal    Boolean    @default(true)
+  documents   Document[]
+  userId      String?
+  user        User?      @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Subject {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String
+  name        String
+  details     String?
+  documents   Document[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Document {
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documentType   DocumentType  @relation(fields: [documentTypeId], references: [id])
+  documentTypeId String
+  subject        Subject       @relation(fields: [subjectId], references: [id])
+  subjectId      String
+  expiryDate     DateTime
+  status         String        @default("ACTIVE")
+  reminders      Reminder[]
+  secureTokens   SecureToken[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Reminder {
+  id         String   @id @default(cuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  sentAt     DateTime @default(now())
+  channel    String
+  status     String
+  message    String?
+}
+
+model SecureToken {
+  id         String   @id @default(cuid())
+  token      String   @unique
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  action     String
+  createdAt  DateTime @default(now())
+  usedAt     DateTime?
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  entityType  String
+  entityId    String
+  action      String
+  description String
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+}
+
+// ============================================
+// System Configuration
+// ============================================
+
+model SystemConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
