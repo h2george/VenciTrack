@@ -5,99 +5,64 @@
 
 ![VenciTrack Banner](https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop)
 
-## 📋 Sobre el Proyecto
+## ¿Para qué sirve?
 
-**VenciTrack** es una plataforma de gestión de fechas críticas que elimina el error humano de la ecuación. A diferencia de un calendario tradicional, VenciTrack está diseñado con una filosofía de **insistencia inteligente**:
+**VenciTrack** es tu asistente personal para gestionar fechas críticas. Su único propósito es asegurar que **nunca se te pase un vencimiento importante**. 
 
-1.  **Registro Rápido:** Captura fechas de SOAT, licencias, pasaportes o hipotecas en menos de 30 segundos.
-2.  **Alertas Persistentes:** Enviamos recordatorios preventivos vía correo electrónico con frecuencia incremental hasta que se toma acción.
-3.  **Acción sin Fricción:** Actualiza las fechas renovadas directamente desde el correo mediante **enlaces seguros (Magic Links)**, sin necesidad de iniciar sesión.
-
-### 🌟 Pilares de Diseño
-- **Simplicidad Radical:** Interfaz limpia, sin configuraciones complejas.
-- **Dark/Light Mode:** Soporte nativo para temas claro y oscuro, respetando la preferencia del sistema del usuario.
-- **Voz Humanizada:** Comunicación clara, directa y libre de tecnicismos ("núcleos", "protocolos").
-- **Multi-Categoría:** Soporte para Vehículos, Salud, Finanzas, Viajes y más.
+Vivimos rodeados de fechas límite: el seguro del auto, la revisión técnica, la cita médica anual o el pago de impuestos. Un olvido de un solo día puede costar mucho dinero en multas o problemas legales. VenciTrack elimina ese riesgo.
 
 ---
 
-## 🛠️ Stack Tecnológico
+## ¿Qué puedes hacer con VenciTrack?
 
-Construido con una arquitectura moderna enfocada en rendimiento, seguridad y experiencia de usuario:
+Esta herramienta no es solo para documentos vehiculares. Es una central de control para toda tu vida administrativa:
 
--   **Frontend:** [Next.js 14](https://nextjs.org/) (App Router), [React](https://react.dev/)
--   **Estilos:** [Tailwind CSS](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/)
--   **Animaciones:** [Framer Motion](https://www.framer.com/motion/)
--   **Base de Datos:** [Prisma ORM](https://www.prisma.io/) (SQLite en dev, PostgreSQL recomendado para prod)
--   **Iconografía:** [Lucide React](https://lucide.dev/)
--   **Tipografía:** Inter (Google Fonts)
+### 🚗 Parque Automotor
+Mantén tu vehículo legal y seguro.
+- **SOAT y Seguros:** Evita multas de tránsito por pólizas vencidas.
+- **Licencia de Conducir:** Te avisamos meses antes para que tramites la revalidación.
+- **Revisiones Técnicas:** No dejes que inmovilicen tu auto.
 
----
+### 🏥 Salud y Bienestar
+La salud no espera.
+- **Citas Médicas:** Recordatorios para chequeos anuales o dentales.
+- **Vacunas:** Control para ti, tus hijos o tus mascotas.
+- **Recetas Médicas:** Renovación de medicamentos crónicos.
 
-## 🚀 Instalación y Despliegue
+### 🏠 Finanzas y Hogar
+Protege tu patrimonio.
+- **Pagos de Hipoteca/Alquiler:** Fechas límite para evitar moras.
+- **Seguros de Hogar:** Renovación de pólizas contra riesgos.
+- **Impuestos:** Recordatorios para prediales o arbitrios.
 
-### Requisitos Previos
--   Node.js 18.17 o superior
--   npm o pnpm
-
-### Desarrollo Local
-
-1.  **Clonar el repositorio:**
-    ```bash
-    git clone https://github.com/tu-usuario/vencitrack.git
-    cd vencitrack
-    ```
-
-2.  **Instalar dependencias:**
-    ```bash
-    npm install
-    # o
-    npm install --legacy-peer-deps
-    ```
-
-3.  **Configurar Base de Datos:**
-    El proyecto utiliza SQLite por defecto para desarrollo local.
-    ```bash
-    npx prisma generate
-    npx prisma db push
-    ```
-
-4.  **Iniciar Servidor de Desarrollo:**
-    ```bash
-    npm run dev
-    ```
-    Visita `http://localhost:3000` para ver la aplicación.
-
-### Despliegue en Producción (Vercel)
-
-Para desplegar en Vercel, asegúrate de migrar la base de datos a un proveedor compatible con Edge/Serverless (como **Vercel Postgres** o **Neon**).
-
-1.  Actualiza `schema.prisma` para usar `provider = "postgresql"`.
-2.  Configura `DATABASE_URL` en las variables de entorno de Vercel.
-3.  Ejecuta `npx prisma migrate deploy` durante el build.
+### ✈️ Viajes y Documentos
+Listos para despegar.
+- **Pasaportes y Visas:** Evita la sorpresa de un documento vencido antes de viajar.
+- **Seguros de Viaje:** Fechas de cobertura internacionales.
 
 ---
 
-## 📂 Estructura del Proyecto
+## ¿Cómo funciona?
 
-```
-/src
-  /app              # Rutas y páginas (Next.js App Router)
-  /components
-    /ui             # Componentes base (Botones, Inputs, Cards)
-  /lib              # Utilidades y configuración (utils.ts, prisma.ts)
-/prisma             # Esquema de base de datos y migraciones
-/public             # Assets estáticos
-```
+A diferencia de un calendario común que solo te avisa una vez, VenciTrack utiliza un sistema de **Insistencia Inteligente**.
 
----
+1.  **Registra (30 segundos):**
+    Entras a la plataforma, eliges el tipo recordatorio (ej. SOAT) y marcas la fecha de vencimiento. Eso es todo.
 
-## 🔒 Privacidad y Seguridad
+2.  **Recibe Alertas:**
+    El sistema te enviará correos electrónicos preventivos con la anticipación necesaria (ej. 1 mes antes, 15 días antes, 3 días antes). No paramos de avisar hasta que estés al tanto.
 
-VenciTrack está diseñado bajo el principio de **privacidad primero**.
--   **Enlaces Mágicos:** Los tokens de actualización son de uso único y expiran por seguridad.
--   **Datos Mínimos:** Solo almacenamos la información estrictamente necesaria para el recordatorio.
+3.  **Actualiza sin trabas:**
+    Cuando renueves tu documento, recibirás un enlace mágico en el correo. Al darle clic, podrás actualizar la nueva fecha inmediatamente, sin necesidad de recordar contraseñas ni iniciar sesión.
 
 ---
 
-© 2026 VenciTrack Engineering. Todos los derechos reservados.
+## Filosofía del Proyecto
+
+*   **Gratis y Simple:** Creemos que la tranquilidad mental no debería costar. La herramienta esencial es gratuita.
+*   **Privacidad:** Solo guardamos las fechas. No te pedimos subir fotos de tus documentos ni datos sensibles innecesarios.
+*   **Cero Fricción:** Diseñado para usarse rápido. Entras, registras y te olvidas.
+
+---
+
+© 2026 VenciTrack.
