@@ -131,13 +131,13 @@ export default function Sidebar(): React.ReactElement {
             )}
 
             <aside
-                className={`sidebar-premium flex flex-col p-6 border-r border-[var(--border)] bg-[var(--card)] backdrop-blur-3xl fixed h-screen z-[1000] selection:bg-brand-red/20 overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-in-out md:translate-x-0 ${isMobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'} ${isCollapsed ? 'items-center px-4' : ''}`}
+                className={`sidebar-premium flex flex-col p-6 border-r border-[var(--border)] bg-[var(--card)] backdrop-blur-3xl fixed h-screen !z-[1000] selection:bg-brand-red/20 overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-in-out md:translate-x-0 ${isMobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'} ${isCollapsed ? 'items-center px-4' : ''}`}
                 style={{ width: isMobileOpen && (typeof window !== 'undefined' && window.innerWidth < 768) ? '280px' : 'var(--sidebar-width)' }}
             >
                 {/* Mobile Close Button */}
                 <button
                     onClick={() => setIsMobileOpen(false)}
-                    className="absolute top-4 right-4 md:hidden p-2 text-[var(--text-muted)] hover:text-brand-red"
+                    className="absolute top-4 right-4 md:hidden p-2 text-[var(--text-muted)] hover:text-brand-red z-50 transition-colors"
                     aria-label="Cerrar menú"
                 >
                     <span className="icon">close</span>
