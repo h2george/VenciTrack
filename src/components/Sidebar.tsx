@@ -9,7 +9,6 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import ThemeToggle from "@/components/ThemeToggle";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 /**
@@ -112,7 +111,7 @@ export default function Sidebar(): React.ReactElement {
             <div className="flex flex-col gap-10">
                 <nav className="flex flex-col gap-1.5">
                     <p className={`text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] opacity-40 mb-3 ${isCollapsed ? 'text-center' : 'px-3'}`}>
-                        {isCollapsed ? '•••' : 'Operaciones Base'}
+                        {isCollapsed ? '•••' : 'Menú'}
                     </p>
                     {links.map((link) => {
                         const isActive = pathname === link.href;
@@ -138,46 +137,33 @@ export default function Sidebar(): React.ReactElement {
                 </nav>
 
                 {/* System Management */}
-                <nav className="flex flex-col gap-1.5">
+
+                <Link
+                    href="/settings"
+                    className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${pathname === '/settings' ? 'bg-brand-blue/10 text-brand-blue' : 'text-[var(--text-muted)] hover:bg-[var(--bg-soft)] hover:text-[var(--text)]'} ${isCollapsed ? 'justify-center px-0' : ''}`}
+                    title={isCollapsed ? "Ajustes" : ""}
+                >
+                    <span className={`icon text-2xl ${pathname === '/settings' ? 'text-brand-blue' : 'text-[var(--text-muted)] group-hover:text-brand-blue'} shrink-0`}>settings</span>
                     {!isCollapsed && (
-                        <div className="flex items-center justify-between px-3 mb-3 animate-fade-in">
-                            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] opacity-40">Sistema</p>
-                            <ThemeToggle />
-                        </div>
+                        <span className="font-black text-[12px] tracking-widest uppercase animate-fade-in whitespace-nowrap">Ajustes</span>
                     )}
-                    {isCollapsed && (
-                        <div className="flex justify-center mb-4 scale-75">
-                            <ThemeToggle />
-                        </div>
-                    )}
+                </Link>
 
-                    <Link
-                        href="/settings"
-                        className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${pathname === '/settings' ? 'bg-brand-blue/10 text-brand-blue' : 'text-[var(--text-muted)] hover:bg-[var(--bg-soft)] hover:text-[var(--text)]'} ${isCollapsed ? 'justify-center px-0' : ''}`}
-                        title={isCollapsed ? "Ajustes" : ""}
-                    >
-                        <span className={`icon text-2xl ${pathname === '/settings' ? 'text-brand-blue' : 'text-[var(--text-muted)] group-hover:text-brand-blue'} shrink-0`}>settings</span>
-                        {!isCollapsed && (
-                            <span className="font-black text-[12px] tracking-widest uppercase animate-fade-in whitespace-nowrap">Ajustes</span>
-                        )}
-                    </Link>
-
-                    <button
-                        onClick={handleLogout}
-                        disabled={isLoggingOut}
-                        className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group text-brand-red/60 hover:text-brand-red hover:bg-brand-red/5 w-full text-left ${isCollapsed ? 'justify-center px-0' : ''}`}
-                        title={isCollapsed ? "Cerrar Sesión" : ""}
-                    >
-                        <span className="icon text-2xl group-hover:animate-pulse shrink-0">
-                            {isLoggingOut ? 'sync' : 'logout'}
+                <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group text-brand-red/60 hover:text-brand-red hover:bg-brand-red/5 w-full text-left ${isCollapsed ? 'justify-center px-0' : ''}`}
+                    title={isCollapsed ? "Cerrar Sesión" : ""}
+                >
+                    <span className="icon text-2xl group-hover:animate-pulse shrink-0">
+                        {isLoggingOut ? 'sync' : 'logout'}
+                    </span>
+                    {!isCollapsed && (
+                        <span className="font-black text-[12px] tracking-widest uppercase animate-fade-in whitespace-nowrap">
+                            {isLoggingOut ? 'Saliendo...' : 'Cerrar Sesión'}
                         </span>
-                        {!isCollapsed && (
-                            <span className="font-black text-[12px] tracking-widest uppercase animate-fade-in whitespace-nowrap">
-                                {isLoggingOut ? 'Saliendo...' : 'Cerrar Sesión'}
-                            </span>
-                        )}
-                    </button>
-                </nav>
+                    )}
+                </button>
             </div>
         </aside>
     );

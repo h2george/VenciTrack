@@ -115,24 +115,23 @@ export default function Dashboard(): React.ReactElement {
 
           <DashboardHeader
             title="Dashboard"
-            subtitle="Centro de comando maestro. Gestión de infraestructura y cumplimiento."
+            subtitle="Monitorización en tiempo real."
           />
 
           {/* Admin Stats Overview */}
           {/* Admin Analytics Overview */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             {[
-              { label: "Documentos Totales", value: documents.length, icon: "inventory_2", color: "text-brand-blue" },
-              { label: "Usuarios en Plataforma", value: stats?.totalUsers || "24", icon: "people", color: "text-brand-blue" },
-              { label: "Alertas Enviadas", value: stats?.totalReminders || "1,245", icon: "notifications_active", color: "text-brand-red" },
-              { label: "Vencimientos Hoy", value: "8", icon: "add_chart", color: "text-emerald-500" }
+              { label: "Documentos Totales", value: stats?.overview?.totalDocuments || 0, icon: "inventory_2", color: "text-brand-blue" },
+              { label: "Usuarios en Plataforma", value: stats?.overview?.totalUsers || 0, icon: "people", color: "text-brand-blue" },
+              { label: "Alertas Enviadas", value: stats?.overview?.totalReminders || 0, icon: "notifications_active", color: "text-brand-red" },
+              { label: "Vencimientos Hoy", value: stats?.overview?.expiringToday || 0, icon: "add_chart", color: "text-emerald-500" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-6 flex flex-col gap-2 border-white/5">
                 <div className="flex items-center justify-between mb-2">
                   <div className={`size-10 rounded-xl bg-foreground/5 flex items-center justify-center`}>
                     <span className={`icon text-xl ${stat.color}`}>{stat.icon}</span>
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] opacity-50">Admin</span>
                 </div>
                 <h4 className="text-3xl font-black tracking-tighter">{stat.value}</h4>
                 <p className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">{stat.label}</p>
@@ -147,18 +146,15 @@ export default function Dashboard(): React.ReactElement {
                 Actividad del Sistema
               </h3>
               <div className="space-y-4">
-                {[
-                  { user: "Admin", action: "Actualizó configuración de Categorías", time: "Hace 5 min" },
-                  { user: "Soporte", action: "Auditó acceso de nuevos usuarios", time: "Hace 12 min" },
-                  { user: "Bot", action: "Notificaciones de vencimiento enviadas", time: "Hace 1 hora" },
-                  { user: "Sistema", action: "Sincronización de Documentos completada", time: "Hace 3 horas" }
-                ].map((log, i) => (
+                {(stats?.activities || []).map((log: any, i: number) => (
                   <div key={i} className="flex items-center justify-between p-4 rounded-xl bg-foreground/[0.02] border border-white/5">
                     <div>
                       <p className="text-[11px] font-black uppercase tracking-wider">{log.action}</p>
                       <p className="text-[9px] text-[var(--text-muted)] font-black italic">{log.user}</p>
                     </div>
-                    <span className="text-[8px] font-black uppercase text-[var(--text-muted)] opacity-40">{log.time}</span>
+                    <span className="text-[8px] font-black uppercase text-[var(--text-muted)] opacity-40">
+                      {new Date(log.time).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -167,15 +163,21 @@ export default function Dashboard(): React.ReactElement {
             <section className="glass-card p-8 border-white/5 bg-gradient-to-br from-brand-red/[0.03] to-transparent">
               <h3 className="text-xl font-black uppercase tracking-tight mb-6 flex items-center gap-3">
                 <span className="icon text-brand-red">priority_high</span>
-                Resumen de Cumplimiento
+                Estatus del Sistema
               </h3>
-              <div className="p-12 border-2 border-dashed border-brand-red/10 rounded-3xl flex flex-col items-center justify-center text-center">
-                <div className="size-16 rounded-full bg-brand-red/10 flex items-center justify-center mb-6 animate-pulse">
-                  <span className="icon text-3xl text-brand-red">analytics</span>
+              <div className="p-8 border border-white/5 rounded-3xl flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] uppercase font-black tracking-widest text-white/60">Base de Datos</span>
+                  <span className="text-[10px] uppercase font-black tracking-widest text-emerald-500 flex items-center gap-2"><div className="size-2 bg-emerald-500 rounded-full animate-pulse"></div> Conectado</span>
                 </div>
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-muted)] max-w-[200px] leading-relaxed">
-                  Generando reportes de auditoría semanal...
-                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] uppercase font-black tracking-widest text-white/60">Motor de Alertas</span>
+                  <span className="text-[10px] uppercase font-black tracking-widest text-emerald-500 flex items-center gap-2"><div className="size-2 bg-emerald-500 rounded-full animate-pulse"></div> Activo</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] uppercase font-black tracking-widest text-white/60">Última Sincronización</span>
+                  <span className="text-[10px] uppercase font-black tracking-widest text-white">Hace 2 min</span>
+                </div>
               </div>
             </section>
           </div>

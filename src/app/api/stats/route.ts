@@ -27,6 +27,53 @@ export async function GET() {
         }
 
         const now = new Date();
+        if (session.role === 'ADMIN') {
+            const [
+                totalDocuments,
+                totalUsers,
+                totalReminders,
+                activities
+            ] = await Promise.all([
+                prisma.document.count(),
+                prisma.user.count(),
+                prisma.reminder.count({ where: { status: 'SENT' } }),
+                prisma.auditLog.findMany({
+                    take: 5,
+                    orderBy: { createdAt: 'desc' },
+                    include: { user: true }
+                })
+            ]);
+
+            // Documents expiring today
+            const expiringToday = await prisma.document.count({
+                where: {
+                    status: 'ACTIVE',
+                    expiryDate: {
+                        gte: new Date(now.setHours(0, 0, 0, 0)),
+                        lte: new Date(now.setHours(23, 59, 59, 999))
+                    }
+                }
+            });
+
+            return NextResponse.json({
+                success: true,
+                data: {
+                    overview: {
+                        totalDocuments,
+                        totalUsers,
+                        totalReminders,
+                        expiringToday
+                    },
+                    activities: activities.map(log => ({
+                        user: log.user?.name || "Sistema",
+                        action: log.description,
+                        time: log.createdAt
+                    }))
+                }
+            });
+        }
+
+        // Regular User Logic
         const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
         // Parallel queries for performance - all filtered by userId
@@ -197,7 +244,6 @@ export async function GET() {
                 })
             }
         });
-
     } catch (error) {
         console.error('Error fetching stats:', error);
         return NextResponse.json(

@@ -59,7 +59,7 @@ const Hero2 = () => {
                     >
                         <div className="size-2 rounded-full bg-brand-red animate-ping" />
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--foreground)] opacity-50">
-                            Innovación en Gestión de Riesgo
+                            Innovación en Gestión Documental
                         </span>
                     </motion.div>
 

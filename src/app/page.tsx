@@ -93,7 +93,7 @@ export default function LandingPage(): React.ReactElement {
                                 <div className="space-y-4">
                                     {[
                                         { icon: <AlertTriangle className="text-brand-red" size={20} />, text: "Multas evitables", cost: "S/ 500+" },
-                                        { icon: <Clock className="text-brand-blue" size={20} />, text: "Días de papeleo", cost: "2-3 días" },
+                                        { icon: <Clock className="text-brand-blue" size={20} />, text: "Días sin Documentos", cost: "2-3 días" },
                                         { icon: <ShieldCheck className="text-emerald-500" size={20} />, text: "Seguros no vigentes", cost: "Riesgo Total" }
                                     ].map((item, i) => (
                                         <div key={i} className="flex items-center justify-between p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] shadow-sm">
