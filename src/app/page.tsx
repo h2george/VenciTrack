@@ -31,11 +31,11 @@ export default function LandingPage(): React.ReactElement {
                                 { label: "Configuración", value: "30s", icon: <Clock size={20} className="text-yellow-500" /> }
                             ].map((stat, i) => (
                                 <div key={i} className="text-center group">
-                                    <div className="inline-flex size-12 rounded-2xl bg-white dark:bg-black border border-black/5 dark:border-white/5 items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
+                                    <div className="inline-flex size-12 rounded-2xl bg-[var(--card)] border border-[var(--border)] items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
                                         {stat.icon}
                                     </div>
-                                    <p className="text-3xl font-black tracking-tighter mb-1">{stat.value}</p>
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-black/40 dark:text-white/30">{stat.label}</p>
+                                    <p className="text-3xl font-black tracking-tighter mb-1 text-[var(--text)]">{stat.value}</p>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">{stat.label}</p>
                                 </div>
                             ))}
                         </div>
@@ -49,7 +49,7 @@ export default function LandingPage(): React.ReactElement {
                             <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-8 uppercase leading-tight">
                                 Controla <span className="text-brand-red">todo lo que vence</span>
                             </h2>
-                            <p className="text-black/50 dark:text-white/40 font-bold text-sm leading-relaxed uppercase tracking-widest">
+                            <p className="text-[var(--text-muted)] font-bold text-sm leading-relaxed uppercase tracking-widest">
                                 Una sola herramienta para múltiples necesidades
                             </p>
                         </div>
@@ -60,14 +60,14 @@ export default function LandingPage(): React.ReactElement {
                                 { icon: <Home size={24} className="text-brand-blue" />, title: "Finanzas", items: ["Hipotecas", "Seguros", "Impuestos", "Contratos"] },
                                 { icon: <Plane size={24} className="text-yellow-500" />, title: "Viajes", items: ["Pasaporte", "Visas", "Seguros", "Mantenimiento"] },
                             ].map((cat, i) => (
-                                <div key={i} className="p-8 rounded-[2.5rem] bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 hover:border-brand-red/20 transition-all group">
-                                    <div className="size-12 rounded-2xl bg-white dark:bg-black border border-black/5 dark:border-white/5 flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                                <div key={i} className="p-8 rounded-[2.5rem] bg-[var(--bg-soft)] border border-[var(--border)] hover:border-brand-red/20 transition-all group">
+                                    <div className="size-12 rounded-2xl bg-[var(--card)] border border-[var(--border)] flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
                                         {cat.icon}
                                     </div>
                                     <h3 className="text-xl font-black uppercase tracking-widest mb-6">{cat.title}</h3>
                                     <ul className="space-y-3">
                                         {cat.items.map((item, j) => (
-                                            <li key={j} className="text-xs font-bold text-black/40 dark:text-white/40 flex items-center gap-2">
+                                            <li key={j} className="text-xs font-bold text-[var(--text-muted)] flex items-center gap-2">
                                                 <div className="size-1 rounded-full bg-brand-red" />
                                                 {item}
                                             </li>
@@ -87,7 +87,7 @@ export default function LandingPage(): React.ReactElement {
                                 <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-8 uppercase leading-tight">
                                     El costo de un <br /> <span className="text-brand-red">vencimiento olvidado</span>
                                 </h2>
-                                <p className="text-black/60 dark:text-white/40 font-medium text-lg leading-relaxed mb-10">
+                                <p className="text-[var(--text-muted)] font-medium text-lg leading-relaxed mb-10">
                                     Un olvido de un solo día puede significar multas costosas, pérdida de tiempo o sorpresas legales desagradables.
                                 </p>
                                 <div className="space-y-4">
@@ -96,10 +96,10 @@ export default function LandingPage(): React.ReactElement {
                                         { icon: <Clock className="text-brand-blue" size={20} />, text: "Días de papeleo", cost: "2-3 días" },
                                         { icon: <ShieldCheck className="text-emerald-500" size={20} />, text: "Seguros no vigentes", cost: "Riesgo Total" }
                                     ].map((item, i) => (
-                                        <div key={i} className="flex items-center justify-between p-5 rounded-2xl bg-white dark:bg-black border border-black/5 dark:border-white/5 shadow-sm">
+                                        <div key={i} className="flex items-center justify-between p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] shadow-sm">
                                             <div className="flex items-center gap-4">
                                                 {item.icon}
-                                                <span className="font-bold text-sm">{item.text}</span>
+                                                <span className="font-bold text-sm text-[var(--text)]">{item.text}</span>
                                             </div>
                                             <span className="text-xs font-black text-brand-red uppercase bg-brand-red/5 px-3 py-1 rounded-full">{item.cost}</span>
                                         </div>
@@ -111,12 +111,12 @@ export default function LandingPage(): React.ReactElement {
                                 <div className="absolute inset-0 bg-brand-red/5 blur-[8rem] group-hover:bg-brand-red/10 transition-all rounded-full" />
                                 <div className="relative glass-card overflow-hidden rounded-[2.5rem] border border-black/10 dark:border-white/10 p-2">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                        <div className="bg-black/5 dark:bg-white/5 p-8 rounded-[2rem]">
+                                        <div className="bg-[var(--bg-soft)] p-8 rounded-[2rem]">
                                             <div className="size-10 rounded-full bg-brand-red/10 flex items-center justify-center mb-6">
                                                 <AlertTriangle size={20} className="text-brand-red" />
                                             </div>
-                                            <h4 className="font-black uppercase tracking-widest text-xs mb-4">Sin VenciTrack</h4>
-                                            <ul className="space-y-3 text-[11px] font-bold text-black/40 dark:text-white/40">
+                                            <h4 className="font-black uppercase tracking-widest text-xs mb-4 text-[var(--text)]">Sin VenciTrack</h4>
+                                            <ul className="space-y-3 text-[11px] font-bold text-[var(--text-muted)]">
                                                 <li className="flex items-center gap-2">❌ Olvidos frecuentes</li>
                                                 <li className="flex items-center gap-2">❌ Multas acumuladas</li>
                                                 <li className="flex items-center gap-2">❌ Estrés constante</li>
@@ -149,7 +149,7 @@ export default function LandingPage(): React.ReactElement {
                             <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-6 uppercase leading-tight">
                                 La herramienta que <br /> piensa por ti
                             </h2>
-                            <p className="text-black/50 dark:text-white/40 font-bold text-sm leading-relaxed">
+                            <p className="text-[var(--text-muted)] font-bold text-sm leading-relaxed">
                                 Diseñamos VenciTrack para ser la extensión de tu memoria que nunca falla.
                             </p>
                         </div>
@@ -187,12 +187,12 @@ export default function LandingPage(): React.ReactElement {
                                     desc: "Nuestra herramienta esencial es gratuita. Queremos ayudarte a evitar multas innecesarias."
                                 }
                             ].map((feature, i) => (
-                                <div key={i} className="p-10 rounded-3xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/[0.05] dark:hover:bg-white/[0.05] transition-all group">
-                                    <div className="size-12 rounded-xl bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-sm">
+                                <div key={i} className="p-10 rounded-3xl border border-[var(--border)] bg-[var(--bg-soft)] hover:bg-[var(--card)] transition-all group">
+                                    <div className="size-12 rounded-xl bg-[var(--card)] border border-[var(--border)] flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-sm">
                                         {feature.icon}
                                     </div>
-                                    <h3 className="text-lg font-black uppercase tracking-widest mb-4">{feature.title}</h3>
-                                    <p className="text-sm text-black/50 dark:text-white/40 font-bold leading-relaxed">{feature.desc}</p>
+                                    <h3 className="text-lg font-black uppercase tracking-widest mb-4 text-[var(--text)]">{feature.title}</h3>
+                                    <p className="text-sm text-[var(--text-muted)] font-bold leading-relaxed">{feature.desc}</p>
                                 </div>
                             ))}
                         </div>
@@ -220,8 +220,8 @@ export default function LandingPage(): React.ReactElement {
                                             <span className="text-[10px] font-black text-brand-red">{t.name[0]}</span>
                                         </div>
                                         <div>
-                                            <p className="text-xs font-black uppercase tracking-widest">{t.name}</p>
-                                            <p className="text-[10px] text-black/40 dark:text-white/30 font-bold uppercase">{t.role}</p>
+                                            <p className="text-xs font-black uppercase tracking-widest text-[var(--text)]">{t.name}</p>
+                                            <p className="text-[10px] text-[var(--text-muted)] font-bold uppercase">{t.role}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -240,7 +240,7 @@ export default function LandingPage(): React.ReactElement {
                         >
                             Crear cuenta gratuita
                         </Link>
-                        <p className="mt-10 text-[9px] font-black uppercase tracking-[0.4em] text-black/20 dark:text-white/20">Tu herramienta de confianza para que todo siga vigente</p>
+                        <p className="mt-10 text-[9px] font-black uppercase tracking-[0.4em] text-[var(--text-muted)] opacity-30">Tu herramienta de confianza para que todo siga vigente</p>
                     </div>
                 </section>
 
