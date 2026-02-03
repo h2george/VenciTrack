@@ -54,6 +54,9 @@
   /* Mapping for Tailwind v4 standard variables */
   --background: var(--bg);
   --foreground: var(--text);
+
+  /* Layout Variables */
+  --sidebar-width: 300px;
 }
 
 .dark {
@@ -69,6 +72,9 @@
   /* Mapping for Tailwind v4 standard variables */
   --background: var(--bg);
   --foreground: var(--text);
+
+  /* Layout Variables */
+  --sidebar-width: 300px;
 }
 
 ::selection {
@@ -316,7 +322,7 @@ div {
 
 /* Layout */
 .sidebar-premium {
-  width: 280px;
+  width: var(--sidebar-width);
   height: 100vh;
   position: fixed;
   background: var(--sidebar-bg);
@@ -324,13 +330,15 @@ div {
   border-right: 1px solid var(--border-glass);
   padding: 2rem;
   z-index: 100;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .main-premium {
-  margin-left: 280px;
+  margin-left: var(--sidebar-width);
   padding: 3rem;
   min-height: 100vh;
   background: var(--bg-main);
+  transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-item-premium {

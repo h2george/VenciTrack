@@ -1,7 +1,7 @@
 /**
  * @file Sidebar.tsx
  * @description Master navigation component. Implements high-fidelity brand identity 
- * and kinetic interaction states.
+ * and kinetic interaction states. Supports collapsible mode.
  */
 
 "use client";
@@ -10,18 +10,29 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import ThemeToggle from "@/components/ThemeToggle";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 /**
  * Sidebar Component
- * @returns {React.ReactElement} The fixed navigation sidebar.
+ * @returns {React.ReactElement} The responsive and collapsible navigation sidebar.
  */
 export default function Sidebar(): React.ReactElement {
     const pathname = usePathname();
     const router = useRouter();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
+    // Initial load for collapse state from localStorage
     useEffect(() => {
+        const savedState = localStorage.getItem("sidebar-collapsed");
+        if (savedState === "true") {
+            setIsCollapsed(true);
+            document.documentElement.style.setProperty('--sidebar-width', '100px');
+        } else {
+            document.documentElement.style.setProperty('--sidebar-width', '300px');
+        }
+
         fetch('/api/auth/me')
             .then(res => res.json())
             .then(data => {
@@ -31,6 +42,13 @@ export default function Sidebar(): React.ReactElement {
             })
             .catch(err => console.error("Error checking role", err));
     }, []);
+
+    const toggleCollapse = () => {
+        const newState = !isCollapsed;
+        setIsCollapsed(newState);
+        localStorage.setItem("sidebar-collapsed", newState.toString());
+        document.documentElement.style.setProperty('--sidebar-width', newState ? '100px' : '300px');
+    };
 
     const userLinks = [
         { href: '/dashboard', label: 'Bóveda Viva', icon: 'dashboard' },
@@ -48,9 +66,6 @@ export default function Sidebar(): React.ReactElement {
 
     const links = isAdmin ? [...userLinks, ...adminLinks.filter(l => l.href !== '/dashboard')] : userLinks;
 
-    /**
-     * Termina la sesión del usuario con limpieza de estado
-     */
     async function handleLogout(): Promise<void> {
         setIsLoggingOut(true);
         try {
@@ -67,35 +82,53 @@ export default function Sidebar(): React.ReactElement {
     }
 
     return (
-        <aside className="sidebar-premium flex flex-col p-8 border-r border-[var(--border-glass)] bg-[var(--sidebar-bg)] backdrop-blur-3xl fixed h-screen w-[300px] z-[500] selection:bg-brand-red/20 overflow-y-auto">
-            {/* Branding - High Fidelity */}
-            <Link href="/dashboard" className="flex items-center gap-4 mb-14 group px-2">
-                <div className="size-11 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-red flex items-center justify-center shadow-xl shadow-brand-red/10 group-hover:scale-110 transition-transform duration-500">
+        <aside
+            className={`sidebar-premium flex flex-col p-6 border-r border-[var(--border)] bg-[var(--card)] backdrop-blur-3xl fixed h-screen z-[500] selection:bg-brand-red/20 overflow-y-auto overflow-x-hidden ${isCollapsed ? 'items-center p-4' : ''}`}
+            style={{ width: 'var(--sidebar-width)' }}
+        >
+            {/* Collapse Toggle Control */}
+            <button
+                onClick={toggleCollapse}
+                className="absolute -right-3 top-10 size-6 rounded-full bg-brand-red text-white flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-transform z-[501]"
+            >
+                {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+            </button>
+
+            {/* Branding - Kinetic State */}
+            <Link href="/dashboard" className={`flex items-center gap-4 mb-14 group ${isCollapsed ? 'justify-center px-0' : 'px-2'}`}>
+                <div className="size-11 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-red flex items-center justify-center shadow-xl shadow-brand-red/10 group-hover:scale-110 transition-transform duration-500 shrink-0">
                     <span className="icon text-white text-2xl">verified_user</span>
                 </div>
-                <div>
-                    <h2 className="text-xl font-black tracking-tighter text-[var(--text-primary)] leading-none mb-1">VenciTrack</h2>
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] italic">Security Vault</p>
-                </div>
+                {!isCollapsed && (
+                    <div className="animate-fade-in whitespace-nowrap">
+                        <h2 className="text-xl font-black tracking-tighter text-[var(--text)] leading-none mb-1">VenciTrack</h2>
+                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] italic">Security Vault</p>
+                    </div>
+                )}
             </Link>
 
             {/* Navigation Sections */}
             <div className="flex flex-col gap-10">
                 <nav className="flex flex-col gap-2">
-                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[var(--text-muted)] opacity-40 px-3 mb-4">Operaciones Base</p>
+                    <p className={`text-[10px] font-black uppercase tracking-[0.25em] text-[var(--text-muted)] opacity-40 mb-4 ${isCollapsed ? 'text-center' : 'px-3'}`}>
+                        {isCollapsed ? '...' : 'Operaciones Base'}
+                    </p>
                     {links.map((link) => {
                         const isActive = pathname === link.href;
                         return (
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-brand-red/10 text-brand-red shadow-inner shadow-brand-red/5' : 'text-[var(--text-secondary)] hover:bg-[var(--border-glass)] hover:text-[var(--text-primary)]'}`}
+                                className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-brand-red/10 text-brand-red shadow-inner shadow-brand-red/5' : 'text-[var(--text-muted)] hover:bg-[var(--bg-soft)] hover:text-[var(--text)]'} ${isCollapsed ? 'justify-center px-0' : ''}`}
+                                title={isCollapsed ? link.label : ""}
                             >
-                                <span className={`icon text-2xl transition-transform group-hover:scale-110 ${isActive ? 'text-brand-red' : 'text-[var(--text-muted)] group-hover:text-brand-red'}`}>
+                                <span className={`icon text-2xl transition-transform group-hover:scale-110 ${isActive ? 'text-brand-red' : 'text-[var(--text-muted)] group-hover:text-brand-red'} shrink-0`}>
                                     {link.icon}
                                 </span>
-                                <span className="font-black text-[13px] tracking-tight uppercase tracking-widest">{link.label}</span>
-                                {isActive && <div className="ml-auto size-1.5 rounded-full bg-brand-red shadow-glow shadow-brand-red/50 animate-pulse"></div>}
+                                {!isCollapsed && (
+                                    <span className="font-black text-[13px] tracking-widest uppercase animate-fade-in whitespace-nowrap">{link.label}</span>
+                                )}
+                                {!isCollapsed && isActive && <div className="ml-auto size-1.5 rounded-full bg-brand-red shadow-glow shadow-brand-red/50 animate-pulse"></div>}
                             </Link>
                         );
                     })}
@@ -103,52 +136,67 @@ export default function Sidebar(): React.ReactElement {
 
                 {/* System Management */}
                 <nav className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between px-3 mb-4">
-                        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[var(--text-muted)] opacity-40">Núcleo Sistema</p>
-                        <ThemeToggle />
-                    </div>
+                    {!isCollapsed && (
+                        <div className="flex items-center justify-between px-3 mb-4 animate-fade-in">
+                            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[var(--text-muted)] opacity-40">Núcleo Sistema</p>
+                            <ThemeToggle />
+                        </div>
+                    )}
+                    {isCollapsed && (
+                        <div className="flex justify-center mb-4">
+                            <ThemeToggle />
+                        </div>
+                    )}
 
                     <Link
                         href="/settings"
-                        className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group ${pathname === '/settings' ? 'bg-brand-blue/10 text-brand-blue' : 'text-[var(--text-secondary)] hover:bg-[var(--border-glass)] hover:text-[var(--text-primary)]'}`}
+                        className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group ${pathname === '/settings' ? 'bg-brand-blue/10 text-brand-blue' : 'text-[var(--text-muted)] hover:bg-[var(--bg-soft)] hover:text-[var(--text)]'} ${isCollapsed ? 'justify-center px-0' : ''}`}
+                        title={isCollapsed ? "Ajustes" : ""}
                     >
-                        <span className={`icon text-2xl ${pathname === '/settings' ? 'text-brand-blue' : 'text-[var(--text-muted)] group-hover:text-brand-blue'}`}>settings</span>
-                        <span className="font-black text-[13px] tracking-widest uppercase">Ajustes</span>
+                        <span className={`icon text-2xl ${pathname === '/settings' ? 'text-brand-blue' : 'text-[var(--text-muted)] group-hover:text-brand-blue'} shrink-0`}>settings</span>
+                        {!isCollapsed && (
+                            <span className="font-black text-[13px] tracking-widest uppercase animate-fade-in whitespace-nowrap">Ajustes</span>
+                        )}
                     </Link>
 
                     <button
                         onClick={handleLogout}
                         disabled={isLoggingOut}
-                        className="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group text-brand-red/60 hover:text-brand-red hover:bg-brand-red/5 w-full text-left"
+                        className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group text-brand-red/60 hover:text-brand-red hover:bg-brand-red/5 w-full text-left ${isCollapsed ? 'justify-center px-0' : ''}`}
+                        title={isCollapsed ? "Cerrar Protocolo" : ""}
                     >
-                        <span className="icon text-2xl group-hover:animate-pulse">
+                        <span className="icon text-2xl group-hover:animate-pulse shrink-0">
                             {isLoggingOut ? 'sync' : 'logout'}
                         </span>
-                        <span className="font-black text-[13px] tracking-widest uppercase">
-                            {isLoggingOut ? 'Desconexión...' : 'Cerrar Protocolo'}
-                        </span>
+                        {!isCollapsed && (
+                            <span className="font-black text-[13px] tracking-widest uppercase animate-fade-in whitespace-nowrap">
+                                {isLoggingOut ? 'Desconexión...' : 'Cerrar Protocolo'}
+                            </span>
+                        )}
                     </button>
                 </nav>
             </div>
 
-            {/* AI Callout - Dynamic Visual */}
-            <div className="mt-14 px-2">
-                <div className="glass-card p-6 bg-gradient-to-br from-brand-blue/10 to-transparent border-brand-blue/20 group hover:border-brand-blue/40 transition-all cursor-default">
-                    <div className="flex items-center gap-2 mb-3">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-blue shadow-glow shadow-brand-blue/50"></span>
-                        </span>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-brand-blue">IA Terminal</span>
+            {/* AI Callout - Adaptive Visual */}
+            {!isCollapsed && (
+                <div className="mt-14 px-2 animate-fade-in">
+                    <div className="glass-card p-6 bg-gradient-to-br from-brand-blue/10 to-transparent border-brand-blue/20 group hover:border-brand-blue/40 transition-all cursor-default overflow-hidden">
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-blue shadow-glow shadow-brand-blue/50"></span>
+                            </span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-brand-blue">IA Terminal</span>
+                        </div>
+                        <p className="text-[11px] text-[var(--text-muted)] font-bold leading-relaxed mb-4">
+                            Analizador de riesgos documentales activo.
+                        </p>
+                        <button className="w-full py-2.5 rounded-xl bg-brand-blue/10 text-brand-blue font-black text-[10px] uppercase tracking-widest hover:bg-brand-blue hover:text-white transition-all duration-300">
+                            Iniciar Escaneo
+                        </button>
                     </div>
-                    <p className="text-[11px] text-[var(--text-muted)] font-bold leading-relaxed mb-4">
-                        Analizador de riesgos documentales activo.
-                    </p>
-                    <button className="w-full py-2.5 rounded-xl bg-brand-blue/10 text-brand-blue font-black text-[10px] uppercase tracking-widest hover:bg-brand-blue hover:text-white transition-all duration-300">
-                        Iniciar Escaneo
-                    </button>
                 </div>
-            </div>
+            )}
         </aside>
     );
 }
