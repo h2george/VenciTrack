@@ -51,7 +51,7 @@ export default function Sidebar(): React.ReactElement {
     };
 
     const userLinks = [
-        { href: '/dashboard', label: 'Bóveda Viva', icon: 'dashboard' },
+        { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
         { href: '/documents', label: 'Inventario', icon: 'inventory_2' },
         { href: '/subjects', label: 'Asociados', icon: 'group' },
     ];
@@ -59,7 +59,8 @@ export default function Sidebar(): React.ReactElement {
     const adminLinks = [
         { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
         { href: '/admin/users', label: 'Usuarios', icon: 'manage_accounts' },
-        { href: '/admin/documents', label: 'Docs Global', icon: 'database' },
+        { href: '/admin/expiration-categories', label: 'Categorías de Vencimiento', icon: 'category' },
+        { href: '/admin/global-database', label: 'Base de Datos Global', icon: 'layers' },
         { href: '/admin/audit-logs', label: 'Bitácora', icon: 'history' },
         { href: '/admin/integrations', label: 'Integraciones', icon: 'hub' },
     ];
@@ -121,14 +122,14 @@ export default function Sidebar(): React.ReactElement {
                                 key={link.href}
                                 href={link.href}
                                 className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${isActive ? 'bg-brand-red/10 text-brand-red shadow-inner shadow-brand-red/5' : 'text-[var(--text-muted)] hover:bg-[var(--bg-soft)] hover:text-[var(--text)]'} ${isCollapsed ? 'justify-center px-0' : ''}`}
-                                title={isCollapsed ? (link.label === 'Bóveda Viva' ? 'Panel Principal' : link.label) : ""}
+                                title={isCollapsed ? link.label : ""}
                             >
                                 <span className={`icon text-2xl transition-transform group-hover:scale-110 ${isActive ? 'text-brand-red' : 'text-[var(--text-muted)] group-hover:text-brand-red'} shrink-0`}>
                                     {link.icon}
                                 </span>
                                 {!isCollapsed && (
                                     <span className="font-black text-[12px] tracking-widest uppercase animate-fade-in whitespace-nowrap overflow-hidden text-ellipsis">
-                                        {link.label === 'Bóveda Viva' ? 'Panel Principal' : link.label}
+                                        {link.label}
                                     </span>
                                 )}
                                 {!isCollapsed && isActive && <div className="ml-auto size-1.5 rounded-full bg-brand-red shadow-glow shadow-brand-red/50 animate-pulse"></div>}
