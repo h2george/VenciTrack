@@ -341,14 +341,14 @@ div {
   transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .main-premium {
     margin-left: 0 !important;
     padding: 1.5rem !important;
+    width: 100% !important;
   }
 
-  /* Hide desktop sidebar behavior by default on mobile if needed via CSS, 
-     though Sidebar.tsx logic will handle translation */
+  /* Hide desktop sidebar behavior layout vars */
   :root {
     --sidebar-width: 0px;
   }
