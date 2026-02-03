@@ -26,6 +26,7 @@ export default function CategoriesPage() {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const [editingId, setEditingId] = useState<string | null>(null);
 
     // Form state
     const [formData, setFormData] = useState({
@@ -57,22 +58,63 @@ export default function CategoriesPage() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch("/api/admin/document-types", {
-                method: "POST",
+            const url = "/api/admin/document-types";
+            const method = editingId ? "PUT" : "POST";
+            const body = editingId ? { ...formData, id: editingId } : formData;
+
+            const res = await fetch(url, {
+                method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(body)
             });
+
             const json = await res.json();
             if (json.success) {
-                setModalOpen(false);
-                setFormData({ name: "", category: "General", description: "", gracePeriodDays: 30, requiresExpiry: true, targetType: "BOTH" });
+                closeModal();
                 fetchTypes();
+            } else {
+                alert("Error: " + (json.error || "Failed to save"));
             }
         } catch (err) {
             console.error(err);
         } finally {
             setSubmitting(false);
         }
+    };
+
+    const handleEdit = (type: DocumentType) => {
+        setFormData({
+            name: type.name,
+            category: type.category,
+            description: type.description || "",
+            gracePeriodDays: type.gracePeriodDays,
+            requiresExpiry: type.requiresExpiry,
+            targetType: type.targetType
+        });
+        setEditingId(type.id);
+        setModalOpen(true);
+    };
+
+    const handleDelete = async (id: string, name: string) => {
+        if (!confirm(`¿Estás seguro de eliminar la categoría "${name}"? Esta acción no se puede deshacer.`)) return;
+
+        try {
+            const res = await fetch(`/api/admin/document-types?id=${id}`, { method: "DELETE" });
+            const json = await res.json();
+            if (json.success) {
+                fetchTypes();
+            } else {
+                alert("No se pudo eliminar: " + (json.error || "Error desconocido"));
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setEditingId(null);
+        setFormData({ name: "", category: "General", description: "", gracePeriodDays: 30, requiresExpiry: true, targetType: "BOTH" });
     };
 
     if (loading) {
@@ -105,7 +147,7 @@ export default function CategoriesPage() {
                     </div>
 
                     <button
-                        onClick={() => setModalOpen(true)}
+                        onClick={() => { closeModal(); setModalOpen(true); }}
                         className="button-red flex items-center gap-2 px-8 py-4 shadow-xl shadow-brand-red/20 transform hover:scale-105 transition-all"
                     >
                         <Plus size={20} />
@@ -121,8 +163,19 @@ export default function CategoriesPage() {
                                     <FileText size={24} />
                                 </div>
                                 <div className="flex gap-2">
-                                    <button className="p-2 rounded-lg bg-foreground/5 hover:bg-brand-blue/10 hover:text-brand-blue transition-colors">
+                                    <button
+                                        onClick={() => handleEdit(type)}
+                                        className="p-2 rounded-lg bg-foreground/5 hover:bg-brand-blue/10 hover:text-brand-blue transition-colors"
+                                        title="Editar"
+                                    >
                                         <Settings2 size={16} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(type.id, type.name)}
+                                        className="p-2 rounded-lg bg-foreground/5 hover:bg-brand-red/10 hover:text-brand-red transition-colors"
+                                        title="Eliminar"
+                                    >
+                                        <Trash2 size={16} />
                                     </button>
                                 </div>
                             </div>
@@ -160,9 +213,9 @@ export default function CategoriesPage() {
                 {/* Create Modal */}
                 {isModalOpen && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 sm:p-12">
-                        <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setModalOpen(false)}></div>
+                        <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={closeModal}></div>
                         <div className="glass-card relative z-10 w-full max-w-2xl p-10 border-white/10 shadow-3xl shadow-black animate-fade-in-up">
-                            <h2 className="text-3xl font-black uppercase tracking-tighter mb-8">Nueva Categoría de Vencimiento</h2>
+                            <h2 className="text-3xl font-black uppercase tracking-tighter mb-8">{editingId ? 'Editar Categoría' : 'Nueva Categoría'}</h2>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
@@ -242,11 +295,11 @@ export default function CategoriesPage() {
                                         className="button-red flex-1 py-5 flex items-center justify-center gap-3"
                                     >
                                         {submitting ? <Loader2 className="animate-spin" size={20} /> : <FileText size={20} />}
-                                        <span className="font-black uppercase tracking-widest text-sm">Guardar Configuración</span>
+                                        <span className="font-black uppercase tracking-widest text-sm">{editingId ? 'Actualizar' : 'Guardar'} Configuración</span>
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => setModalOpen(false)}
+                                        onClick={closeModal}
                                         className="button-glass px-10 py-5"
                                     >
                                         <span className="font-black uppercase tracking-widest text-sm opacity-50">Cancelar</span>
