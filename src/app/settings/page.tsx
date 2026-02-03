@@ -22,7 +22,7 @@ export default function SettingsPage(): React.ReactElement {
         frequency: "IMMEDIATE",
         anticipationDays: 30
     });
-    const [user, setUser] = useState<{ name: string, company: string | null }>({ name: "Cargando...", company: "" });
+    const [user, setUser] = useState<{ name: string }>({ name: "Cargando..." });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState("");
@@ -40,7 +40,7 @@ export default function SettingsPage(): React.ReactElement {
         fetch("/api/auth/me")
             .then(res => res.json())
             .then(data => {
-                if (data.success) setUser({ name: data.data.name, company: data.data.company });
+                if (data.success) setUser({ name: data.data.name });
             });
     }, []);
 
@@ -171,7 +171,7 @@ export default function SettingsPage(): React.ReactElement {
                             <h3 className="text-xl font-black uppercase tracking-tight text-[var(--text-primary)]">Identidad del Operador</h3>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 gap-8">
                             <div className="flex flex-col gap-3">
                                 <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Nombre Maestro</label>
                                 <input
@@ -179,15 +179,6 @@ export default function SettingsPage(): React.ReactElement {
                                     readOnly
                                     className="input-premium px-6 py-4 opacity-70"
                                     value={user.name}
-                                />
-                            </div>
-                            <div className="flex flex-col gap-3">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Organización</label>
-                                <input
-                                    type="text"
-                                    readOnly
-                                    className="input-premium px-6 py-4 opacity-70"
-                                    value={user.company || "Asociado Independiente"}
                                 />
                             </div>
                         </div>
