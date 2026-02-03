@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 import AddDocumentModal from "@/components/AddDocumentModal";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -106,9 +107,14 @@ export default function Dashboard(): React.ReactElement {
     return (
       <main className="flex min-h-screen bg-[var(--bg)] text-[var(--text)]">
         <Sidebar />
-        <div className="main-premium flex-1">
+        <div className="main-premium flex-1 relative overflow-hidden">
+          {/* Theme Switcher - Top Right */}
+          <div className="absolute top-10 right-10 z-[110]">
+            <ThemeToggle />
+          </div>
+
           <DashboardHeader
-            title="Panel de Control"
+            title="Dashboard"
             subtitle="Centro de comando maestro. Gestión de infraestructura y cumplimiento."
           />
 
@@ -185,6 +191,11 @@ export default function Dashboard(): React.ReactElement {
     <main className="flex min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <Sidebar />
       <div className="main-premium flex-1 relative overflow-hidden">
+        {/* Theme Switcher - Top Right */}
+        <div className="absolute top-10 right-10 z-[110]">
+          <ThemeToggle />
+        </div>
+
         {/* Decorative Background Blob */}
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none"></div>
 

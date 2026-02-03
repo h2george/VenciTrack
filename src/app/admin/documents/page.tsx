@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Loader2, Plus, UploadCloud, ShieldCheck } from "lucide-react";
@@ -110,13 +111,17 @@ export default function AdminDocumentsPage(): React.ReactElement {
         <main className="flex bg-[var(--bg)] min-h-screen text-[var(--text)]">
             <Sidebar />
             <div className="main-premium flex-1 relative overflow-hidden">
+                {/* Theme Switcher - Top Right */}
+                <div className="absolute top-10 right-10 z-[110]">
+                    <ThemeToggle />
+                </div>
                 <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/5 blur-[120px] rounded-full pointer-events-none"></div>
 
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-1.5 h-6 bg-brand-red rounded-full"></div>
-                            <h1 className="text-5xl font-black tracking-tighter text-[var(--text-primary)]">Historial Global</h1>
+                            <h1 className="text-5xl font-black tracking-tighter text-[var(--text-primary)]">Documentos</h1>
                         </div>
                         <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1">
                             Control centralizado de vigencias y alertas de todos los usuarios

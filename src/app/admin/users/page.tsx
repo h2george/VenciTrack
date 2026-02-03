@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -71,16 +72,20 @@ export default function AdminUsersPage(): React.ReactElement {
         <main className="flex bg-[var(--bg)] min-h-screen text-[var(--text)]">
             <Sidebar />
             <div className="main-premium flex-1 relative overflow-hidden">
+                {/* Theme Switcher - Top Right */}
+                <div className="absolute top-10 right-10 z-[110]">
+                    <ThemeToggle />
+                </div>
                 <div className="absolute top-0 left-0 w-[40%] h-[40%] bg-brand-blue/5 blur-[120px] rounded-full pointer-events-none"></div>
 
                 <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-1.5 h-6 bg-brand-red rounded-full"></div>
-                            <h1 className="text-5xl font-black tracking-tighter">Gestión de Usuarios</h1>
+                            <h1 className="text-5xl font-black tracking-tighter">Usuarios</h1>
                         </div>
                         <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1">
-                            Auditoría y control de identidades en la red maestra
+                            Auditoría y control de cuentas en la plataforma
                         </p>
                     </div>
 
@@ -103,7 +108,7 @@ export default function AdminUsersPage(): React.ReactElement {
                                 <tr className="border-b border-[var(--border)]">
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Entidad</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Organización</th>
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Activos Sincronizados</th>
+                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Vencimientos</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Registro</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Acciones</th>
                                 </tr>
@@ -133,17 +138,12 @@ export default function AdminUsersPage(): React.ReactElement {
                                             </td>
                                             <td className="px-6 py-6">
                                                 <span className="text-sm font-bold text-[var(--text-secondary)]">
-                                                    {user.company || "Asociado Independiente"}
+                                                    {user.company || "Usuario Independiente"}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-6 transition-transform">
-                                                <div className="flex gap-3">
-                                                    <div className="stat-pill bg-brand-blue/10 text-brand-blue border-none px-4 py-1 text-[9px] font-black uppercase tracking-widest">
-                                                        {user._count.documents} Vaults
-                                                    </div>
-                                                    <div className="stat-pill bg-foreground/5 text-[var(--text-muted)] border-none px-4 py-1 text-[9px] font-black uppercase tracking-widest">
-                                                        {user._count.subjects} Subjs
-                                                    </div>
+                                                <div className="stat-pill inline-flex bg-brand-blue/10 text-brand-blue border-none px-4 py-1 text-[9px] font-black uppercase tracking-widest">
+                                                    {user._count.documents} Documentos
                                                 </div>
                                             </td>
                                             <td className="px-6 py-6">

@@ -8,6 +8,7 @@
 
 import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 
 /** 
  * Config interface for bridge connectors
@@ -80,15 +81,19 @@ export default function IntegrationsPage(): React.ReactElement {
     return (
         <main className="flex bg-[var(--bg)] min-h-screen text-[var(--text)]">
             <Sidebar />
-            <div className="main-premium flex-1">
+            <div className="main-premium flex-1 relative overflow-hidden">
+                {/* Theme Switcher - Top Right */}
+                <div className="absolute top-10 right-10 z-[110]">
+                    <ThemeToggle />
+                </div>
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-1.5 h-6 bg-brand-red rounded-full"></div>
-                            <h1 className="text-5xl font-black tracking-tighter">Puentes Externos</h1>
+                            <h1 className="text-5xl font-black tracking-tighter">Integraciones</h1>
                         </div>
                         <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1">
-                            Sincronización de telemetría y audiencias maestras
+                            Sincronización de telemetría y plataformas externas
                         </p>
                     </div>
                 </header>

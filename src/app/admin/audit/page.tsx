@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { History, ShieldCheck, Mail, User, Search } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export const dynamic = 'force-dynamic';
 
@@ -13,18 +14,26 @@ export default async function AuditLogsPage() {
     });
 
     return (
-        <div className="flex min-h-screen bg-[var(--bg)]">
+        <div className="flex min-h-screen bg-[var(--bg)] text-[var(--text)]">
             <Sidebar />
-            <main className="flex-1 ml-[300px] p-10 py-16">
-                <div className="max-w-6xl mx-auto">
+            <main className="main-premium flex-1 relative overflow-hidden">
+                {/* Theme Switcher - Top Right */}
+                <div className="absolute top-10 right-10 z-[110]">
+                    <ThemeToggle />
+                </div>
+                <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+                <div className="p-10 py-16">
                     {/* Header */}
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
                         <div>
                             <div className="flex items-center gap-3 mb-2">
                                 <History className="text-brand-red" size={24} />
-                                <h1 className="text-4xl font-black uppercase tracking-tighter">Bitácora de Auditoría</h1>
+                                <h1 className="text-5xl font-black tracking-tighter">Auditoría</h1>
                             </div>
-                            <p className="text-[var(--text-muted)] font-bold text-sm">Trazabilidad total de notificaciones y acciones del sistema.</p>
+                            <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1">
+                                Trazabilidad total de alertas y acciones administrativas
+                            </p>
                         </div>
 
                         <div className="flex items-center gap-4 bg-[var(--sidebar-bg)] p-4 px-6 rounded-2xl border border-[var(--border-glass)] shadow-2xl">

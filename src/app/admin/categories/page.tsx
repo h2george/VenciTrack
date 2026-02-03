@@ -7,6 +7,7 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 import { Plus, Settings2, Trash2, FileText, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 interface DocumentType {
@@ -86,6 +87,10 @@ export default function CategoriesPage() {
         <main className="flex bg-[var(--bg)] min-h-screen text-[var(--text)]">
             <Sidebar />
             <div className="main-premium flex-1 relative overflow-hidden">
+                {/* Theme Switcher - Top Right */}
+                <div className="absolute top-10 right-10 z-[110]">
+                    <ThemeToggle />
+                </div>
                 <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none"></div>
 
                 <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
