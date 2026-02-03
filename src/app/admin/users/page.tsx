@@ -11,7 +11,7 @@ import Sidebar from "@/components/Sidebar";
 import ThemeToggle from "@/components/ThemeToggle";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Edit2, Search, Filter, Lock, Unlock, Plus, X, Save } from "lucide-react";
+import { Edit2, Search, Lock, Unlock, Plus, X, Save } from "lucide-react";
 
 /** 
  * Admin User interface
@@ -20,7 +20,6 @@ interface AdminUser {
     id: string;
     name: string;
     email: string;
-    company?: string;
     role: string;
     status: string;
     createdAt: string;
@@ -38,7 +37,6 @@ export default function AdminUsersPage(): React.ReactElement {
     const [users, setUsers] = useState<AdminUser[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedOrg, setSelectedOrg] = useState("all");
 
     // Modal & Form State
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,7 +46,6 @@ export default function AdminUsersPage(): React.ReactElement {
         name: "",
         email: "",
         password: "",
-        company: "",
         role: "USER"
     });
 
@@ -69,19 +66,10 @@ export default function AdminUsersPage(): React.ReactElement {
         }
     }
 
-    // Extract unique organizations for filter
-    const organizations = Array.from(new Set(users.map(u => u.company || "Usuario Independiente")));
-
-    const filteredUsers = users.filter(user => {
-        const matchesSearch =
-            user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (user.company?.toLowerCase() || "").includes(searchTerm.toLowerCase());
-
-        const matchesOrg = selectedOrg === "all" || (user.company || "Usuario Independiente") === selectedOrg;
-
-        return matchesSearch && matchesOrg;
-    });
+    const filteredUsers = users.filter(user =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     // Handlers
     const handleEditUser = (user: AdminUser) => {
@@ -90,7 +78,6 @@ export default function AdminUsersPage(): React.ReactElement {
             name: user.name,
             email: user.email,
             password: "", // Leave blank to keep existing
-            company: user.company || "",
             role: user.role
         });
         setIsModalOpen(true);
@@ -102,7 +89,6 @@ export default function AdminUsersPage(): React.ReactElement {
             name: "",
             email: "",
             password: "",
-            company: "",
             role: "USER"
         });
         setIsModalOpen(true);
@@ -216,20 +202,7 @@ export default function AdminUsersPage(): React.ReactElement {
                             />
                         </div>
 
-                        {/* Filter - Compact */}
-                        <div className="glass-card flex items-center px-3 py-2 border-white/5 focus-within:border-brand-blue/30 transition-all w-full sm:w-[180px]">
-                            <Filter size={14} className="text-[var(--text-muted)] mr-2" />
-                            <select
-                                value={selectedOrg}
-                                onChange={(e) => setSelectedOrg(e.target.value)}
-                                className="bg-transparent border-none outline-none text-xs font-bold w-full text-[var(--text)] uppercase tracking-wide cursor-pointer appearance-none"
-                            >
-                                <option value="all" className="bg-[var(--card)]">Organización: Todas</option>
-                                {organizations.map(org => (
-                                    <option key={org} value={org} className="bg-[var(--card)] text-[var(--text)]">{org}</option>
-                                ))}
-                            </select>
-                        </div>
+                        {/* Filter - Compact (Removed due to no company field) */}
                     </div>
                 </header>
 
@@ -240,7 +213,6 @@ export default function AdminUsersPage(): React.ReactElement {
                                 <thead>
                                     <tr className="border-b border-[var(--border)]">
                                         <th className="px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Usuario</th>
-                                        <th className="px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Organización</th>
                                         <th className="px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Estado</th>
                                         <th className="px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Creación</th>
                                         <th className="px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] text-right">Acciones</th>
@@ -268,11 +240,6 @@ export default function AdminUsersPage(): React.ReactElement {
                                                             <p className="text-[10px] text-[var(--text-muted)] font-mono opacity-70">{user.email}</p>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <span className="text-xs font-bold text-[var(--text-secondary)]">
-                                                        {user.company || "Independiente"}
-                                                    </span>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider ${user.status === 'ACTIVE'
@@ -377,17 +344,6 @@ export default function AdminUsersPage(): React.ReactElement {
                                         className="w-full bg-[var(--bg)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-bold focus:border-brand-red/50 focus:ring-2 focus:ring-brand-red/20 outline-none transition-all"
                                         placeholder="••••••••"
                                         minLength={6}
-                                    />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)] ml-1">Organización</label>
-                                    <input
-                                        type="text"
-                                        value={formData.company}
-                                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                                        className="w-full bg-[var(--bg)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm font-bold focus:border-brand-red/50 focus:ring-2 focus:ring-brand-red/20 outline-none transition-all"
-                                        placeholder="Ej. Vencia Corp"
                                     />
                                 </div>
 

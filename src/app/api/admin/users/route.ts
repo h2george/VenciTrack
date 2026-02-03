@@ -22,7 +22,6 @@ export async function GET() {
                 id: true,
                 name: true,
                 email: true,
-                company: true,
                 role: true,
                 status: true,
                 createdAt: true,
@@ -57,7 +56,7 @@ export async function POST(request: Request) {
         if (!session || session.role !== "ADMIN") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
         const body = await request.json();
-        const { name, email, password, company, role } = body;
+        const { name, email, password, role } = body;
 
         if (!name || !email || !password) {
             return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 });
@@ -78,7 +77,6 @@ export async function POST(request: Request) {
                 name,
                 email,
                 password, // TODO: Ensure this is hashed if not handled by middleware
-                company,
                 role: role || "USER",
                 status: "ACTIVE"
             }
@@ -111,11 +109,11 @@ export async function PUT(request: Request) {
         if (!session || session.role !== "ADMIN") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
         const body = await request.json();
-        const { id, name, email, company, role, status, password } = body;
+        const { id, name, email, role, status, password } = body;
 
         if (!id) return NextResponse.json({ success: false, error: "User ID required" }, { status: 400 });
 
-        const dataToUpdate: any = { name, email, company, role, status };
+        const dataToUpdate: any = { name, email, role, status };
         if (password) dataToUpdate.password = password; // Only update if provided
 
         const updatedUser = await prisma.user.update({
