@@ -23,9 +23,9 @@ interface Subject {
 
 /**
  * SubjectsPage Component
- * @returns {JSX.Element} The rendered associates gallery.
+ * @returns {React.ReactElement} The rendered associates gallery.
  */
-export default function SubjectsPage(): JSX.Element {
+export default function SubjectsPage(): React.ReactElement {
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [loading, setLoading] = useState(true);
 

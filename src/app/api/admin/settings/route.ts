@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
         const session = await getSession();
         if (!session?.userId) {
@@ -41,15 +41,15 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         // Expect body: { "META_PIXEL_ID": "...", "GA_MEASUREMENT_ID": "..." }
 
-        const updates = Object.entries(body).map(async ([key, value]) => {
-            if (typeof value === 'string') {
+        const updates = Object.entries(body as Record<string, any>)
+            .filter(([, value]) => typeof value === 'string')
+            .map(async ([key, value]) => {
                 return prisma.systemConfig.upsert({
                     where: { key },
-                    update: { value },
-                    create: { key, value }
+                    update: { value: value as string },
+                    create: { key, value: value as string }
                 });
-            }
-        });
+            });
 
         await Promise.all(updates);
 

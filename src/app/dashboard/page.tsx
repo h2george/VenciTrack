@@ -15,9 +15,9 @@ import Link from "next/link";
 
 /**
  * Dashboard Component
- * @returns {JSX.Element} The adaptive dashboard view.
+ * @returns {React.ReactElement} The adaptive dashboard view.
  */
-export default function Dashboard(): JSX.Element {
+export default function Dashboard(): React.ReactElement {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -103,6 +103,7 @@ export default function Dashboard(): JSX.Element {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { href: "/admin/users", icon: "manage_accounts", title: "Usuarios", desc: "Administra cuentas, roles y auditoría de acceso.", color: "text-brand-blue" },
+              { href: "/admin/document-types", icon: "category", title: "Tipos Documentales", desc: "HU-1.1: Configura alertas y reglas por tipo de activo.", color: "text-brand-blue" },
               { href: "/admin/documents", icon: "database", title: "PostgreSQL Bóveda", desc: "Carga masiva y normalización de doc types globales.", color: "text-brand-blue" },
               { href: "/admin/integrations", icon: "hub", title: "Integraciones", desc: "Monitoreo de APIs, Meta Pixel y Google Analytics.", color: "text-brand-red" }
             ].map((card, i) => (
@@ -259,6 +260,16 @@ export default function Dashboard(): JSX.Element {
                       <span className="flex items-center gap-3 text-[var(--text-primary)]">
                         <span className="icon text-brand-blue">person_add</span>
                         Nuevo Asociado
+                      </span>
+                      <span className="icon text-xs text-[var(--text-muted)]">arrow_forward</span>
+                    </Link>
+                    <Link
+                      href="/settings"
+                      className="button-glass w-full justify-between px-6 hover:border-brand-blue/40"
+                    >
+                      <span className="flex items-center gap-3 text-[var(--text-primary)]">
+                        <span className="icon text-brand-blue">notifications_active</span>
+                        Alertas & Canales
                       </span>
                       <span className="icon text-xs text-[var(--text-muted)]">arrow_forward</span>
                     </Link>

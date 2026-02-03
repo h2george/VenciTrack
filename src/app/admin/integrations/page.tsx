@@ -19,9 +19,9 @@ interface IntegrationConfig {
 
 /**
  * IntegrationsPage Component
- * @returns {JSX.Element} The rendered integrations control panel.
+ * @returns {React.ReactElement} The rendered integrations control panel.
  */
-export default function IntegrationsPage(): JSX.Element {
+export default function IntegrationsPage(): React.ReactElement {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [config, setConfig] = useState<IntegrationConfig>({

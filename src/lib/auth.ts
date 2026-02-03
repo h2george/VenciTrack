@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
-const secretKey = process.env.JWT_SECRET || "vencitrack-secret-key-change-me-in-production";
+const secretKey = process.env[''] || "vencitrack-secret-key-change-me-in-production";
 const key = new TextEncoder().encode(secretKey);
 
 export const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days

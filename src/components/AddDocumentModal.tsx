@@ -34,7 +34,7 @@ interface DocumentType {
 /**
  * AddDocumentModal Component
  */
-export default function AddDocumentModal({ isOpen, onClose, onSuccess }: AddDocumentModalProps): JSX.Element | null {
+export default function AddDocumentModal({ isOpen, onClose, onSuccess }: AddDocumentModalProps): React.ReactElement | null {
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [docTypes, setDocTypes] = useState<DocumentType[]>([]);
     const [loading, setLoading] = useState(false);
@@ -155,7 +155,9 @@ export default function AddDocumentModal({ isOpen, onClose, onSuccess }: AddDocu
                         <div className="flex flex-col gap-2">
                             <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Asociado Maestro</label>
                             <div className="relative group">
-                                <span className="icon absolute left-5 text-lg text-[var(--text-muted)] group-focus-within:text-brand-red transition-colors top-1/2 -translate-y-1/2 pointer-events-none">person</span>
+                                <span className="icon absolute left-5 text-lg text-[var(--text-muted)] group-focus-within:text-brand-red transition-colors top-1/2 -translate-y-1/2 pointer-events-none">
+                                    {subjects.find(s => s.id === formData.subjectId)?.type === 'VEHICLE' ? 'directions_car' : 'person'}
+                                </span>
                                 <select
                                     required
                                     className="input-premium pl-14 pr-12 py-4 appearance-none w-full"
@@ -164,7 +166,7 @@ export default function AddDocumentModal({ isOpen, onClose, onSuccess }: AddDocu
                                 >
                                     <option value="" disabled className="bg-slate-900">Seleccionar Ente...</option>
                                     {subjects.map(s => (
-                                        <option key={s.id} value={s.id} className="bg-slate-900">{s.name} [{s.type}]</option>
+                                        <option key={s.id} value={s.id} className="bg-slate-900">{s.name} {s.type === 'VEHICLE' ? '[Placa]' : '[Persona]'}</option>
                                     ))}
                                 </select>
                                 <span className="icon absolute right-5 text-sm text-[var(--text-muted)] pointer-events-none top-1/2 -translate-y-1/2">expand_more</span>

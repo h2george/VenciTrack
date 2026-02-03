@@ -2,7 +2,7 @@ import { Hero2 } from "@/components/ui/hero-2-1";
 
 /**
  * Demo Component
- * @returns {JSX.Element} The rendered Hero2 demo.
+ * @returns {React.ReactElement} The rendered Hero2 demo.
  */
 const DemoOne = () => {
     return (

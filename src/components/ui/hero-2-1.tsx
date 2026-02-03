@@ -15,158 +15,118 @@ const Hero2 = () => {
 
     return (
         <div className="relative overflow-hidden bg-white dark:bg-black selection:bg-brand-red/30 transition-colors duration-500">
-            {/* Background Gradients */}
-            <div className="flex flex-col items-end absolute -right-60 -top-10 blur-3xl z-0 pointer-events-none opacity-50 dark:opacity-100">
-                <div className="h-[15rem] rounded-full w-[60rem] z-1 bg-gradient-to-b blur-[8rem] from-brand-red/10 to-brand-blue/10"></div>
-                <div className="h-[15rem] rounded-full w-[90rem] z-1 bg-gradient-to-b blur-[8rem] from-brand-red/5 to-yellow-500/5"></div>
+            {/* Background Gradients - Enhanced for depth */}
+            <div className="absolute -right-60 -top-10 blur-3xl z-0 pointer-events-none opacity-40 dark:opacity-60 overflow-hidden">
+                <div className="h-[25rem] rounded-full w-[60rem] bg-gradient-to-r from-brand-red/20 via-brand-blue/20 to-yellow-500/10 animate-pulse"></div>
             </div>
 
             {/* Content container */}
             <div className="relative z-10">
                 {/* Navigation */}
-                <nav className="container mx-auto flex items-center justify-between px-6 py-6 lg:px-12">
+                <nav className="container mx-auto flex items-center justify-between px-6 py-8 lg:px-12">
                     <Link href="/" className="flex items-center group transition-all active:scale-95">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-red text-white shadow-lg shadow-brand-red/10">
-                            <ShieldCheck size={22} />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-red text-white shadow-2xl shadow-brand-red/20 group-hover:rotate-6 transition-transform">
+                            <ShieldCheck size={26} />
                         </div>
-                        <span className="ml-3 text-xl font-black text-black dark:text-white tracking-tighter">VenciTrack</span>
+                        <span className="ml-4 text-2xl font-black text-black dark:text-white tracking-tighter uppercase">VenciTrack</span>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-4">
-                        <Link href="/login" className="h-12 w-40 rounded-2xl border border-black/10 dark:border-white/10 flex items-center justify-center text-xs font-black uppercase tracking-widest text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all active:scale-95">
+                    <div className="hidden md:flex items-center space-x-6">
+                        <Link href="/login" className="px-8 py-3 rounded-2xl border border-black/10 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all">
                             Ingresar
                         </Link>
-                        <Link href="/register" className="h-12 w-40 rounded-2xl bg-brand-red flex items-center justify-center text-xs font-black uppercase tracking-widest text-white shadow-xl shadow-brand-red/20 hover:scale-105 transition-all active:scale-95">
+                        <Link href="/register" className="px-8 py-3 rounded-2xl bg-brand-red text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-2xl shadow-brand-red/30 hover:scale-105 transition-all">
                             Registrarse
                         </Link>
                     </div>
 
                     {/* Mobile menu button */}
                     <button
-                        className="md:hidden size-10 flex items-center justify-center rounded-xl border border-black/10 dark:border-white/10 text-black dark:text-white"
+                        className="md:hidden size-12 flex items-center justify-center rounded-2xl border border-black/10 dark:border-white/10 text-black dark:text-white glass-panel"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
-                        <span className="sr-only">Toggle menu</span>
-                        {mobileMenuOpen ? (
-                            <X className="h-6 w-6" />
-                        ) : (
-                            <Menu className="h-6 w-6" />
-                        )}
+                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
                 </nav>
 
-                {/* Mobile Navigation Menu */}
-                <AnimatePresence>
-                    {mobileMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.2 }}
-                            className="fixed inset-0 z-50 flex flex-col p-8 bg-white dark:bg-black md:hidden"
-                        >
-                            <div className="flex items-center justify-between mb-12">
-                                <Link href="/" className="flex items-center">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-red text-white">
-                                        <ShieldCheck size={22} />
-                                    </div>
-                                    <span className="ml-3 text-xl font-black text-black dark:text-white tracking-tighter">VenciTrack</span>
-                                </Link>
-                                <button onClick={() => setMobileMenuOpen(false)} className="size-10 flex items-center justify-center rounded-xl border border-black/10 dark:border-white/10 text-black dark:text-white">
-                                    <X className="h-6 w-6" />
-                                </button>
-                            </div>
-                            <div className="flex flex-col gap-6">
-                                <Link href="/login" className="w-full h-14 rounded-2xl border border-black/10 dark:border-white/10 flex items-center justify-center text-sm font-black uppercase tracking-widest text-black dark:text-white">
-                                    Ingresar
-                                </Link>
-                                <Link href="/register" className="w-full h-14 rounded-2xl bg-brand-red flex items-center justify-center text-sm font-black uppercase tracking-widest text-white">
-                                    Registrarse
-                                </Link>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
                 {/* Hero content */}
-                <div className="container mx-auto mt-20 px-6 text-center">
+                <div className="container mx-auto mt-24 px-6 text-center">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="mx-auto mb-8 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 px-4 py-2"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="mx-auto mb-10 flex max-w-fit items-center justify-center space-x-3 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 px-5 py-2.5"
                     >
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-black/50 dark:text-white/50">
-                            No dejes que se te pase ni una fecha
+                        <div className="size-2 rounded-full bg-brand-red animate-ping" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/50 dark:text-white/50">
+                            Innovación en Gestión de Riesgo
                         </span>
-                        <ArrowRight className="h-3 w-3 text-brand-red" />
                     </motion.div>
 
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="mx-auto max-w-4xl text-5xl font-black tracking-tighter text-black dark:text-white md:text-6xl lg:text-7xl leading-[1.1]"
+                        transition={{ duration: 0.8 }}
+                        className="mx-auto max-w-5xl text-6xl font-black tracking-tighter text-black dark:text-white md:text-8xl leading-[0.95] uppercase"
                     >
-                        Control total de tus <br className="hidden md:block" /> <span className="text-brand-red">vencimientos</span> importantes.
+                        Prever es <br /> <span className="text-brand-red italic">no perder.</span>
                     </motion.h1>
 
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="mx-auto mt-8 max-w-2xl text-base md:text-lg text-black/60 dark:text-white/50 font-medium leading-relaxed"
+                        transition={{ delay: 0.2 }}
+                        className="mx-auto mt-10 max-w-2xl text-lg md:text-xl text-black/60 dark:text-white/50 font-bold leading-relaxed uppercase tracking-wide"
                     >
-                        Desde documentos de tu vehículo hasta citas médicas e hipotecas. Recibe recordatorios preventivos por correo electrónico para que siempre estés al día.
+                        Controlamos tus fechas críticas para evitar multas, pérdida de seguros y riesgos legales. Gestión inteligente, recordatorios implacables.
                     </motion.p>
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-12 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-6 sm:space-y-0"
+                        transition={{ delay: 0.3 }}
+                        className="mt-16 flex flex-col items-center justify-center space-y-6 sm:flex-row sm:space-x-8 sm:space-y-0"
                     >
-                        <Link href="/register" className="h-14 w-full sm:w-64 rounded-2xl bg-black dark:bg-white flex items-center justify-center text-xs font-black uppercase tracking-widest text-white dark:text-black hover:scale-[1.02] transition-all shadow-2xl shadow-black/10 active:scale-95">
-                            Empieza gratis ahora
+                        <Link href="/register" className="h-16 w-full sm:w-72 rounded-[2rem] bg-black dark:bg-white flex items-center justify-center text-[10px] font-black uppercase tracking-[0.3em] text-white dark:text-black hover:scale-105 transition-all shadow-premium active:scale-95">
+                            Crea tu cuenta de riesgo
                         </Link>
                     </motion.div>
 
-                    {/* Screenshot Placeholder - High Fidelity Mockup */}
+                    {/* Screenshot Mockup - Glassmorphism Pro */}
                     <motion.div
-                        initial={{ opacity: 0, y: 40 }}
+                        initial={{ opacity: 0, y: 60 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 }}
-                        className="relative mx-auto mt-20 w-full max-w-5xl"
+                        transition={{ delay: 0.5 }}
+                        className="relative mx-auto mt-32 w-full max-w-6xl animate-float"
                     >
-                        <div className="absolute inset-0 bg-brand-red/10 blur-[10rem] opacity-30 dark:opacity-20 pointer-events-none" />
+                        <div className="absolute -inset-10 bg-brand-red/10 blur-[130px] opacity-30 pointer-events-none" />
 
-                        <div className="relative overflow-hidden rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white dark:bg-[#111] shadow-[0_40px_100px_-15px_rgba(0,0,0,0.3)] dark:shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8)] aspect-[16/10] sm:aspect-[16/9] flex flex-col">
-                            {/* Browser Header */}
-                            <div className="h-8 md:h-12 w-full bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5 flex items-center px-4 gap-2">
-                                <div className="flex gap-1.5">
-                                    <div className="size-2 md:size-3 rounded-full bg-red-500/20" />
-                                    <div className="size-2 md:size-3 rounded-full bg-yellow-500/20" />
-                                    <div className="size-2 md:size-3 rounded-full bg-green-500/20" />
+                        <div className="relative overflow-hidden rounded-[3rem] glass-panel p-2 shadow-2xl">
+                            <div className="relative overflow-hidden rounded-[2.5rem] bg-white dark:bg-[#020617] aspect-[16/10] flex flex-col">
+                                {/* Browser Chrome */}
+                                <div className="h-14 w-full bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5 flex items-center px-6 gap-3">
+                                    <div className="flex gap-2">
+                                        <div className="size-3 rounded-full bg-red-500/30" />
+                                        <div className="size-3 rounded-full bg-yellow-500/30" />
+                                        <div className="size-3 rounded-full bg-green-500/30" />
+                                    </div>
+                                    <div className="mx-auto w-1/4 h-6 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5" />
                                 </div>
-                                <div className="mx-auto w-1/3 h-4 md:h-6 rounded-lg bg-black/5 dark:bg-white/5" />
-                            </div>
-                            {/* Screenshot Image - Grayscale */}
-                            <div className="flex-1 w-full relative overflow-hidden bg-[#fafafa] dark:bg-[#0a0a0a]">
-                                <img
-                                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"
-                                    alt="VenciTrack Dashboard Mockup"
-                                    className="w-full h-full object-cover grayscale opacity-10 dark:opacity-20"
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center flex-col p-12">
-                                    <div className="w-full max-w-3xl space-y-6 text-left">
-                                        <div className="h-8 w-48 rounded-2xl bg-black/10 dark:bg-white/20 animate-pulse" />
-                                        <div className="grid grid-cols-3 gap-6">
-                                            <div className="h-24 rounded-3xl bg-black/5 dark:bg-white/10 animate-pulse" />
-                                            <div className="h-24 rounded-3xl bg-black/5 dark:bg-white/10 animate-pulse" />
-                                            <div className="h-24 rounded-3xl bg-black/5 dark:bg-white/10 animate-pulse" />
+                                {/* Inner GUI Content */}
+                                <div className="flex-1 w-full relative overflow-hidden bg-[#fafafa] dark:bg-[#020617]">
+                                    <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-red via-brand-blue to-brand-red opacity-50" />
+                                    <div className="flex flex-col p-12 gap-10">
+                                        <div className="flex justify-between items-center">
+                                            <div className="h-8 w-60 rounded-2xl bg-black/10 dark:bg-white/10" />
+                                            <div className="h-12 w-12 rounded-2xl bg-brand-red/20" />
                                         </div>
-                                        <div className="h-64 rounded-[2rem] bg-black/5 dark:bg-white/10 border border-black/5 dark:border-white/5 relative overflow-hidden">
-                                            <div className="absolute top-0 left-0 w-full h-1 bg-brand-red/50" />
+                                        <div className="grid grid-cols-3 gap-8">
+                                            {[1, 2, 3].map(i => (
+                                                <div key={i} className="h-40 rounded-[2.5rem] border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]" />
+                                            ))}
+                                        </div>
+                                        <div className="flex-1 rounded-[3rem] border border-black/5 dark:border-white/5 bg-black/[0.01] dark:bg-white/[0.01] overflow-hidden">
+                                            <div className="w-full h-full bg-gradient-to-br from-transparent via-brand-red/5 to-transparent animate-pulse" />
                                         </div>
                                     </div>
                                 </div>

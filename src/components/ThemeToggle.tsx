@@ -10,9 +10,9 @@ import { useEffect, useState } from "react";
 
 /**
  * ThemeToggle Component
- * @returns {JSX.Element} A kinetic switch for theme selection.
+ * @returns {React.ReactElement} A kinetic switch for theme selection.
  */
-export default function ThemeToggle(): JSX.Element {
+export default function ThemeToggle(): React.ReactElement {
     const [theme, setTheme] = useState<string>("light");
 
     useEffect(() => {

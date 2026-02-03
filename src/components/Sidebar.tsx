@@ -13,9 +13,9 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 /**
  * Sidebar Component
- * @returns {JSX.Element} The fixed navigation sidebar.
+ * @returns {React.ReactElement} The fixed navigation sidebar.
  */
-export default function Sidebar(): JSX.Element {
+export default function Sidebar(): React.ReactElement {
     const pathname = usePathname();
     const router = useRouter();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -36,13 +36,13 @@ export default function Sidebar(): JSX.Element {
         { href: '/dashboard', label: 'Bóveda Viva', icon: 'dashboard' },
         { href: '/documents', label: 'Inventario', icon: 'inventory_2' },
         { href: '/subjects', label: 'Asociados', icon: 'group' },
-        { href: '/reminders', label: 'Alertas IA', icon: 'notifications_active' },
     ];
 
     const adminLinks = [
         { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
         { href: '/admin/users', label: 'Usuarios', icon: 'manage_accounts' },
         { href: '/admin/documents', label: 'Docs Global', icon: 'database' },
+        { href: '/admin/audit-logs', label: 'Bitácora', icon: 'history' },
         { href: '/admin/integrations', label: 'Integraciones', icon: 'hub' },
     ];
 

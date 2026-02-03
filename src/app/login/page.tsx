@@ -13,9 +13,9 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 /**
  * LoginPage Component
- * @returns {JSX.Element} The rendered login view.
+ * @returns {React.ReactElement} The rendered login view.
  */
-export default function LoginPage(): JSX.Element {
+export default function LoginPage(): React.ReactElement {
     const router = useRouter();
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");

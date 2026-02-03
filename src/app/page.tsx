@@ -11,9 +11,9 @@ import Link from "next/link";
 
 /**
  * LandingPage component.
- * @returns {JSX.Element} The rendered landing page.
+ * @returns {React.ReactElement} The rendered landing page.
  */
-export default function LandingPage(): JSX.Element {
+export default function LandingPage(): React.ReactElement {
     return (
         <div className="relative min-h-screen w-full bg-white dark:bg-black overflow-x-hidden transition-colors duration-500 text-black dark:text-white">
             <main className="w-full">

@@ -37,6 +37,14 @@ export async function POST(request: NextRequest) {
                 password: hashedPassword,
                 name,
                 company,
+                // HU-8.1: Initialize default notification preferences
+                preferences: {
+                    create: {
+                        channels: "EMAIL", // DB expects string
+                        frequency: "IMMEDIATE",
+                        anticipationDays: 30
+                    }
+                }
             },
         });
 
@@ -54,7 +62,7 @@ export async function POST(request: NextRequest) {
         (await cookies()).set("session", sessionToken, {
             expires,
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: process.env[''] === "production",
             sameSite: "lax",
         });
 

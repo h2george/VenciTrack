@@ -31,6 +31,7 @@ model User {
   documentTypes DocumentType[]
   sessions      Session[]
   auditLogs     AuditLog[]
+  preferences   UserPreference?
 }
 
 model Session {
@@ -47,27 +48,44 @@ model Session {
 // ============================================
 
 model DocumentType {
-  id          String     @id @default(cuid())
-  name        String     @unique
-  category    String
-  isGlobal    Boolean    @default(true)
-  documents   Document[]
-  userId      String?
-  user        User?      @relation(fields: [userId], references: [id])
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id              String     @id @default(cuid())
+  name            String     @unique
+  category        String
+  description     String?
+  gracePeriodDays Int        @default(30)
+  requiresExpiry  Boolean    @default(true)
+  targetType      String     @default("BOTH") // PERSON, VEHICLE, BOTH
+  isGlobal        Boolean    @default(true)
+  documents       Document[]
+  userId          String?
+  user            User?      @relation(fields: [userId], references: [id])
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 }
 
 model Subject {
   id          String     @id @default(cuid())
   userId      String
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type        String
-  name        String
-  details     String?
+  type        String     // PERSON or VEHICLE
+  name        String     // Name or Plate Number
+  details     String?    // JSON for vehicle details (make, model, year)
   documents   Document[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+}
+
+model Vehicle {
+  id        String   @id @default(cuid())
+  plate     String   @unique
+  brand     String
+  model     String
+  year      Int
+  version   String?
+  usage     String?
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Document {
@@ -79,7 +97,8 @@ model Document {
   subject        Subject       @relation(fields: [subjectId], references: [id])
   subjectId      String
   expiryDate     DateTime
-  status         String        @default("ACTIVE")
+  status         String        @default("ACTIVE") // ACTIVE, INACTIVE, DEACTIVATED
+  deactivatedAt  DateTime?
   reminders      Reminder[]
   secureTokens   SecureToken[]
   createdAt      DateTime      @default(now())
@@ -92,8 +111,9 @@ model Reminder {
   document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   sentAt     DateTime @default(now())
   channel    String
-  status     String
+  status     String   @default("SENT") // SENT, FAILED, PENDING
   message    String?
+  metadata   String?  // JSON string for auditable comms content
 }
 
 model SecureToken {
@@ -102,7 +122,7 @@ model SecureToken {
   documentId String
   document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   expiresAt  DateTime
-  action     String
+  action     String   // UPDATE_DATE, DEACTIVATE
   createdAt  DateTime @default(now())
   usedAt     DateTime?
 }
@@ -113,14 +133,24 @@ model AuditLog {
   entityId    String
   action      String
   description String
+  metadata    String?  // JSON string for granular history
   userId      String?
   user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   createdAt   DateTime @default(now())
 }
 
 // ============================================
-// System Configuration
+// System Configuration & Preferences
 // ============================================
+
+model UserPreference {
+  id               String  @id @default(cuid())
+  userId           String  @unique
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channels         String  @default("EMAIL") // Comma separated: EMAIL,WHATSAPP,PUSH
+  frequency        String  @default("IMMEDIATE")
+  anticipationDays Int     @default(30)
+}
 
 model SystemConfig {
   id        String   @id @default(cuid())

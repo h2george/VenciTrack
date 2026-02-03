@@ -108,7 +108,10 @@ export async function POST(request: NextRequest) {
                 where: { id: secureToken.documentId },
                 data: {
                     expiryDate: parsedDate,
-                    updatedAt: now
+                    updatedAt: now,
+                    // Ensure it is ACTIVE if updated
+                    status: 'ACTIVE',
+                    deactivatedAt: null
                 },
                 include: {
                     subject: true,
@@ -116,13 +119,14 @@ export async function POST(request: NextRequest) {
                 }
             });
 
-            auditDescription = `Document ${updatedDocument.documentType.name} for ${updatedDocument.subject.name} updated via public link. New expiry: ${parsedDate.toISOString()}`;
+            auditDescription = `HU-4.1: Renewal validated via secure link. Type: ${updatedDocument.documentType.name}. Subject: ${updatedDocument.subject.name}.`;
 
         } else if (action === 'DEACTIVATE') {
             updatedDocument = await prisma.document.update({
                 where: { id: secureToken.documentId },
                 data: {
-                    status: 'INACTIVE',
+                    status: 'DEACTIVATED', // Match specification HU-2.2
+                    deactivatedAt: now,
                     updatedAt: now
                 },
                 include: {
@@ -131,7 +135,7 @@ export async function POST(request: NextRequest) {
                 }
             });
 
-            auditDescription = `Document ${updatedDocument.documentType.name} for ${updatedDocument.subject.name} deactivated via public link`;
+            auditDescription = `HU-4.2: Audit Alert - Recordatorios desactivados vía enlace por el usuario. Documento: ${updatedDocument.documentType.name}.`;
 
         } else {
             return NextResponse.json(
@@ -146,14 +150,20 @@ export async function POST(request: NextRequest) {
             data: { usedAt: now }
         });
 
-        // Create audit log
+        // Create audit log with detailed metadata (HU-5.1)
         await prisma.auditLog.create({
             data: {
                 entityType: 'DOCUMENT',
                 entityId: secureToken.documentId,
                 action: action,
                 description: auditDescription,
-                userId: `public_token:${token.substring(0, 8)}...`
+                metadata: JSON.stringify({
+                    tokenUsed: token.substring(0, 10) + '...',
+                    previousDate: secureToken.document.expiryDate,
+                    newDate: action === 'UPDATE_DATE' ? updatedDocument.expiryDate : null,
+                    ip: request.headers.get('x-forwarded-for') || 'unknown'
+                }),
+                userId: secureToken.document.userId // Link back to owner for traceability
             }
         });
 

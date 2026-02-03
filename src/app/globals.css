@@ -137,6 +137,56 @@ body {
   height: 70vw;
 }
 
+/* UI Refinement: Glassmorphism Unification */
+.glass-panel {
+  background: var(--card-glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1.5px solid var(--border-glass);
+  box-shadow: var(--shadow-premium);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  background: var(--card-glass-hover);
+  border-color: rgba(230, 51, 77, 0.2);
+  transform: translateY(-2px);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--brand-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-red {
+  box-shadow: 0 0 20px -5px oklch(0.6 0.25 25 / 0.4);
+}
+
+.glow-blue {
+  box-shadow: 0 0 20px -5px oklch(0.45 0.15 260 / 0.4);
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
 .blob-red {
   background: radial-gradient(circle, var(--brand-red) 0%, transparent 80%);
   width: 60vw;
@@ -431,4 +481,56 @@ div {
 .table-premium tr:hover td {
   background: var(--card-glass-hover);
   border-color: rgba(230, 51, 77, 0.2);
+}
+
+/* Atmospheric Utilities */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 40px -10px currentColor;
+}
+
+.input-premium {
+  background: var(--input-bg);
+  border: 1px solid var(--border-glass);
+  color: var(--text-primary);
+  border-radius: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.input-premium:focus {
+  background: var(--bg-main);
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 20px -5px oklch(0.45 0.15 260 / 0.2);
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    scale: 0.95;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
 }

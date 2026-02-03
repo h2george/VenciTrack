@@ -13,7 +13,9 @@ async function main() {
     // 1. Create ADMIN user
     const admin = await prisma.user.upsert({
         where: { email: 'admin@vencitrack.com' },
-        update: {},
+        update: {
+            password: adminPassword, // Force update password
+        },
         create: {
             email: 'admin@vencitrack.com',
             name: 'Administrador General',
@@ -22,12 +24,14 @@ async function main() {
             company: 'VenciTrack HQ'
         },
     })
-    console.log(`✅ Admin user created: ${admin.email}`)
+    console.log(`✅ Admin user created/updated: ${admin.email}`)
 
     // 2. Create REGULAR user
     const user = await prisma.user.upsert({
         where: { email: 'user@vencitrack.com' },
-        update: {},
+        update: {
+            password: userPassword, // Force update password
+        },
         create: {
             email: 'user@vencitrack.com',
             name: 'Usuario Demo',
@@ -36,7 +40,7 @@ async function main() {
             company: 'Empresa Demo S.A.'
         },
     })
-    console.log(`✅ Regular user created: ${user.email}`)
+    console.log(`✅ Regular user created/updated: ${user.email}`)
 
     // 3. Create initial Document Types (Global)
     const docTypes = [

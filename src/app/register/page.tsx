@@ -13,9 +13,9 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 /**
  * RegisterPage Component
- * @returns {JSX.Element} The rendered registration view.
+ * @returns {React.ReactElement} The rendered registration view.
  */
-export default function RegisterPage(): JSX.Element {
+export default function RegisterPage(): React.ReactElement {
     const router = useRouter();
     const [formData, setFormData] = useState({
         name: "",

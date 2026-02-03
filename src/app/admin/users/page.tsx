@@ -28,9 +28,9 @@ interface AdminUser {
 
 /**
  * AdminUsersPage Component
- * @returns {JSX.Element} The rendered user management view.
+ * @returns {React.ReactElement} The rendered user management view.
  */
-export default function AdminUsersPage(): JSX.Element {
+export default function AdminUsersPage(): React.ReactElement {
     const [users, setUsers] = useState<AdminUser[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");

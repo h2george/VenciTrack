@@ -29,9 +29,9 @@ interface Document {
 
 /**
  * DocumentsPage Component
- * @returns {JSX.Element} The rendered documents list.
+ * @returns {React.ReactElement} The rendered documents list.
  */
-export default function DocumentsPage(): JSX.Element {
+export default function DocumentsPage(): React.ReactElement {
     const [documents, setDocuments] = useState<Document[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
