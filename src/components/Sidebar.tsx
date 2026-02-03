@@ -58,10 +58,10 @@ export default function Sidebar(): React.ReactElement {
 
     const adminLinks = [
         { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-        { href: '/admin/users', label: 'Gestión de Usuarios', icon: 'manage_accounts' },
+        { href: '/admin/users', label: 'Usuarios', icon: 'manage_accounts' },
         { href: '/admin/categories', label: 'Categorías', icon: 'category' },
-        { href: '/admin/global-database', label: 'Historial Global', icon: 'layers' },
-        { href: '/admin/audit-logs', label: 'Bitácora', icon: 'history' },
+        { href: '/admin/documents', label: 'Documentos', icon: 'layers' },
+        { href: '/admin/audit', label: 'Auditoría', icon: 'history' },
         { href: '/admin/integrations', label: 'Integraciones', icon: 'hub' },
     ];
 

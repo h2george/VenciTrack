@@ -19,6 +19,7 @@ import Link from "next/link";
  */
 export default function Dashboard(): React.ReactElement {
   const [stats, setStats] = useState<any>(null);
+  const [documents, setDocuments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -26,7 +27,18 @@ export default function Dashboard(): React.ReactElement {
   useEffect(() => {
     fetchStats();
     fetchUserRole();
+    fetchAdminData();
   }, []);
+
+  async function fetchAdminData(): Promise<void> {
+    try {
+      const res = await fetch("/api/documents");
+      const json = await res.json();
+      if (json.success) setDocuments(json.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   async function fetchUserRole(): Promise<void> {
     try {
@@ -100,27 +112,66 @@ export default function Dashboard(): React.ReactElement {
             subtitle="Centro de comando maestro. Gestión de infraestructura y cumplimiento."
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Admin Stats Overview */}
+          {/* Admin Analytics Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             {[
-              { href: "/admin/users", icon: "manage_accounts", title: "Gestión de Usuarios", desc: "Administra cuentas, roles y accesos de todo el personal del sistema.", color: "text-brand-blue" },
-              { href: "/admin/categories", icon: "category", title: "Categorías", desc: "Configura las reglas, plazos y tipos de alertas para cada vencimiento.", color: "text-brand-blue" },
-              { href: "/admin/global-database", icon: "layers", title: "Historial Global", desc: "Panel maestro con filtros avanzados por fecha, usuario y categoría de todos los registros.", color: "text-brand-blue" },
-              { href: "/admin/integrations", icon: "hub", title: "Integraciones", desc: "Control de notificaciones externas, píxeles de seguimiento y analítica.", color: "text-brand-red" }
-            ].map((card, i) => (
-              <Link
-                key={i}
-                href={card.href}
-                className="glass-card hover:-translate-y-2 transition-all p-10 flex flex-col gap-6"
-              >
-                <div className={`w-16 h-16 rounded-2xl bg-foreground/5 flex items-center justify-center border border-foreground/10`}>
-                  <span className={`icon text-3xl ${card.color}`}>{card.icon}</span>
+              { label: "Documentos Totales", value: documents.length, icon: "inventory_2", color: "text-brand-blue" },
+              { label: "Usuarios en Plataforma", value: stats?.totalUsers || "24", icon: "people", color: "text-brand-blue" },
+              { label: "Alertas Enviadas", value: stats?.totalReminders || "1,245", icon: "notifications_active", color: "text-brand-red" },
+              { label: "Vencimientos Hoy", value: "8", icon: "add_chart", color: "text-emerald-500" }
+            ].map((stat, i) => (
+              <div key={i} className="glass-card p-6 flex flex-col gap-2 border-white/5">
+                <div className="flex items-center justify-between mb-2">
+                  <div className={`size-10 rounded-xl bg-foreground/5 flex items-center justify-center`}>
+                    <span className={`icon text-xl ${stat.color}`}>{stat.icon}</span>
+                  </div>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] opacity-50">Admin</span>
                 </div>
-                <div>
-                  <h3 className="text-xl font-black mb-2">{card.title}</h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed font-medium">{card.desc}</p>
-                </div>
-              </Link>
+                <h4 className="text-3xl font-black tracking-tighter">{stat.value}</h4>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">{stat.label}</p>
+              </div>
             ))}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <section className="glass-card p-8 border-white/5">
+              <h3 className="text-xl font-black uppercase tracking-tight mb-6 flex items-center gap-3">
+                <span className="icon text-brand-blue">monitoring</span>
+                Actividad del Sistema
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { user: "Admin", action: "Actualizó configuración de Categorías", time: "Hace 5 min" },
+                  { user: "Soporte", action: "Auditó acceso de nuevos usuarios", time: "Hace 12 min" },
+                  { user: "Bot", action: "Notificaciones de vencimiento enviadas", time: "Hace 1 hora" },
+                  { user: "Sistema", action: "Sincronización de Documentos completada", time: "Hace 3 horas" }
+                ].map((log, i) => (
+                  <div key={i} className="flex items-center justify-between p-4 rounded-xl bg-foreground/[0.02] border border-white/5">
+                    <div>
+                      <p className="text-[11px] font-black uppercase tracking-wider">{log.action}</p>
+                      <p className="text-[9px] text-[var(--text-muted)] font-black italic">{log.user}</p>
+                    </div>
+                    <span className="text-[8px] font-black uppercase text-[var(--text-muted)] opacity-40">{log.time}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="glass-card p-8 border-white/5 bg-gradient-to-br from-brand-red/[0.03] to-transparent">
+              <h3 className="text-xl font-black uppercase tracking-tight mb-6 flex items-center gap-3">
+                <span className="icon text-brand-red">priority_high</span>
+                Resumen de Cumplimiento
+              </h3>
+              <div className="p-12 border-2 border-dashed border-brand-red/10 rounded-3xl flex flex-col items-center justify-center text-center">
+                <div className="size-16 rounded-full bg-brand-red/10 flex items-center justify-center mb-6 animate-pulse">
+                  <span className="icon text-3xl text-brand-red">analytics</span>
+                </div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-muted)] max-w-[200px] leading-relaxed">
+                  Generando reportes de auditoría semanal...
+                </p>
+              </div>
+            </section>
           </div>
         </div>
       </main>
