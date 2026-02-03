@@ -135,29 +135,29 @@ export default function CategoriesPage() {
                 </div>
                 <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-                <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
+                <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-8 md:mb-16 mt-12 md:mt-0">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-1.5 h-6 bg-brand-blue rounded-full"></div>
-                            <h1 className="text-5xl font-black tracking-tighter">Categorías</h1>
+                            <h1 className="text-3xl md:text-5xl font-black tracking-tighter">Categorías</h1>
                         </div>
-                        <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1">
-                            Define las agrupaciones y plazos de alerta para tus vencimientos
+                        <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1 max-w-[80%]">
+                            Define las agrupaciones y plazos de alerta
                         </p>
                     </div>
 
                     <button
                         onClick={() => { closeModal(); setModalOpen(true); }}
-                        className="button-red flex items-center gap-2 px-8 py-4 shadow-xl shadow-brand-red/20 transform hover:scale-105 transition-all"
+                        className="button-red flex items-center gap-2 px-6 py-4 md:px-8 shadow-xl shadow-brand-red/20 transform hover:scale-105 transition-all w-full md:w-auto justify-center"
                     >
                         <Plus size={20} />
                         <span className="font-black uppercase tracking-widest text-xs">Nueva Categoría</span>
                     </button>
                 </header>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 pb-20">
                     {types.map((type) => (
-                        <div key={type.id} className="glass-card p-8 border-white/5 hover:border-brand-blue/30 transition-all group">
+                        <div key={type.id} className="glass-card p-6 md:p-8 border-white/5 hover:border-brand-blue/30 transition-all group">
                             <div className="flex justify-between items-start mb-6">
                                 <div className="size-12 rounded-2xl bg-brand-blue/10 border border-brand-blue/20 flex items-center justify-center text-brand-blue">
                                     <FileText size={24} />
