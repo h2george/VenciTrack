@@ -53,11 +53,11 @@ export default function RegisterPage(): React.ReactElement {
     }
 
     return (
-        <main className="flex items-center justify-center min-h-screen bg-[var(--bg)] overflow-hidden relative py-20">
+        <main className="flex items-center justify-center min-h-screen bg-[var(--bg)] overflow-hidden relative py-20 transition-colors duration-500 selection:bg-brand-red/30">
             {/* Cinematic Background */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                <div className="absolute top-[-5%] left-[-5%] w-[45%] h-[45%] bg-brand-blue/5 blur-[120px] rounded-full animate-float"></div>
-                <div className="absolute bottom-[-5%] right-[-5%] w-[40%] h-[40%] bg-brand-red/5 blur-[120px] rounded-full animate-pulse-slow"></div>
+                <div className="absolute top-[-5%] left-[-5%] w-[45%] h-[45%] bg-brand-blue/10 blur-[120px] rounded-full animate-float opacity-20"></div>
+                <div className="absolute bottom-[-5%] right-[-5%] w-[40%] h-[40%] bg-brand-red/10 blur-[120px] rounded-full animate-pulse-slow opacity-20"></div>
             </div>
 
             <div className="relative z-10 w-full max-w-lg p-6">
@@ -67,17 +67,17 @@ export default function RegisterPage(): React.ReactElement {
 
                 <div className="flex flex-col items-center mb-10">
                     <Link href="/" className="group mb-8">
-                        <div className="size-16 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-red flex items-center justify-center shadow-2xl shadow-brand-red/20 group-hover:scale-110 transition-transform">
+                        <div className="size-16 rounded-2xl bg-brand-red flex items-center justify-center shadow-2xl shadow-brand-red/20 group-hover:scale-110 transition-transform">
                             <span className="icon text-white text-3xl">verified_user</span>
                         </div>
                     </Link>
-                    <h1 className="text-4xl font-black tracking-tighter mb-2 text-center">Únete a VenciTrack</h1>
+                    <h1 className="text-4xl font-black tracking-tighter mb-2 text-center text-[var(--text)]">Únete a VenciTrack</h1>
                     <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.3em] text-[10px] italic text-center">
                         Inicia tu gestión de blindaje documental
                     </p>
                 </div>
 
-                <div className="glass-card p-10 shadow-3xl shadow-black/50 border-white/5">
+                <div className="glass-card p-10 border-[var(--border)] bg-[var(--card)]">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                         {error && (
                             <div className="bg-brand-red/10 border border-brand-red/20 text-brand-red p-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3 animate-shake">
@@ -137,7 +137,7 @@ export default function RegisterPage(): React.ReactElement {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`button-red py-5 flex items-center justify-center gap-3 shadow-xl shadow-brand-red/30 mt-4 ${loading ? 'opacity-50' : 'hover:scale-[1.02]'}`}
+                            className={`button-red py-5 flex items-center justify-center gap-3 shadow-xl mt-4 ${loading ? 'opacity-50' : 'hover:scale-[1.02]'}`}
                         >
                             <span className="icon">{loading ? 'sync' : 'how_to_reg'}</span>
                             <span className="font-black uppercase tracking-widest text-sm">
@@ -146,7 +146,7 @@ export default function RegisterPage(): React.ReactElement {
                         </button>
                     </form>
 
-                    <div className="mt-10 pt-8 border-t border-white/5 text-center">
+                    <div className="mt-10 pt-8 border-t border-[var(--border)] text-center">
                         <p className="text-[var(--text-muted)] text-xs font-bold">
                             ¿Ya formas parte del núcleo?{" "}
                             <Link href="/login" className="text-brand-red hover:underline font-black uppercase tracking-widest ml-1 text-[10px]">

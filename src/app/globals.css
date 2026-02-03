@@ -39,85 +39,42 @@
 
 :root {
   /* Design Tokens - VenciTrack Premium */
-  --bg-main: #FFFFFF;
-  --bg-soft: #F8FAFC;
-  --bg-rgb: 255, 255, 255;
-  --bg-overlay: rgba(255, 255, 255, 0.82);
-  --sidebar-bg: rgba(255, 255, 255, 0.75);
+  --bg: #FFFFFF;
+  --bg-soft: #F1F5F9;
+  --text: #0F172A;
+  --text-muted: #64748B;
+  --border: rgba(15, 23, 42, 0.08);
+  --card: rgba(255, 255, 255, 0.7);
+  --input: #F1F5F9;
 
   --brand-blue: oklch(0.45 0.15 260);
   --brand-red: oklch(0.6 0.25 25);
-  --brand-accent: oklch(0.7 0.2 40);
-
-  /* Typography Focus */
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --text-inverse: #FFFFFF;
-
-  /* Premium Glassmorphism */
-  --card-glass: rgba(255, 255, 255, 0.65);
-  --card-glass-hover: rgba(255, 255, 255, 0.85);
-  --border-glass: rgba(15, 23, 42, 0.06);
-  --border-focus: oklch(0.6 0.25 25 / 0.4);
-  --shadow-premium: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
-
-  --input-bg: #F1F5F9;
-  --font-display: 'Montserrat', sans-serif;
-
-  /* UTILITY OVERRIDES for consistency */
-  --bg: var(--bg-main);
-  --text: var(--text-primary);
-  --border: var(--border-glass);
+  --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
 }
 
-[data-theme='dark'] {
-  /* Obsidian Obsidian Posture */
-  --bg-main: #020617;
+.dark {
+  --bg: #020617;
   --bg-soft: #0F172A;
-  --bg-rgb: 2, 6, 23;
-  --bg-overlay: rgba(2, 6, 23, 0.88);
-  --sidebar-bg: rgba(2, 6, 23, 0.82);
-
-  --text-primary: #F8FAFC;
-  --text-secondary: #CBD5E1;
+  --text: #F8FAFC;
   --text-muted: #94A3B8;
-  --text-inverse: #020617;
-
-  --card-glass: rgba(15, 23, 42, 0.65);
-  --card-glass-hover: rgba(30, 41, 59, 0.75);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-focus: oklch(0.6 0.25 25 / 0.6);
-  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-
-  --input-bg: #1E293B;
-
-  /* UTILITY OVERRIDES */
-  --bg: var(--bg-main);
-  --text: var(--text-primary);
-  --border: var(--border-glass);
+  --border: rgba(255, 255, 255, 0.1);
+  --card: rgba(15, 23, 42, 0.7);
+  --input: #1E293B;
+  --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
-
-/* * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-} */
 
 ::selection {
-  background-color: oklch(0.6 0.25 25 / 0.3);
+  background-color: var(--brand-red);
+  color: white;
 }
 
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: var(--font-display);
+  font-family: 'Montserrat', sans-serif;
   line-height: 1.5;
-  /* Relaxed default */
   -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Background Blobs - Atmospheric */
@@ -137,35 +94,18 @@ body {
   height: 70vw;
 }
 
-/* UI Refinement: Glassmorphism Unification */
+/* GLASS PANELS */
 .glass-panel {
-  background: var(--card-glass);
+  background: var(--card);
   backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1.5px solid var(--border-glass);
-  box-shadow: var(--shadow-premium);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-panel:hover {
-  background: var(--card-glass-hover);
-  border-color: rgba(230, 51, 77, 0.2);
+  border-color: var(--brand-red);
   transform: translateY(-2px);
-}
-
-.text-gradient {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--brand-red) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.glow-red {
-  box-shadow: 0 0 20px -5px oklch(0.6 0.25 25 / 0.4);
-}
-
-.glow-blue {
-  box-shadow: 0 0 20px -5px oklch(0.45 0.15 260 / 0.4);
 }
 
 /* Animations */
@@ -247,22 +187,17 @@ div {
 
 /* Components - Professional Densisty */
 .glass-card {
-  background: var(--card-glass);
-  backdrop-filter: blur(48px) saturate(200%);
-  border: 1px solid var(--border-glass);
+  background: var(--card);
+  backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid var(--border);
   border-radius: var(--radius-mega);
   padding: 2rem;
-  /* 32px strict 8pt */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-  background: var(--card-glass-hover);
-  border-color: var(--border-focus);
-  transform: translateY(-4px);
-  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.1);
+  border-color: var(--brand-red);
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.15);
 }
 
 /* Primary Action - High Contrast */
@@ -320,20 +255,19 @@ div {
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  background: var(--card-glass);
+  background: var(--card);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glass);
-  color: var(--text-primary);
+  border: 1px solid var(--border);
+  color: var(--text);
   text-decoration: none;
   gap: 0.875rem;
 }
 
 .button-glass:hover {
-  background: var(--card-glass-hover);
-  border-color: var(--border-focus);
+  background: var(--bg);
+  border-color: var(--brand-red);
   transform: translateY(-4px);
-  box-shadow: var(--shadow-glass);
 }
 
 /* Forms */
@@ -505,16 +439,16 @@ div {
 }
 
 .input-premium {
-  background: var(--input-bg);
-  border: 1px solid var(--border-glass);
-  color: var(--text-primary);
+  background: var(--input);
+  border: 1px solid var(--border);
+  color: var(--text);
   border-radius: 1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
 }
 
 .input-premium:focus {
-  background: var(--bg-main);
+  background: var(--bg);
   border-color: var(--brand-blue);
   box-shadow: 0 0 20px -5px oklch(0.45 0.15 260 / 0.2);
 }
