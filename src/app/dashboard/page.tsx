@@ -94,7 +94,7 @@ export default function Dashboard(): React.ReactElement {
     return (
       <main className="flex min-h-screen bg-[var(--bg)] text-[var(--text)]">
         <Sidebar />
-        <div className="flex-1 p-6 md:p-12">
+        <div className="main-premium flex-1">
           <DashboardHeader
             title="Panel de Control"
             subtitle="Centro de comando maestro. Gestión de infraestructura y cumplimiento."
@@ -133,7 +133,7 @@ export default function Dashboard(): React.ReactElement {
   return (
     <main className="flex min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <Sidebar />
-      <div className="flex-1 p-6 md:p-12 relative overflow-hidden">
+      <div className="main-premium flex-1 relative overflow-hidden">
         {/* Decorative Background Blob */}
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none"></div>
 
