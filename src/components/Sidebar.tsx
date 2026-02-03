@@ -121,13 +121,15 @@ export default function Sidebar(): React.ReactElement {
                                 key={link.href}
                                 href={link.href}
                                 className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group ${isActive ? 'bg-brand-red/10 text-brand-red shadow-inner shadow-brand-red/5' : 'text-[var(--text-muted)] hover:bg-[var(--bg-soft)] hover:text-[var(--text)]'} ${isCollapsed ? 'justify-center px-0' : ''}`}
-                                title={isCollapsed ? link.label : ""}
+                                title={isCollapsed ? (link.label === 'Bóveda Viva' ? 'Panel Principal' : link.label) : ""}
                             >
                                 <span className={`icon text-2xl transition-transform group-hover:scale-110 ${isActive ? 'text-brand-red' : 'text-[var(--text-muted)] group-hover:text-brand-red'} shrink-0`}>
                                     {link.icon}
                                 </span>
                                 {!isCollapsed && (
-                                    <span className="font-black text-[12px] tracking-widest uppercase animate-fade-in whitespace-nowrap overflow-hidden text-ellipsis">{link.label}</span>
+                                    <span className="font-black text-[12px] tracking-widest uppercase animate-fade-in whitespace-nowrap overflow-hidden text-ellipsis">
+                                        {link.label === 'Bóveda Viva' ? 'Panel Principal' : link.label}
+                                    </span>
                                 )}
                                 {!isCollapsed && isActive && <div className="ml-auto size-1.5 rounded-full bg-brand-red shadow-glow shadow-brand-red/50 animate-pulse"></div>}
                             </Link>
@@ -164,14 +166,14 @@ export default function Sidebar(): React.ReactElement {
                         onClick={handleLogout}
                         disabled={isLoggingOut}
                         className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group text-brand-red/60 hover:text-brand-red hover:bg-brand-red/5 w-full text-left ${isCollapsed ? 'justify-center px-0' : ''}`}
-                        title={isCollapsed ? "Cerrar Protocolo" : ""}
+                        title={isCollapsed ? "Cerrar Sesión" : ""}
                     >
                         <span className="icon text-2xl group-hover:animate-pulse shrink-0">
                             {isLoggingOut ? 'sync' : 'logout'}
                         </span>
                         {!isCollapsed && (
                             <span className="font-black text-[12px] tracking-widest uppercase animate-fade-in whitespace-nowrap">
-                                {isLoggingOut ? '...' : 'Cerrar'}
+                                {isLoggingOut ? 'Saliendo...' : 'Cerrar Sesión'}
                             </span>
                         )}
                     </button>

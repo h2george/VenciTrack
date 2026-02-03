@@ -102,10 +102,10 @@ export default function Dashboard(): React.ReactElement {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { href: "/admin/users", icon: "manage_accounts", title: "Usuarios", desc: "Administra cuentas, roles y auditoría de acceso.", color: "text-brand-blue" },
-              { href: "/admin/document-types", icon: "category", title: "Tipos Documentales", desc: "HU-1.1: Configura alertas y reglas por tipo de activo.", color: "text-brand-blue" },
-              { href: "/admin/documents", icon: "database", title: "PostgreSQL Bóveda", desc: "Carga masiva y normalización de doc types globales.", color: "text-brand-blue" },
-              { href: "/admin/integrations", icon: "hub", title: "Integraciones", desc: "Monitoreo de APIs, Meta Pixel y Google Analytics.", color: "text-brand-red" }
+              { href: "/admin/users", icon: "manage_accounts", title: "Usuarios", desc: "Administra cuentas, roles y permisos de acceso al sistema.", color: "text-brand-blue" },
+              { href: "/admin/document-types", icon: "category", title: "Categorías de Vencimiento", desc: "Configura las reglas y plazos de alerta por cada tipo de fecha.", color: "text-brand-blue" },
+              { href: "/admin/documents", icon: "database", title: "Base de Datos Global", desc: "Gestión centralizada y normalización de todos los registros del sistema.", color: "text-brand-blue" },
+              { href: "/admin/integrations", icon: "hub", title: "Integraciones", desc: "Configuración de notificaciones, Meta Pixel y analítica externa.", color: "text-brand-red" }
             ].map((card, i) => (
               <Link
                 key={i}
@@ -138,8 +138,8 @@ export default function Dashboard(): React.ReactElement {
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none"></div>
 
         <DashboardHeader
-          title="Mi Bóveda"
-          subtitle="Tus documentos están protegidos con encriptación militar."
+          title="Panel de Control"
+          subtitle="Tus fechas y vencimientos están protegidos con encriptación de alto nivel."
           action={
             <button
               onClick={() => setIsModalOpen(true)}
@@ -147,7 +147,7 @@ export default function Dashboard(): React.ReactElement {
               className="button-red px-8 py-4 flex items-center gap-3 active:scale-95"
             >
               <span className="icon">add_circle</span>
-              <span className="font-black uppercase tracking-widest text-sm">Nuevo Documento</span>
+              <span className="font-black uppercase tracking-widest text-sm">Nuevo Vencimiento</span>
             </button>
           }
         />
@@ -162,7 +162,7 @@ export default function Dashboard(): React.ReactElement {
             {/* Stats Overview */}
             <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { label: "Total Documentos", value: stats.totalDocuments, icon: "inventory_2", color: "text-brand-blue" },
+                { label: "Total Vencimientos", value: stats.totalDocuments, icon: "inventory_2", color: "text-brand-blue" },
                 { label: "En Riesgo (30d)", value: stats.expiringSoon, icon: "warning", color: "text-brand-red", highlight: true },
                 { label: "Alertas Activas", value: stats.totalReminders, icon: "notifications_active", color: "text-[var(--text)]" }
               ].map((stat, i) => (
