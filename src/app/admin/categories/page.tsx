@@ -1,6 +1,6 @@
 /**
- * @file admin/document-types/page.tsx
- * @description Admin interface for managing the catalog of document types (HU-1.1).
+ * @file admin/categories/page.tsx
+ * @description Admin interface for managing expiration categories.
  */
 
 "use client";
@@ -20,7 +20,7 @@ interface DocumentType {
     documents?: any[];
 }
 
-export default function DocumentTypesPage() {
+export default function CategoriesPage() {
     const [types, setTypes] = useState<DocumentType[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
@@ -92,10 +92,10 @@ export default function DocumentTypesPage() {
                     <div>
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-1.5 h-6 bg-brand-blue rounded-full"></div>
-                            <h1 className="text-5xl font-black tracking-tighter">Tipos Documentales</h1>
+                            <h1 className="text-5xl font-black tracking-tighter">Categorías</h1>
                         </div>
                         <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1">
-                            HU-1.1: Configuración de activos regulatorios y riesgos
+                            Define las agrupaciones y plazos de alerta para tus vencimientos
                         </p>
                     </div>
 
@@ -104,7 +104,7 @@ export default function DocumentTypesPage() {
                         className="button-red flex items-center gap-2 px-8 py-4 shadow-xl shadow-brand-red/20 transform hover:scale-105 transition-all"
                     >
                         <Plus size={20} />
-                        <span className="font-black uppercase tracking-widest text-xs">Añadir Tipo</span>
+                        <span className="font-black uppercase tracking-widest text-xs">Nueva Categoría</span>
                     </button>
                 </header>
 
@@ -157,7 +157,7 @@ export default function DocumentTypesPage() {
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 sm:p-12">
                         <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" onClick={() => setModalOpen(false)}></div>
                         <div className="glass-card relative z-10 w-full max-w-2xl p-10 border-white/10 shadow-3xl shadow-black animate-fade-in-up">
-                            <h2 className="text-3xl font-black uppercase tracking-tighter mb-8">Nuevo Tipo de Documento</h2>
+                            <h2 className="text-3xl font-black uppercase tracking-tighter mb-8">Nueva Categoría de Vencimiento</h2>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">

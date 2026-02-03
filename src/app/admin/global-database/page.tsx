@@ -100,7 +100,7 @@ export default function AdminDocumentsPage(): React.ReactElement {
             <div className="flex items-center justify-center min-h-screen bg-[var(--bg)] text-[var(--text)]">
                 <div className="flex flex-col items-center gap-4">
                     <Loader2 className="animate-spin text-brand-red" size={40} />
-                    <p className="font-black uppercase tracking-[0.3em] text-[var(--text-muted)] text-[10px]">Indexando Bóveda Global...</p>
+                    <p className="font-black uppercase tracking-[0.3em] text-[var(--text-muted)] text-[10px]">Cargando Historial Global...</p>
                 </div>
             </div>
         );
@@ -116,10 +116,10 @@ export default function AdminDocumentsPage(): React.ReactElement {
                     <div>
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-1.5 h-6 bg-brand-red rounded-full"></div>
-                            <h1 className="text-5xl font-black tracking-tighter text-[var(--text-primary)]">Bóveda Global</h1>
+                            <h1 className="text-5xl font-black tracking-tighter text-[var(--text-primary)]">Historial Global</h1>
                         </div>
                         <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1">
-                            Control centralizado de vigencias y protocolos legales
+                            Control centralizado de vigencias y alertas de todos los usuarios
                         </p>
                     </div>
 
@@ -140,7 +140,7 @@ export default function AdminDocumentsPage(): React.ReactElement {
                         <table className="table-premium w-full text-left">
                             <thead>
                                 <tr className="border-b border-white/10">
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Documento / Propietario</th>
+                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Vencimiento / Propietario</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Asociado</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Expiración</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Estado</th>
@@ -164,7 +164,7 @@ export default function AdminDocumentsPage(): React.ReactElement {
                                         <tr key={doc.id} className="hover:bg-white/5 transition-colors group">
                                             <td className="px-6 py-6">
                                                 <div className="flex flex-col">
-                                                    <span className="text-sm font-black text-brand-red uppercase tracking-tight">{doc.documentType?.name || 'Documento'}</span>
+                                                    <span className="text-sm font-black text-brand-red uppercase tracking-tight">{doc.documentType?.name || 'Vencimiento'}</span>
                                                     <span className="text-[10px] uppercase font-black tracking-widest text-[var(--text-muted)] opacity-60">{doc.user?.name || 'Sistema'}</span>
                                                 </div>
                                             </td>

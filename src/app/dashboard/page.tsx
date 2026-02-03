@@ -102,10 +102,10 @@ export default function Dashboard(): React.ReactElement {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { href: "/admin/users", icon: "manage_accounts", title: "Usuarios", desc: "Administra cuentas, roles y permisos de acceso al sistema.", color: "text-brand-blue" },
-              { href: "/admin/document-types", icon: "category", title: "Categorías de Vencimiento", desc: "Configura las reglas y plazos de alerta por cada tipo de fecha.", color: "text-brand-blue" },
-              { href: "/admin/documents", icon: "database", title: "Base de Datos Global", desc: "Gestión centralizada y normalización de todos los registros del sistema.", color: "text-brand-blue" },
-              { href: "/admin/integrations", icon: "hub", title: "Integraciones", desc: "Configuración de notificaciones, Meta Pixel y analítica externa.", color: "text-brand-red" }
+              { href: "/admin/users", icon: "manage_accounts", title: "Gestión de Usuarios", desc: "Administra cuentas, roles y accesos de todo el personal del sistema.", color: "text-brand-blue" },
+              { href: "/admin/categories", icon: "category", title: "Categorías", desc: "Configura las reglas, plazos y tipos de alertas para cada vencimiento.", color: "text-brand-blue" },
+              { href: "/admin/global-database", icon: "layers", title: "Historial Global", desc: "Panel maestro con filtros avanzados por fecha, usuario y categoría de todos los registros.", color: "text-brand-blue" },
+              { href: "/admin/integrations", icon: "hub", title: "Integraciones", desc: "Control de notificaciones externas, píxeles de seguimiento y analítica.", color: "text-brand-red" }
             ].map((card, i) => (
               <Link
                 key={i}
