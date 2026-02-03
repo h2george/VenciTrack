@@ -15,7 +15,7 @@ import Link from "next/link";
  */
 export default function LandingPage(): React.ReactElement {
     return (
-        <div className="relative min-h-screen w-full bg-white dark:bg-black overflow-x-hidden transition-colors duration-500 text-black dark:text-white">
+        <div className="relative min-h-screen w-full bg-[var(--background)] text-[var(--foreground)] overflow-x-hidden transition-colors duration-500">
             <main className="w-full">
                 {/* Hero section */}
                 <Hero2 />
@@ -43,7 +43,7 @@ export default function LandingPage(): React.ReactElement {
                 </section>
 
                 {/* Scope Section - Broadening the horizon */}
-                <section className="py-32 bg-white dark:bg-black">
+                <section className="py-32 bg-[var(--background)]">
                     <div className="container mx-auto max-w-screen-2xl px-6 md:px-12">
                         <div className="text-center mb-20 max-w-3xl mx-auto">
                             <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-8 uppercase leading-tight">
@@ -143,7 +143,7 @@ export default function LandingPage(): React.ReactElement {
                 </section>
 
                 {/* Main Value Propositions */}
-                <section id="features" className="py-32 bg-white dark:bg-black">
+                <section id="features" className="py-32 bg-[var(--background)]">
                     <div className="container mx-auto max-w-screen-2xl px-6 md:px-12">
                         <div className="text-center mb-24 max-w-2xl mx-auto">
                             <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-6 uppercase leading-tight">
@@ -231,7 +231,7 @@ export default function LandingPage(): React.ReactElement {
                 </section>
 
                 {/* Final Push Section */}
-                <section className="py-40 text-center relative overflow-hidden bg-white dark:bg-black border-t border-black/5 dark:border-white/5">
+                <section className="py-40 text-center relative overflow-hidden bg-[var(--background)] border-t border-black/5 dark:border-white/5">
                     <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
                         <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-10 leading-tight uppercase">Deja de preocuparte <br /> por el olvido</h2>
                         <Link

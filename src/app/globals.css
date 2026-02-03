@@ -40,7 +40,7 @@
 :root {
   /* Design Tokens - VenciTrack Premium */
   --bg: #FFFFFF;
-  --bg-soft: #F1F5F9;
+  --bg-soft: #F8FAFC;
   --text: #0F172A;
   --text-muted: #64748B;
   --border: rgba(15, 23, 42, 0.08);
@@ -50,6 +50,10 @@
   --brand-blue: oklch(0.45 0.15 260);
   --brand-red: oklch(0.6 0.25 25);
   --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+
+  /* Mapping for Tailwind v4 standard variables */
+  --background: var(--bg);
+  --foreground: var(--text);
 }
 
 .dark {
@@ -60,7 +64,11 @@
   --border: rgba(255, 255, 255, 0.1);
   --card: rgba(15, 23, 42, 0.7);
   --input: #1E293B;
-  --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+
+  /* Mapping for Tailwind v4 standard variables */
+  --background: var(--bg);
+  --foreground: var(--text);
 }
 
 ::selection {
@@ -74,6 +82,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -140,9 +149,8 @@ h3,
 h4 {
   font-weight: 900;
   letter-spacing: -0.04em;
-  color: var(--text-primary);
+  color: var(--text);
   line-height: 1.2;
-  /* Strict 1.2 for titles */
   text-wrap: balance;
 }
 
@@ -301,6 +309,7 @@ div {
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
+  font-feature-settings: 'liga';
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
