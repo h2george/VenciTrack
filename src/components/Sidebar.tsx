@@ -105,28 +105,33 @@ export default function Sidebar(): React.ReactElement {
 
     return (
         <>
-            {/* Mobile Toggle Trigger */}
-            <button
-                onClick={() => setIsMobileOpen(true)}
-                className="fixed top-4 left-4 z-[490] p-2 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-lg md:hidden hover:bg-[var(--bg-soft)] transition-colors"
-                aria-label="Abrir menú"
-            >
-                <span className="icon text-2xl">menu</span>
-            </button>
+            {/* Mobile Toggle Trigger - Hidden when menu is open */}
+            {!isMobileOpen && (
+                <button
+                    onClick={() => {
+                        setIsMobileOpen(true);
+                        // Ensure sidebar is expanded when opening on mobile
+                        if (isCollapsed) setIsCollapsed(false);
+                        document.documentElement.style.setProperty('--sidebar-width', '280px');
+                    }}
+                    className="fixed top-4 left-4 z-[490] p-2 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-lg md:hidden hover:bg-[var(--bg-soft)] transition-colors"
+                    aria-label="Abrir menú"
+                >
+                    <span className="icon text-2xl">menu</span>
+                </button>
+            )}
 
-            {/* Mobile Toggle Trigger */}
-            <button
-                onClick={() => setIsMobileOpen(true)}
-                className="fixed top-4 left-4 z-[490] p-2 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-lg md:hidden hover:bg-[var(--bg-soft)] transition-colors"
-                aria-label="Abrir menú"
-            >
-                <span className="icon text-2xl">menu</span>
-            </button>
-
-            {/* Mobile Overlay Removed as requested */}
+            {/* Transparent Mobile Overlay for closing on outside click */}
+            {isMobileOpen && (
+                <div
+                    className="fixed inset-0 z-[999] md:hidden cursor-default"
+                    onClick={() => setIsMobileOpen(false)}
+                    aria-hidden="true"
+                />
+            )}
 
             <aside
-                className={`sidebar-premium flex flex-col p-6 border-r border-[var(--border)] bg-[var(--card)] backdrop-blur-3xl fixed h-screen z-[1000] selection:bg-brand-red/20 overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-in-out md:translate-x-0 ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'} ${isCollapsed ? 'items-center px-4' : ''}`}
+                className={`sidebar-premium flex flex-col p-6 border-r border-[var(--border)] bg-[var(--card)] backdrop-blur-3xl fixed h-screen z-[1000] selection:bg-brand-red/20 overflow-y-auto overflow-x-hidden transition-transform duration-300 ease-in-out md:translate-x-0 ${isMobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'} ${isCollapsed ? 'items-center px-4' : ''}`}
                 style={{ width: isMobileOpen && (typeof window !== 'undefined' && window.innerWidth < 768) ? '280px' : 'var(--sidebar-width)' }}
             >
                 {/* Mobile Close Button */}
