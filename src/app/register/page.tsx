@@ -21,7 +21,6 @@ export default function RegisterPage(): React.ReactElement {
         name: "",
         email: "",
         password: "",
-        company: "",
     });
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -86,28 +85,16 @@ export default function RegisterPage(): React.ReactElement {
                             </div>
                         )}
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div className="flex flex-col gap-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Nombre Maestro</label>
-                                <input
-                                    type="text"
-                                    required
-                                    className="input-premium px-6 py-4"
-                                    placeholder="Agente Alfa"
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Organización</label>
-                                <input
-                                    type="text"
-                                    className="input-premium px-6 py-4"
-                                    placeholder="Empresa / Individual"
-                                    value={formData.company}
-                                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                                />
-                            </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Nombre Maestro</label>
+                            <input
+                                type="text"
+                                required
+                                className="input-premium px-6 py-4"
+                                placeholder="Agente Alfa"
+                                value={formData.name}
+                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            />
                         </div>
 
                         <div className="flex flex-col gap-2">

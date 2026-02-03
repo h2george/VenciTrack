@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
     try {
-        const { email, password, name, company } = await request.json();
+        const { email, password, name } = await request.json();
 
         // 1. Validations
         if (!email || !password || !name) {
@@ -36,7 +36,6 @@ export async function POST(request: NextRequest) {
                 email,
                 password: hashedPassword,
                 name,
-                company,
                 // HU-8.1: Initialize default notification preferences
                 preferences: {
                     create: {
