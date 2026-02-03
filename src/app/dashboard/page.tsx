@@ -226,9 +226,9 @@ export default function Dashboard(): React.ReactElement {
             {/* Stats Overview */}
             <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { label: "Total Vencimientos", value: stats.totalDocuments, icon: "inventory_2", color: "text-brand-blue" },
-                { label: "En Riesgo (30d)", value: stats.expiringSoon, icon: "warning", color: "text-brand-red", highlight: true },
-                { label: "Alertas Activas", value: stats.totalReminders, icon: "notifications_active", color: "text-[var(--text)]" }
+                { label: "Total Vencimientos", value: stats?.overview?.totalDocuments || 0, icon: "inventory_2", color: "text-brand-blue" },
+                { label: "En Riesgo (30d)", value: stats?.overview?.expiringSoon || 0, icon: "warning", color: "text-brand-red", highlight: true },
+                { label: "Alertas Activas", value: stats?.overview?.totalReminders || 0, icon: "notifications_active", color: "text-[var(--text)]" }
               ].map((stat, i) => (
                 <div key={i} className="glass-card p-10 flex flex-col gap-6">
                   <div className="flex justify-between items-start">
@@ -250,12 +250,12 @@ export default function Dashboard(): React.ReactElement {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                  {stats.upcomingExpirations.length === 0 ? (
+                  {(stats?.upcomingExpirations || []).length === 0 ? (
                     <div className="p-20 text-center text-[var(--text-muted)] italic text-sm">
                       No se detectan amenazas de vencimiento.
                     </div>
                   ) : (
-                    stats.upcomingExpirations.map((doc: any) => {
+                    (stats?.upcomingExpirations || []).map((doc: any) => {
                       const status = getUrgencyStatus(doc.daysUntilExpiry);
                       return (
                         <div
