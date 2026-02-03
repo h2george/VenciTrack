@@ -74,7 +74,7 @@ export default function Sidebar(): React.ReactElement {
 
     const userLinks = [
         { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-        { href: '/documents', label: 'Inventario', icon: 'inventory_2' },
+        { href: '/documents', label: 'Documentos', icon: 'inventory_2' },
     ];
 
     const adminLinks = [

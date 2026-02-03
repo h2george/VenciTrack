@@ -21,7 +21,6 @@ async function main() {
             name: 'Administrador General',
             password: adminPassword,
             role: 'ADMIN',
-            company: 'VenciTrack HQ'
         },
     })
     console.log(`✅ Admin user created/updated: ${admin.email}`)
@@ -31,13 +30,13 @@ async function main() {
         where: { email: 'user@vencitrack.com' },
         update: {
             password: userPassword, // Force update password
+            name: 'Juan Pérez',
         },
         create: {
             email: 'user@vencitrack.com',
-            name: 'Usuario Demo',
+            name: 'Juan Pérez',
             password: userPassword,
             role: 'USER',
-            company: 'Empresa Demo S.A.'
         },
     })
     console.log(`✅ Regular user created/updated: ${user.email}`)

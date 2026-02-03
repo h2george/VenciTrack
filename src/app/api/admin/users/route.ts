@@ -113,6 +113,16 @@ export async function PUT(request: Request) {
 
         if (!id) return NextResponse.json({ success: false, error: "User ID required" }, { status: 400 });
 
+        // Safety: Prevent self-demotion or self-blocking
+        if (id === session.userId) {
+            if (role && role !== "ADMIN") {
+                return NextResponse.json({ success: false, error: "No puedes cambiar tu propio rol a Usuario." }, { status: 400 });
+            }
+            if (status && status !== "ACTIVE") {
+                return NextResponse.json({ success: false, error: "No puedes bloquear tu propia cuenta." }, { status: 400 });
+            }
+        }
+
         const dataToUpdate: any = { name, email, role, status };
         if (password) dataToUpdate.password = password; // Only update if provided
 
