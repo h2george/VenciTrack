@@ -86,7 +86,7 @@ export default function Sidebar(): React.ReactElement {
             className={`sidebar-premium flex flex-col p-6 border-r border-[var(--border)] bg-[var(--card)] backdrop-blur-3xl fixed h-screen z-[500] selection:bg-brand-red/20 overflow-y-auto overflow-x-hidden ${isCollapsed ? 'items-center px-4' : ''}`}
             style={{ width: 'var(--sidebar-width)' }}
         >
-            {/* Collapse Toggle Control - Repositioned to be inside and visible */}
+            {/* Collapse Toggle Control */}
             <button
                 onClick={toggleCollapse}
                 className={`absolute right-4 top-13 size-8 rounded-xl bg-[var(--bg-soft)] border border-[var(--border)] text-[var(--text)] flex items-center justify-center shadow-lg hover:border-brand-red/40 hover:text-brand-red active:scale-95 transition-all z-[501] group/toggle`}
@@ -95,7 +95,7 @@ export default function Sidebar(): React.ReactElement {
                 {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
             </button>
 
-            {/* Branding - Kinetic State */}
+            {/* Branding */}
             <Link href="/dashboard" className={`flex items-center gap-3 mb-14 group ${isCollapsed ? 'justify-center px-0' : 'px-1 mr-8'}`}>
                 <div className="size-10 rounded-xl bg-gradient-to-br from-brand-blue to-brand-red flex items-center justify-center shadow-xl shadow-brand-red/10 group-hover:scale-110 transition-transform duration-500 shrink-0">
                     <span className="icon text-white text-xl">verified_user</span>
@@ -177,27 +177,6 @@ export default function Sidebar(): React.ReactElement {
                     </button>
                 </nav>
             </div>
-
-            {/* AI Callout - Adaptive Visual */}
-            {!isCollapsed && (
-                <div className="mt-14 px-1 animate-fade-in">
-                    <div className="glass-card p-5 bg-gradient-to-br from-brand-blue/10 to-transparent border-brand-blue/20 group hover:border-brand-blue/40 transition-all cursor-default overflow-hidden rounded-2xl">
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-blue shadow-glow shadow-brand-blue/50"></span>
-                            </span>
-                            <span className="text-[9px] font-black uppercase tracking-widest text-brand-blue">IA Activa</span>
-                        </div>
-                        <p className="text-[10px] text-[var(--text-muted)] font-bold leading-tight mb-3">
-                            Analizador de riesgos listo.
-                        </p>
-                        <button className="w-full py-2 rounded-xl bg-brand-blue/10 text-brand-blue font-black text-[9px] uppercase tracking-widest hover:bg-brand-blue hover:text-white transition-all duration-300">
-                            Escanear
-                        </button>
-                    </div>
-                </div>
-            )}
         </aside>
     );
 }
