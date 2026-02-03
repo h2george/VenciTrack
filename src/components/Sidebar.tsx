@@ -63,7 +63,7 @@ export default function Sidebar(): React.ReactElement {
         { href: '/admin/integrations', label: 'Integraciones', icon: 'hub' },
     ];
 
-    const links = isAdmin ? [...userLinks, ...adminLinks.filter(l => l.href !== '/dashboard')] : userLinks;
+    const links = isAdmin ? adminLinks : userLinks;
 
     async function handleLogout(): Promise<void> {
         setIsLoggingOut(true);
