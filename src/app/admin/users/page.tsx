@@ -35,6 +35,7 @@ export default function AdminUsersPage(): React.ReactElement {
     const [users, setUsers] = useState<AdminUser[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedOrg, setSelectedOrg] = useState("all");
 
     useEffect(() => {
         async function fetchUsers(): Promise<void> {
@@ -51,11 +52,19 @@ export default function AdminUsersPage(): React.ReactElement {
         fetchUsers();
     }, []);
 
-    const filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (user.company?.toLowerCase() || "").includes(searchTerm.toLowerCase())
-    );
+    // Extract unique organizations for filter
+    const organizations = Array.from(new Set(users.map(u => u.company || "Usuario Independiente")));
+
+    const filteredUsers = users.filter(user => {
+        const matchesSearch =
+            user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (user.company?.toLowerCase() || "").includes(searchTerm.toLowerCase());
+
+        const matchesOrg = selectedOrg === "all" || (user.company || "Usuario Independiente") === selectedOrg;
+
+        return matchesSearch && matchesOrg;
+    });
 
     if (loading) {
         return (
@@ -89,15 +98,33 @@ export default function AdminUsersPage(): React.ReactElement {
                         </p>
                     </div>
 
-                    <div className="glass-card flex items-center gap-4 px-6 py-4 border-white/5 focus-within:border-brand-red/30 transition-all">
-                        <span className="icon text-[var(--text-muted)]">search</span>
-                        <input
-                            type="text"
-                            placeholder="Buscar en el núcleo..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="bg-transparent border-none outline-none text-sm font-bold w-full lg:w-[300px] placeholder:opacity-30"
-                        />
+                    <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+                        {/* Organization Filter */}
+                        <div className="glass-card flex items-center px-4 py-2.5 border-white/5 focus-within:border-brand-blue/30 transition-all min-w-[200px]">
+                            <span className="icon text-[var(--text-muted)] text-lg mr-2">filter_alt</span>
+                            <select
+                                value={selectedOrg}
+                                onChange={(e) => setSelectedOrg(e.target.value)}
+                                className="bg-transparent border-none outline-none text-xs font-bold w-full text-[var(--text)] uppercase tracking-wide cursor-pointer appearance-none"
+                            >
+                                <option value="all" className="bg-[var(--card)] text-[var(--text)]">Todas las Organizaciones</option>
+                                {organizations.map(org => (
+                                    <option key={org} value={org} className="bg-[var(--card)] text-[var(--text)]">{org}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Search Bar */}
+                        <div className="glass-card flex items-center px-4 py-2.5 border-white/5 focus-within:border-brand-blue/30 transition-all w-full lg:w-[320px]">
+                            <span className="icon text-[var(--text-muted)] text-lg mr-2">search</span>
+                            <input
+                                type="text"
+                                placeholder="Buscar usuarios..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="bg-transparent border-none outline-none text-xs font-bold w-full placeholder:opacity-40 text-[var(--text)]"
+                            />
+                        </div>
                     </div>
                 </header>
 
