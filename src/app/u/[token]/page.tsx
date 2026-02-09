@@ -9,7 +9,7 @@
 
 import { useState, useEffect } from "react";
 import { Calendar, FileText, User, AlertCircle, ShieldCheck, History, Loader2, CheckCircle2 } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
+import ThemeToggle from "@/shared/components/ThemeToggle";
 
 interface DocumentInfo {
     subject: { name: string };
@@ -17,8 +17,8 @@ interface DocumentInfo {
     expiryDate: string;
 }
 
-export default function PublicActionPage({ params }: { params: { token: string } }): React.ReactElement {
-    const { token } = params;
+export default function PublicActionPage(props: any): React.ReactElement {
+    const [token, setToken] = useState<string>("");
     const [docInfo, setDocInfo] = useState<DocumentInfo | null>(null);
     const [newDate, setNewDate] = useState<string>("");
     const [loading, setLoading] = useState(true);
@@ -27,6 +27,23 @@ export default function PublicActionPage({ params }: { params: { token: string }
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
+        // Unwrap params safely for Next.js 15+ support in Client Component
+        const unwrapParams = async () => {
+            try {
+                const params = await props.params;
+                setToken(params.token);
+            } catch (e) {
+                console.error("Params unwrap error", e);
+                // Fallback for older Next.js versions where params might be sync
+                if (props.params?.token) setToken(props.params.token);
+            }
+        };
+        unwrapParams();
+    }, [props.params]);
+
+    useEffect(() => {
+        if (!token) return;
+
         async function fetchTokenInfo() {
             try {
                 const res = await fetch(`/api/public/token-info?token=${token}`);

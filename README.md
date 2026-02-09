@@ -1,30 +1,39 @@
-# VenciTrack: El Guardián de tu Operación
+# VenciTrack
 
-**VenciTrack** es un sistema inteligente de vigilancia preventiva diseñado para eliminar el riesgo de vencimientos documentales. No es solo un calendario; es un motor activo que asegura que tu empresa, flota o personal nunca se detengan por un trámite olvidado.
+Sistema de gestión de vencimientos y documentos con arquitectura premium.
 
-![VenciTrack Overview](https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop)
+## 🚀 Modos de Ejecución
 
-## 🎯 El Valor de VenciTrack
+### 1. Desarrollo Local (Rápido)
+Ideal para programar nuevas funcionalidades. Usa **SQLite**.
 
-### 🤖 Vigilancia Activa e Inteligente
-El sistema no espera a que lo consultes. VenciTrack calcula automáticamente el nivel de riesgo de cada documento basándose en reglas de anticipación personalizadas. Ejecuta un protocolo de insistencia que se vuelve más crítico a medida que el vencimiento se acerca (avisos a los 30, 7, 3 y 1 día), garantizando una respuesta oportuna.
+1. Instalar dependencias: `npm install`
+2. Configurar `.env` (usa los valores por defecto de SQLite).
+3. Sincronizar base de datos: `npx prisma db push`
+4. Iniciar: `npm run dev`
 
-### 🛡️ Centro de Control y Trazabilidad
-VenciTrack actúa como el cerebro logístico de tus documentos. Cada notificación enviada, cada actualización de fecha y cada acción administrativa queda registrada con precisión quirúrgica. Esto proporciona un historial completo para procesos de auditoría y cumplimiento normativo, eliminando las dudas sobre quién fue notificado y cuándo.
+### 2. Pruebas de Producción (Docker)
+Ideal para validar el despliegue antes de subir a CapRover. Usa **PostgreSQL**.
 
-### ⚡ Gestión de Campo sin Fricciones
-Diseñado para la velocidad. Cuando un operador recibe una alerta, el sistema le entrega un acceso único y seguro que le permite actualizar información en segundos desde cualquier lugar, **sin necesidad de iniciar sesión o recordar contraseñas**. Es eficiencia pura en el punto de trabajo.
+1. Preparar entorno:
+   ```bash
+   cp .env.example .env
+   node scripts/generate-secret.js # Generar NEXTAUTH_SECRET
+   ```
+2. Iniciar contenedores: `docker-compose up --build -d`
+3. Sincronizar base de datos:
+   ```bash
+   docker-compose exec app npx prisma db push
+   docker-compose exec app npx prisma db seed
+   ```
+4. Acceder en: `http://localhost:3000`
 
-### 🚛 Versatilidad Multiactivo
-Ya sea que gestiones una flota de vehículos, personal operativo con certificaciones críticas o maquinaria especializada, VenciTrack se adapta. Permite organizar documentos por sujetos (personas o vehículos) y categorizarlos según su importancia legal o técnica.
+## 🛡️ Configuración Dinámica
+Una vez desplegado, la configuración de **SMTP** y **Analytics (Meta/Google)** se gestiona directamente desde el **Panel de Administración** (`/admin/settings`). No es necesario reiniciar el servidor ni modificar el archivo `.env`.
 
----
-
-## 🏛️ Filosofía de Producto
-
-*   **Anticipación como Estándar**: El software está diseñado para que el usuario siempre esté un paso adelante de la burocracia.
-*   **Diseño de Alta Fidelidad**: Una interfaz premium que comunica profesionalismo y claridad, facilitando la toma de decisiones bajo presión.
-*   **Arquitectura Evolutiva**: Listo para conectar con múltiples canales de comunicación (Email, WhatsApp) y escalar hacia bases de datos de alto rendimiento según la demanda de la operación.
-
----
-© 2026 VenciTrack - Inteligencia Preventiva para Humanos.
+## 🏗️ Tecnología
+- **Frontend**: Next.js 15 (App Router)
+- **UI**: Tailwind CSS + Antigravity UI
+- **ORM**: Prisma
+- **DB**: SQLite (Dev) / PostgreSQL (Prod)
+- **Auth**: NextAuth.js

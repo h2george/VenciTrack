@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { sendNotification } from "@/lib/notifications";
-import { generateSecureToken } from "@/lib/tokens";
+import { prisma } from "@/server/db/prisma";
+import { sendNotification } from "@/shared/lib/notifications";
+import { generateSecureToken } from "@/shared/lib/tokens";
 
 export const dynamic = 'force-dynamic';
 

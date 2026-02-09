@@ -7,8 +7,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Sidebar from "@/components/Sidebar";
-import ThemeToggle from "@/components/ThemeToggle";
+import Sidebar from "@/shared/components/Sidebar";
+import ThemeToggle from "@/shared/components/ThemeToggle";
 
 /** 
  * Config interface for bridge connectors

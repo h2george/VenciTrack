@@ -7,8 +7,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/Sidebar";
-import ThemeToggle from "@/components/ThemeToggle";
+import Sidebar from "@/shared/components/Sidebar";
+import ThemeToggle from "@/shared/components/ThemeToggle";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Edit2, Search, Lock, Unlock, Plus, X, Save } from "lucide-react";

@@ -3,45 +3,39 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-red: oklch(0.6 0.25 25);
-  --color-brand-blue: oklch(0.45 0.15 260);
-  --color-background: var(--bg-main);
-  --color-foreground: var(--text-primary);
+  --color-brand-red: var(--brand-red);
+  --color-brand-blue: var(--brand-blue);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-muted: var(--text-muted);
+  --color-border: var(--border);
 
   /* Strict 8pt Grid */
   --spacing-2: 0.5rem;
-  /* 8px */
   --spacing-4: 1rem;
-  /* 16px */
   --spacing-6: 1.5rem;
-  /* 24px */
   --spacing-7: 1.75rem;
-  /* 28px */
   --spacing-8: 2rem;
-  /* 32px */
   --spacing-10: 2.5rem;
-  /* 40px */
   --spacing-12: 3rem;
-  /* 48px */
   --spacing-16: 4rem;
-  /* 64px */
   --spacing-18: 4.5rem;
-  /* 72px */
   --spacing-20: 5rem;
-  /* 80px */
   --spacing-24: 6rem;
-  /* 96px */
 
   --font-sans: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --radius-mega: 1.5rem;
-  /* 24px rounded */
 }
 
-:root {
+:root,
+[data-theme="light"] {
   /* Design Tokens - VenciTrack Premium */
-  --bg: #FFFFFF;
-  --bg-soft: #F8FAFC;
+  --bg: #0A0A0A;
+  --bg-soft: #111111;
+  --sidebar-bg: #FFFFFF;
   --text: #0F172A;
+  --text-on-dark: #FFFFFF;
+  --text-sidebar-title: #0F172A;
   --text-muted: #64748B;
   --border: rgba(15, 23, 42, 0.08);
   --card: rgba(255, 255, 255, 0.7);
@@ -59,10 +53,14 @@
   --sidebar-width: 300px;
 }
 
-.dark {
-  --bg: #020617;
-  --bg-soft: #0F172A;
+.dark,
+[data-theme="dark"] {
+  --bg: #0A0A0A;
+  --bg-soft: #111111;
+  --sidebar-bg: #0F172A;
   --text: #F8FAFC;
+  --text-on-dark: #F8FAFC;
+  --text-sidebar-title: #F8FAFC;
   --text-muted: #94A3B8;
   --border: rgba(255, 255, 255, 0.1);
   --card: rgba(15, 23, 42, 0.7);
@@ -326,8 +324,7 @@ div {
   height: 100vh;
   position: fixed;
   background: var(--sidebar-bg);
-  backdrop-filter: blur(20px);
-  border-right: 1px solid var(--border-glass);
+  border-right: 1px solid var(--border);
   padding: 2rem;
   z-index: 100;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -337,7 +334,8 @@ div {
   margin-left: var(--sidebar-width);
   padding: 3rem;
   min-height: 100vh;
-  background: var(--bg-main);
+  background: var(--bg);
+  color: var(--text-on-dark);
   transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 

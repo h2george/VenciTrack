@@ -6,8 +6,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/Sidebar";
-import ThemeToggle from "@/components/ThemeToggle";
+import Sidebar from "@/shared/components/Sidebar";
+import ThemeToggle from "@/shared/components/ThemeToggle";
 import { Plus, Settings2, Trash2, FileText, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 interface DocumentType {

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "@/lib/auth";
+import { decrypt } from "@/shared/lib/auth-edge";
 
 // Rutas protegidas que requieren sesión
 const protectedRoutes = ["/dashboard", "/admin", "/documents", "/subjects", "/reminders", "/settings"];
 // Rutas exclusivas de administrador (solo sub-rutas de /admin)
-const adminRoutes = ["/admin/users", "/admin/documents", "/admin/integrations"];
+const adminRoutes = ["/admin/users", "/admin/documents", "/admin/integrations", "/admin/settings"];
 // Rutas de autenticación que no deben ser visitadas si ya hay sesión
 const authRoutes = ["/login", "/register"];
 

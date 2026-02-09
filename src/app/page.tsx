@@ -4,8 +4,8 @@
  * @design Antigravity Premium - Refined spacing and broader service scope.
  */
 
-import { Hero2 } from "@/components/ui/hero-2-1";
-import { Footerdemo } from "@/components/ui/footer-section";
+import { Hero2 } from "@/shared/components/ui/hero-2-1";
+import { Footerdemo } from "@/shared/components/ui/footer-section";
 import { Mail, Zap, Calendar, Bell, CheckCircle2, Layout, Star, Quote, ShieldCheck, Clock, AlertTriangle, TrendingUp, Users, HeartPulse, Home, Plane, Car } from "lucide-react";
 import Link from "next/link";
 

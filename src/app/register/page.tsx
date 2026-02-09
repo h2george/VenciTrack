@@ -9,7 +9,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import ThemeToggle from "@/components/ThemeToggle";
+import ThemeToggle from "@/shared/components/ThemeToggle";
 
 /**
  * RegisterPage Component
@@ -70,9 +70,9 @@ export default function RegisterPage(): React.ReactElement {
                             <span className="icon text-white text-3xl">verified_user</span>
                         </div>
                     </Link>
-                    <h1 className="text-4xl font-black tracking-tighter mb-2 text-center text-[var(--text)]">Únete a VenciTrack</h1>
+                    <h1 className="text-4xl font-black tracking-tighter mb-2 text-center text-[var(--text)] uppercase">Únete a VenciTrack</h1>
                     <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.3em] text-[10px] italic text-center">
-                        Inicia tu gestión de blindaje documental
+                        Gestiona tus documentos y evita multas
                     </p>
                 </div>
 
@@ -86,19 +86,19 @@ export default function RegisterPage(): React.ReactElement {
                         )}
 
                         <div className="flex flex-col gap-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Nombre Maestro</label>
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Tu Nombre</label>
                             <input
                                 type="text"
                                 required
                                 className="input-premium px-6 py-4"
-                                placeholder="Agente Alfa"
+                                placeholder="Tu nombre completo"
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             />
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Identidad Digital (Email)</label>
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Correo Electrónico</label>
                             <input
                                 type="email"
                                 required
@@ -110,7 +110,7 @@ export default function RegisterPage(): React.ReactElement {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Clave de Seguridad</label>
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Contraseña</label>
                             <input
                                 type="password"
                                 required
@@ -128,16 +128,16 @@ export default function RegisterPage(): React.ReactElement {
                         >
                             <span className="icon">{loading ? 'sync' : 'how_to_reg'}</span>
                             <span className="font-black uppercase tracking-widest text-sm">
-                                {loading ? 'Sincronizando...' : 'Consolidar Identidad'}
+                                {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
                             </span>
                         </button>
                     </form>
 
                     <div className="mt-10 pt-8 border-t border-[var(--border)] text-center">
                         <p className="text-[var(--text-muted)] text-xs font-bold">
-                            ¿Ya formas parte del núcleo?{" "}
+                            ¿Ya tienes una cuenta?{" "}
                             <Link href="/login" className="text-brand-red hover:underline font-black uppercase tracking-widest ml-1 text-[10px]">
-                                Acceder a Bóveda
+                                Ingresar a mi cuenta
                             </Link>
                         </p>
                     </div>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
+import { prisma } from "@/server/db/prisma";
+import { getSession } from "@/shared/lib/auth";
 
 export const dynamic = 'force-dynamic';
 
@@ -64,7 +64,7 @@ export async function GET() {
                         totalReminders,
                         expiringToday
                     },
-                    activities: activities.map(log => ({
+                    activities: activities.map((log: any) => ({
                         user: log.user?.name || "Sistema",
                         action: log.description,
                         time: log.createdAt
@@ -164,7 +164,7 @@ export async function GET() {
         ]);
 
         // Enrich documents by type with type names
-        const documentTypeIds = documentsByType.map(d => d.documentTypeId);
+        const documentTypeIds = documentsByType.map((d: any) => d.documentTypeId);
         const types = await prisma.documentType.findMany({
             where: {
                 id: {
@@ -173,8 +173,8 @@ export async function GET() {
             }
         });
 
-        const typeMap = new Map(types.map(t => [t.id, t.name]));
-        const documentsByTypeEnriched = documentsByType.map(d => ({
+        const typeMap = new Map(types.map((t: any) => [t.id, t.name]));
+        const documentsByTypeEnriched = documentsByType.map((d: any) => ({
             type: typeMap.get(d.documentTypeId) || 'Unknown',
             count: d._count.id
         }));
@@ -195,7 +195,7 @@ export async function GET() {
                         lte: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
                     }
                 }
-            }).then(count => { urgencyLevels.critical = count; }),
+            }).then((count: number) => { urgencyLevels.critical = count; }),
 
             prisma.document.count({
                 where: {
@@ -205,7 +205,7 @@ export async function GET() {
                         lte: new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000)
                     }
                 }
-            }).then(count => { urgencyLevels.warning = count; }),
+            }).then((count: number) => { urgencyLevels.warning = count; }),
 
             prisma.document.count({
                 where: {
@@ -215,7 +215,7 @@ export async function GET() {
                         lte: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
                     }
                 }
-            }).then(count => { urgencyLevels.normal = count; })
+            }).then((count: number) => { urgencyLevels.normal = count; })
         ]);
 
         return NextResponse.json({
@@ -229,11 +229,11 @@ export async function GET() {
                 },
                 urgencyLevels,
                 documentsByType: documentsByTypeEnriched,
-                documentsByStatus: documentsByStatus.map(d => ({
+                documentsByStatus: documentsByStatus.map((d: any) => ({
                     status: d.status,
                     count: d._count.id
                 })),
-                upcomingExpirations: upcomingExpirations.map(doc => {
+                upcomingExpirations: upcomingExpirations.map((doc: any) => {
                     const daysUntilExpiry = Math.ceil(
                         (doc.expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
                     );

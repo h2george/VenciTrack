@@ -1,19 +1,32 @@
 /**
  * @file settings/page.tsx
- * @description User profile and account security configuration center. 
- * Implements high-fidelity form controls and state management.
+ * @description User configuration and profile management.
+ * Integrated with Stitch mockup aesthetic.
  */
 
 "use client";
 
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/Sidebar";
-import { User, Shield, Bell, Save, Loader2, CheckCircle, Mail, MessageSquare } from "lucide-react";
+import Sidebar from "@/shared/components/Sidebar";
+import {
+    Loader2,
+    CheckCircle,
+    MessageSquare,
+    Smartphone,
+    Globe,
+    Edit2
+} from "lucide-react";
+import { motion } from "framer-motion";
 
 interface UserPrefs {
     channels: string[];
     frequency: string;
     anticipationDays: number;
+}
+
+interface UserData {
+    name: string;
+    email: string;
 }
 
 export default function SettingsPage(): React.ReactElement {
@@ -22,39 +35,45 @@ export default function SettingsPage(): React.ReactElement {
         frequency: "IMMEDIATE",
         anticipationDays: 30
     });
-    const [user, setUser] = useState<{ name: string }>({ name: "Cargando..." });
+    const [user, setUser] = useState<UserData>({ name: "", email: "" });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        // Fetch Preferences
-        fetch("/api/user/preferences")
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && data.data) setPrefs(data.data);
-            })
-            .finally(() => setLoading(false));
-
-        // Fetch User Identity
-        fetch("/api/auth/me")
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) setUser({ name: data.data.name });
-            });
+        Promise.all([
+            fetch("/api/user/preferences").then(res => res.json()),
+            fetch("/api/auth/me").then(res => res.json())
+        ]).then(([prefsData, userData]) => {
+            if (prefsData.success && prefsData.data) setPrefs(prefsData.data);
+            if (userData.success) setUser({ name: userData.data.name, email: userData.data.email });
+        }).finally(() => setLoading(false));
     }, []);
 
     const handleSave = async () => {
         setSaving(true);
         try {
-            const res = await fetch("/api/user/preferences", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(prefs)
-            });
-            if (res.ok) setMessage("Configuración Sincronizada");
+            const [prefRes, profileRes] = await Promise.all([
+                fetch("/api/user/preferences", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(prefs)
+                }),
+                fetch("/api/user/profile", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(user)
+                })
+            ]);
+
+            if (prefRes.ok && profileRes.ok) {
+                setMessage("Cambios Guardados");
+            } else {
+                setMessage("Error al Guardar");
+            }
         } catch (err) {
             console.error(err);
+            setMessage("Error de Conexión");
         } finally {
             setSaving(false);
             setTimeout(() => setMessage(""), 3000);
@@ -63,169 +82,188 @@ export default function SettingsPage(): React.ReactElement {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-[var(--bg)] text-[var(--text)]">
-                <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="animate-spin text-brand-red" size={40} />
-                    <p className="font-black uppercase tracking-widest text-[var(--text-muted)] text-[10px]">Accediendo al Núcleo...</p>
-                </div>
+            <div className="flex items-center justify-center min-h-screen bg-[#0A0A0A] text-white">
+                <Loader2 className="animate-spin text-brand-red" size={40} />
             </div>
         );
     }
 
     return (
-        <main className="flex bg-[var(--bg)] min-h-screen text-[var(--text)]">
+        <main className="flex bg-[#0A0A0A] min-h-screen text-white font-sans">
             <Sidebar />
-            <div className="main-premium flex-1 relative overflow-hidden">
-                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-blue/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-                <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16">
-                    <div>
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="w-1.5 h-6 bg-brand-red rounded-full"></div>
-                            <h1 className="text-5xl font-black tracking-tighter text-[var(--text-primary)]">Configuración</h1>
+            <div className="flex-1 p-6 lg:p-12 overflow-y-auto max-w-5xl mx-auto">
+                <header className="mb-12">
+                    <h1 className="text-5xl font-black tracking-tighter uppercase mb-2">Configuración de Alertas</h1>
+                    <p className="text-[var(--text-muted)] font-medium text-sm max-w-2xl leading-relaxed">
+                        Gestiona cómo y cuándo recibes las notificaciones de vencimiento de tus documentos críticos.
+                    </p>
+                </header>
+
+                <div className="glass-card bg-[#111] border-white/5 p-6 mb-12 flex items-center justify-between group">
+                    <div className="flex items-center gap-5">
+                        <div className="size-16 rounded-full bg-foreground/10 border border-white/5 flex items-center justify-center text-brand-red overflow-hidden relative">
+                            <span className="icon text-3xl">account_circle</span>
                         </div>
-                        <p className="text-[var(--text-muted)] font-black uppercase tracking-[0.2em] text-[10px] italic ml-1">
-                            HU-8.1: Personalización de canales y alertas críticas
-                        </p>
+                        <div>
+                            <h3 className="text-xl font-black tracking-tight">{user.name || "Usuario VenciTrack"}</h3>
+                            <p className="text-xs font-medium text-[var(--text-muted)] lowercase">{user.email}</p>
+                        </div>
+                    </div>
+                    <button className="px-6 py-2.5 rounded-full bg-white/[0.03] border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-2">
+                        <Edit2 size={12} />
+                        Editar Perfil
+                    </button>
+                </div>
+
+                <section className="mb-14">
+                    <div className="flex items-center gap-3 mb-8">
+                        <span className="icon text-brand-red text-xl">campaign</span>
+                        <h2 className="text-sm font-black uppercase tracking-[0.2em] text-white/80 italic">Canales de Notificación</h2>
                     </div>
 
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between p-6 rounded-[2rem] bg-[#111] border border-white/5 hover:border-white/10 transition-all group">
+                            <div className="flex items-center gap-5">
+                                <div className="text-white/20 group-hover:text-white transition-colors">
+                                    <Globe size={24} />
+                                </div>
+                                <div className="space-y-0.5">
+                                    <p className="font-black text-sm uppercase tracking-tight">Correo Electrónico</p>
+                                    <p className="text-[var(--text-muted)] text-[11px] font-medium">Recibir alertas detalladas en tu bandeja de entrada principal.</p>
+                                </div>
+                            </div>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="sr-only peer"
+                                    checked={prefs.channels.includes("EMAIL")}
+                                    onChange={(e) => {
+                                        const next = e.target.checked
+                                            ? [...prefs.channels, "EMAIL"]
+                                            : prefs.channels.filter(c => c !== "EMAIL");
+                                        setPrefs({ ...prefs, channels: next });
+                                    }}
+                                />
+                                <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-red"></div>
+                            </label>
+                        </div>
+
+                        <div className="flex items-center justify-between p-6 rounded-[2rem] bg-[#111] border border-white/5 opacity-40 grayscale pointer-events-none">
+                            <div className="flex items-center gap-5">
+                                <div className="text-white/20">
+                                    <MessageSquare size={24} />
+                                </div>
+                                <div className="space-y-0.5">
+                                    <div className="flex items-center gap-3">
+                                        <p className="font-black text-sm uppercase tracking-tight">WhatsApp</p>
+                                        <span className="bg-brand-red/20 text-brand-red text-[8px] font-black uppercase px-2 py-0.5 rounded-full tracking-tighter">Próximamente</span>
+                                    </div>
+                                    <p className="text-[var(--text-muted)] text-[11px] font-medium">Notificaciones instantáneas directamente en tu móvil.</p>
+                                </div>
+                            </div>
+                            <div className="w-11 h-6 bg-white/5 rounded-full relative">
+                                <div className="absolute top-[2px] left-[2px] bg-white/10 rounded-full h-5 w-5"></div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between p-6 rounded-[2rem] bg-[#111] border border-white/5 hover:border-white/10 transition-all group">
+                            <div className="flex items-center gap-5">
+                                <div className="text-white/20 group-hover:text-white transition-colors">
+                                    <Smartphone size={24} />
+                                </div>
+                                <div className="space-y-0.5">
+                                    <p className="font-black text-sm uppercase tracking-tight">Notificaciones Push</p>
+                                    <p className="text-[var(--text-muted)] text-[11px] font-medium">Alertas en tiempo real en tu navegador o aplicación móvil.</p>
+                                </div>
+                            </div>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" className="sr-only peer" />
+                                <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-red"></div>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="mb-14">
+                    <div className="flex items-center gap-3 mb-8">
+                        <span className="icon text-brand-red text-xl">history</span>
+                        <h2 className="text-sm font-black uppercase tracking-[0.2em] text-white/80 italic">Frecuencia y Anticipación</h2>
+                    </div>
+
+                    <div className="glass-card bg-[#111] border-white/5 p-10 rounded-[2.5rem] space-y-12">
+                        <div className="space-y-8">
+                            <div>
+                                <h3 className="font-black text-sm uppercase tracking-tight mb-2 uppercase">Primera Alerta de Vencimiento</h3>
+                                <p className="text-[var(--text-muted)] text-xs font-medium italic">Selecciona con cuántos días de antelación deseas recibir el primer aviso.</p>
+                            </div>
+
+                            <div className="relative pt-6 px-4">
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="30"
+                                    step="1"
+                                    value={prefs.anticipationDays}
+                                    onChange={(e) => setPrefs({ ...prefs, anticipationDays: parseInt(e.target.value) })}
+                                    className="w-full h-1 bg-white/5 rounded-full appearance-none cursor-pointer accent-brand-red absolute left-0"
+                                />
+                                <div className="flex justify-between items-center text-[10px] font-black uppercase text-white/30 tracking-widest mt-6">
+                                    <span className={prefs.anticipationDays === 30 ? "text-brand-red" : ""}>30 Días</span>
+                                    <span className={prefs.anticipationDays === 15 ? "text-brand-red" : ""}>15 Días</span>
+                                    <span className={prefs.anticipationDays <= 10 && prefs.anticipationDays >= 5 ? "text-brand-red" : ""}>7 Días</span>
+                                    <span className={prefs.anticipationDays === 1 ? "text-brand-red" : ""}>1 Día</span>
+                                </div>
+                                <motion.div
+                                    animate={{ left: `${((30 - prefs.anticipationDays) / 29) * 100}%` }}
+                                    className="absolute top-2 w-max -translate-x-1/2"
+                                >
+                                    <div className="bg-brand-red size-3 rounded-full shadow-[0_0_15px_rgba(239,68,68,0.5)] border-2 border-[#111]" />
+                                    <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-black text-brand-red whitespace-nowrap">{prefs.anticipationDays} DÍAS</span>
+                                </motion.div>
+                            </div>
+                        </div>
+
+                        <div className="pt-8 border-t border-white/5 flex items-center justify-between">
+                            <div>
+                                <h3 className="font-black text-sm uppercase tracking-tight mb-1">Recordatorios Diarios</h3>
+                                <p className="text-[var(--text-muted)] text-xs font-medium italic">Enviar alertas cada 24h una vez el documento ha vencido.</p>
+                            </div>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="sr-only peer"
+                                    checked={prefs.frequency === "DAILY"}
+                                    onChange={(e) => setPrefs({ ...prefs, frequency: e.target.checked ? "DAILY" : "IMMEDIATE" })}
+                                />
+                                <div className="w-12 h-6 bg-white/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-brand-red after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <footer className="mt-16 flex justify-end">
                     <button
                         onClick={handleSave}
                         disabled={saving}
-                        className="button-red px-10 py-5 flex items-center gap-3 shadow-2xl shadow-brand-red/20 transform active:scale-95 transition-all"
+                        className="button-red px-12 py-5 rounded-2xl flex items-center gap-4 group transition-all active:scale-95 shadow-[0_20px_40px_rgba(239,68,68,0.2)]"
                     >
-                        {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
+                        {saving ? <Loader2 className="animate-spin" size={20} /> : <span className="icon">save</span>}
                         <span className="font-black uppercase tracking-widest text-sm">Guardar Cambios</span>
                     </button>
-                </header>
+                </footer>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl">
-                    {/* Notification Channels (HU-8.1) */}
-                    <section className="glass-card p-10 flex flex-col gap-10 border-brand-blue/20">
-                        <div className="flex items-center gap-4">
-                            <div className="size-14 rounded-2xl bg-brand-blue/10 flex items-center justify-center text-brand-blue shadow-inner">
-                                <Bell size={32} />
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-black uppercase tracking-tight text-[var(--text-primary)]">Canales de Notificación</h3>
-                                <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Estado: Operativo</p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-6">
-                            <div className="flex items-center justify-between p-6 rounded-3xl bg-foreground/5 border border-white/5 hover:border-brand-blue/30 transition-all group">
-                                <div className="flex items-center gap-4">
-                                    <Mail className="text-[var(--text-muted)] group-hover:text-brand-blue transition-colors" size={24} />
-                                    <div>
-                                        <p className="font-black text-sm text-[var(--text-primary)]">Protocolo Email</p>
-                                        <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wide">Reportes detallados y enlaces seguros</p>
-                                    </div>
-                                </div>
-                                <input
-                                    type="checkbox"
-                                    checked={prefs.channels.includes("EMAIL")}
-                                    onChange={(e) => {
-                                        const newChannels = e.target.checked
-                                            ? [...prefs.channels, "EMAIL"]
-                                            : prefs.channels.filter(c => c !== "EMAIL");
-                                        setPrefs({ ...prefs, channels: newChannels });
-                                    }}
-                                    className="size-6 rounded-lg bg-black/40 border-white/10 text-brand-blue focus:ring-brand-blue cursor-pointer"
-                                />
-                            </div>
-
-                            <div className="flex items-center justify-between p-6 rounded-3xl bg-foreground/5 border border-white/5 opacity-50 relative group cursor-not-allowed">
-                                <div className="flex items-center gap-4">
-                                    <MessageSquare className="text-[var(--text-muted)]" size={24} />
-                                    <div>
-                                        <p className="font-black text-sm text-[var(--text-primary)]">Protocolo WhatsApp</p>
-                                        <p className="text-[10px] font-bold text-brand-red uppercase tracking-wide italic">Disponible en Versión PRO</p>
-                                    </div>
-                                </div>
-                                <div className="absolute top-2 right-4 text-[8px] font-black uppercase bg-brand-red text-white px-2 py-0.5 rounded">Premium</div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-6 pt-6 border-t border-white/5">
-                            <div className="flex flex-col gap-3">
-                                <div className="flex justify-between items-center px-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Anticipación Maestra</label>
-                                    <span className="text-xs font-black text-brand-blue">{prefs.anticipationDays} Días</span>
-                                </div>
-                                <input
-                                    type="range" min="15" max="90" step="5"
-                                    value={prefs.anticipationDays}
-                                    onChange={(e) => setPrefs({ ...prefs, anticipationDays: parseInt(e.target.value) })}
-                                    className="w-full accent-brand-blue bg-white/5 h-2 rounded-full appearance-none cursor-pointer"
-                                />
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Profile Information Section */}
-                    <section className="glass-card p-10 flex flex-col gap-10">
-                        <div className="flex items-center gap-4">
-                            <div className="size-14 rounded-2xl bg-foreground/5 flex items-center justify-center text-[var(--text-muted)]">
-                                <User size={32} />
-                            </div>
-                            <h3 className="text-xl font-black uppercase tracking-tight text-[var(--text-primary)]">Identidad del Operador</h3>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-8">
-                            <div className="flex flex-col gap-3">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Nombre Maestro</label>
-                                <input
-                                    type="text"
-                                    readOnly
-                                    className="input-premium px-6 py-4 opacity-70"
-                                    value={user.name}
-                                />
-                            </div>
-                        </div>
-                        <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest italic text-center mt-4">
-                            Ponte en contacto con soporte para modificar tus credenciales maestras.
-                        </p>
-                    </section>
-
-                    {/* Security Section */}
-                    <section className="glass-card p-10 flex flex-col gap-10 border-brand-red/10 lg:col-span-2">
-                        <div className="flex items-center gap-4">
-                            <div className="size-14 rounded-2xl bg-brand-red/5 flex items-center justify-center text-brand-red">
-                                <Shield size={32} />
-                            </div>
-                            <h3 className="text-xl font-black uppercase tracking-tight text-brand-red">Protocolos de Seguridad</h3>
-                        </div>
-
-                        <div className="flex flex-col md:flex-row gap-6">
-                            <div className="flex-1 bg-foreground/5 p-8 rounded-3xl border border-white/5 flex items-center justify-between">
-                                <div>
-                                    <p className="text-sm font-black mb-1">Doble Factor (2FA)</p>
-                                    <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Activo y Protegido</p>
-                                </div>
-                                <div className="size-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
-                                    <CheckCircle size={20} />
-                                </div>
-                            </div>
-
-                            <div className="flex-1 bg-foreground/5 p-8 rounded-3xl border border-white/5 flex items-center justify-between opacity-50">
-                                <div>
-                                    <p className="text-sm font-black mb-1">Rotación de Tokens</p>
-                                    <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider italic">Próxima rotación en 7 días</p>
-                                </div>
-                                <button className="button-glass px-6 py-3 text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Rotar Ahora</button>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                {/* Toast Notification */}
                 {message && (
-                    <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[3000] animate-bounce-in">
-                        <div className="bg-emerald-500 text-white px-8 py-4 rounded-2xl shadow-3xl shadow-emerald-500/20 flex items-center gap-3">
-                            <CheckCircle size={20} />
-                            <span className="font-black uppercase tracking-widest text-xs">{message}</span>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="fixed bottom-12 right-12 z-50"
+                    >
+                        <div className={`px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs flex items-center gap-3 shadow-3xl ${message.includes("Error") ? "bg-brand-red" : "bg-emerald-600"}`}>
+                            <CheckCircle size={18} />
+                            {message}
                         </div>
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </main>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { verifyPassword, encrypt, SESSION_DURATION } from "@/lib/auth";
+import { prisma } from "@/server/db/prisma";
+import { verifyPassword, encrypt, SESSION_DURATION } from "@/shared/lib/auth";
 import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
@@ -37,13 +37,14 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 4. Create Session with Role
+        // 4. Create Session with Role and Password Change requirement
         const expires = new Date(Date.now() + SESSION_DURATION);
         const sessionToken = await encrypt({
             userId: user.id,
             email: user.email,
             name: user.name,
-            role: user.role, // Added role
+            role: user.role,
+            forcePasswordChange: user.forcePasswordChange, // Added to session
             expires
         });
 
@@ -72,7 +73,8 @@ export async function POST(request: NextRequest) {
                 id: user.id,
                 email: user.email,
                 name: user.name,
-                role: user.role // Added role
+                role: user.role,
+                forcePasswordChange: user.forcePasswordChange // Added field
             },
         });
     } catch (error) {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
+import { prisma } from "@/server/db/prisma";
+import { getSession } from "@/shared/lib/auth";
 
 export const dynamic = 'force-dynamic';
 
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Calculate days until expiry for each document
-    const documentsWithDays = documents.map(doc => {
+    const documentsWithDays = documents.map((doc: any) => {
       const now = new Date();
       const daysUntilExpiry = Math.ceil(
         (doc.expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { documentTypeId, subjectId, expiryDate, status = 'ACTIVE' } = body;
+    const { documentTypeId, subjectId, expiryDate, alias, status = 'ACTIVE' } = body;
 
     // Validation
     if (!documentTypeId || !subjectId || !expiryDate) {
@@ -168,6 +168,7 @@ export async function POST(request: NextRequest) {
         documentTypeId,
         subjectId,
         expiryDate: new Date(expiryDate),
+        alias,
         status
       },
       include: {

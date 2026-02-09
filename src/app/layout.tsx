@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "La bóveda de gestión de documentos más sofisticada del mundo. Controla SOAT, licencias y pólizas con seguridad de nivel militar.",
 };
 
-import AnalyticsScripts from "@/components/AnalyticsScripts";
+import AnalyticsScripts from "@/shared/components/AnalyticsScripts";
 
 export default function RootLayout({
   children,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { getSession } from "@/shared/lib/auth";
+import { prisma } from "@/server/db/prisma";
 
 export const dynamic = 'force-dynamic';
 
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         };
 
         // Procesamiento transaccional (óptimo para mantener la consistencia)
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
             for (const item of items) {
                 try {
                     // 1. Resolver o crear Sujeto (Persona o Vehículo)
@@ -89,8 +89,6 @@ export async function POST(request: NextRequest) {
                     results.skipped++;
                 }
             }
-        }, {
-            timeout: 30000 // 30s de tiempo de espera para importaciones grandes
         });
 
         // Registrar la operación masiva en la auditoría (HU-5.1)
