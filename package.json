@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "next dev api -p 3001",
+    "dev:web": "vite client --port 3002",
+    "build": "npm run build:api && npm run build:web",
+    "build:api": "next build api",
+    "build:web": "vite build client",
+    "start": "next start api",
+    "lint": "next lint api"
   },
   "dependencies": {
+    "@prisma/client": "^5.9.1",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-switch": "^1.2.6",
@@ -23,10 +28,13 @@
     "lucide-react": "^0.563.0",
     "motion": "^12.29.2",
     "next": "^16.1.6",
+    "next-auth": "4.24.5",
     "nodemailer": "^7.0.13",
     "pg": "^8.18.0",
+    "prisma": "^5.9.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.22.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
@@ -37,12 +45,15 @@
     "@types/pg": "^8.16.0",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.24",
+    "concurrently": "^8.2.2",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.0.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^5.1.4"
   }
 }

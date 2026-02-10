@@ -4,19 +4,19 @@ services:
   # ========================================
   # BACKEND: API Service (DB, Logic, Auth)
   # ========================================
-  api:
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
       target: api
-    image: vencitrack-api:0.0.1
-    container_name: vencitrack-api
+    image: vencitrack-backend:0.0.0
+    container_name: vencitrack-backend
     ports:
-      - "3003:3001" # Exposed internally (or externally if needed)
+      - "3003:3001"
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      - NEXTAUTH_URL=http://localhost:3002
+      - NEXTAUTH_URL=http://localhost:3004
       - PORT=3001
       - SERVICE_TYPE=api
     depends_on:
@@ -29,26 +29,22 @@ services:
   # ========================================
   # FRONTEND: WEB Service (UI, Assets)
   # ========================================
-  web:
+  # ========================================
+  # FRONTEND: WEB Service (Vite + Nginx)
+  # ========================================
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile
       target: web
-    image: vencitrack-web:0.0.1
-    container_name: vencitrack-web
+    image: vencitrack-frontend:0.0.0
+    container_name: vencitrack-frontend
     ports:
-      - "3002:3001" # Public facing
+      - "3004:80"
     environment:
-      # Still needs DB URL for NextAuth/SSR data fetching in shared context if applicable
-      # In true separation, this would talk to API over HTTP internal network
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
-      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      - NEXTAUTH_URL=http://localhost:3002
-      - PORT=3001
-      - SERVICE_TYPE=web
-      - API_INTERNAL_URL=http://api:3001
+      - VITE_API_URL=http://localhost:3003
     depends_on:
-      api:
+      backend:
         condition: service_started
     networks:
       - vencitrack-net

@@ -1,39 +1,50 @@
 # VenciTrack
 
-Sistema de gestión de vencimientos y documentos con arquitectura premium.
+Sistema de gestión de vencimientos y documentos con arquitectura segregada.
 
-## 🚀 Modos de Ejecución
+## 🏗️ Arquitectura Limpia (Separation of Concerns)
 
-### 1. Desarrollo Local (Rápido)
-Ideal para programar nuevas funcionalidades. Usa **SQLite**.
+El sistema ha sido migrado a una arquitectura de contenedores especializados para garantizar escalabilidad y seguridad:
 
-1. Instalar dependencias: `npm install`
-2. Configurar `.env` (usa los valores por defecto de SQLite).
-3. Sincronizar base de datos: `npx prisma db push`
-4. Iniciar: `npm run dev`
+1.  **Frontend (`vencitrack-frontend`)**:
+    *   Contenedor puro de UI (Next.js Standalone).
+    *   **Sin acceso a Base de Datos**.
+    *   Se comunica exclusivamente con el Backend vía API interna.
+    *   Puerto: `3004`
 
-### 2. Pruebas de Producción (Docker)
-Ideal para validar el despliegue antes de subir a CapRover. Usa **PostgreSQL**.
+2.  **Backend Logic (`vencitrack-backend`)**:
+    *   Contenedor de Lógica de Negocio y Seguridad.
+    *   Maneja autenticación, conexión a BD y transacciones.
+    *   Puerto: `3003` (Interno `3001`)
 
-1. Preparar entorno:
-   ```bash
-   cp .env.example .env
-   node scripts/generate-secret.js # Generar NEXTAUTH_SECRET
-   ```
-2. Iniciar contenedores: `docker-compose up --build -d`
-3. Sincronizar base de datos:
-   ```bash
-   docker-compose exec app npx prisma db push
-   docker-compose exec app npx prisma db seed
-   ```
-4. Acceder en: `http://localhost:3000`
+3.  **Data Storage (`vencitrack-db`)**:
+    *   PostgreSQL 15 optimizado.
+    *   Persistencia de volumen aislado.
 
-## 🛡️ Configuración Dinámica
-Una vez desplegado, la configuración de **SMTP** y **Analytics (Meta/Google)** se gestiona directamente desde el **Panel de Administración** (`/admin/settings`). No es necesario reiniciar el servidor ni modificar el archivo `.env`.
+## 🚀 Despliegue con Docker (Producción)
 
-## 🏗️ Tecnología
-- **Frontend**: Next.js 15 (App Router)
-- **UI**: Tailwind CSS + Antigravity UI
-- **ORM**: Prisma
-- **DB**: SQLite (Dev) / PostgreSQL (Prod)
-- **Auth**: NextAuth.js
+1.  Generar secretos de producción:
+    ```bash
+    cp .env.example .env
+    node scripts/generate-secret.js
+    ```
+
+2.  Levantar infraestructura:
+    ```bash
+    docker-compose up --build -d
+    ```
+
+3.  Acceso:
+    *   **Frontend**: `http://localhost:3004`
+    *   **API (Directo)**: `http://localhost:3003`
+
+## 🛠️ Desarrollo
+
+El proyecto mantiene una estructura unificada de código (Monorepo) para facilitar el desarrollo, pero se despliega segregado.
+
+*   `src/app`: Componentes de UI y Páginas.
+*   `src/server`: Lógica de negocio y consultas seguras.
+*   `prisma`: Esquema de datos.
+
+## 🛡️ Configuración
+Las integraciones externas (SMTP, Analytics) se gestionan desde el Panel de Administración.
