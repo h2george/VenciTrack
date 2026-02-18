@@ -4,46 +4,41 @@ const features = [
     {
         icon: Shield,
         title: "Panel Digital Seguro",
-        description: "Almacenamiento centralizado con Protocolo VenciTrack v2.0. Tu información, organizada y segura."
+        description: "Almacenamiento centralizado con Protocolo VenciTrack v2.0. Tu información, organizada y segura.",
+        color: "text-blue-600 dark:text-blue-400"
     },
     {
         icon: Bell,
         title: "Alertas Multicanal",
-        description: "Notificaciones 'Acción Inmediata' vía Email y WhatsApp para prevenir multas."
+        description: "Notificaciones 'Acción Inmediata' vía Email y WhatsApp para prevenir cualquier multa.",
+        color: "text-red-600 dark:text-red-400"
     },
     {
         icon: FileText,
         title: "Monitoreo Continuo",
-        description: "Detección automática de vencimientos críticos. El sistema trabaja para ti 24/7."
+        description: "Detección automática de vencimientos críticos. El sistema trabaja para ti las 24 horas.",
+        color: "text-emerald-600 dark:text-emerald-400"
     },
     {
         icon: Zap,
         title: "Acceso Ilimitado",
-        description: "Sin límites de documentos. Sin planes ocultos. Gestión profesional gratuita."
+        description: "Sin límites de documentos. Sin planes ocultos. Una herramienta gratuita y profesional.",
+        color: "text-amber-600 dark:text-amber-400"
     }
 ];
 
 export const Features = () => {
     return (
-        <section className="py-24 bg-card border-y border-border/50">
+        <section className="py-24 bg-white dark:bg-slate-900">
             <div className="container mx-auto px-6">
-                <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6">
-                        Gestión <span className="text-primary">Inteligente</span>
-                    </h2>
-                    <p className="text-muted-foreground text-lg">
-                        Plataforma de monitoreo diseñada para eliminar el error humano y garantizar la continuidad operativa.
-                    </p>
-                </div>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {features.map((feature, index) => (
-                        <div key={index} className="p-6 rounded-2xl bg-background border border-border hover:border-primary/50 transition-colors group">
-                            <div className="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                <feature.icon size={24} />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                    {features.map((feature, idx) => (
+                        <div key={idx} className="group">
+                            <div className={`size-14 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                                <feature.icon size={28} className={feature.color} />
                             </div>
-                            <h3 className="text-xl font-bold uppercase tracking-tight mb-2">{feature.title}</h3>
-                            <p className="text-muted-foreground text-sm">{feature.description}</p>
+                            <h3 className="text-xl font-black uppercase tracking-tight mb-3 text-foreground">{feature.title}</h3>
+                            <p className="text-muted text-sm leading-relaxed font-medium">{feature.description}</p>
                         </div>
                     ))}
                 </div>

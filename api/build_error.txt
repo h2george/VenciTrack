@@ -1,0 +1,326 @@
+ÔÜá `eslint` configuration in next.config.ts is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+ÔÜá Invalid next.config.ts options detected: 
+ÔÜá     Unrecognized key(s) in object: 'eslint'
+ÔÜá See more info here: https://nextjs.org/docs/messages/invalid-next-config
+Ôû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 18 errors:
+./api/src/app/api/admin/bulk-import/route.ts:2:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+> 2 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { prisma } from "@/server/db/prisma";
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/admin/config/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export async function GET() {
+  6 |     try {
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/admin/document-types/route.ts:2:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+> 2 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { prisma } from "@/server/db/prisma";
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/admin/users/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+  6 |
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/auth/login/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { verifyPassword, encrypt, SESSION_DURATION } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 | import { cookies } from "next/headers";
+  5 |
+  6 | export async function POST(request: NextRequest) {
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/auth/me/route.ts:2:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextResponse } from "next/server";
+> 2 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { prisma } from "@/server/db/prisma";
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/auth/register/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { hashPassword, encrypt, SESSION_DURATION } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 | import { cookies } from "next/headers";
+  5 |
+  6 | export async function POST(request: NextRequest) {
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/auth/update-password/route.ts:2:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+> 2 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { prisma } from "@/server/db/prisma";
+  4 | import bcrypt from "bcryptjs";
+  5 |
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/document-types/route.ts:2:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextResponse } from "next/server";
+> 2 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { prisma } from "@/server/db/prisma";
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/documents/[id]/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export async function GET(
+  6 |     _request: NextRequest,
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/documents/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+  6 |
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/stats/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+  6 |
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/subjects/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+  6 |
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/user/preferences/route.ts:2:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+> 2 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { prisma } from "@/server/db/prisma";
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/user/profile/route.ts:2:1
+Module not found: Can't resolve '@/shared/lib/auth'
+  1 | import { NextRequest, NextResponse } from "next/server";
+> 2 | import { getSession } from "@/shared/lib/auth";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { prisma } from "@/server/db/prisma";
+  4 |
+  5 | export const dynamic = 'force-dynamic';
+
+Import map: aliased to relative './src/shared/lib/auth' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/cron/reminders/route.ts:3:1
+Module not found: Can't resolve '@/shared/lib/notifications'
+  1 | import { NextResponse } from "next/server";
+  2 | import { prisma } from "@/server/db/prisma";
+> 3 | import { sendNotification } from "@/shared/lib/notifications";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 | import { generateSecureToken } from "@/shared/lib/tokens";
+  5 |
+  6 | export const dynamic = 'force-dynamic';
+
+Import map: aliased to relative './src/shared/lib/notifications' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/cron/reminders/route.ts:4:1
+Module not found: Can't resolve '@/shared/lib/tokens'
+  2 | import { prisma } from "@/server/db/prisma";
+  3 | import { sendNotification } from "@/shared/lib/notifications";
+> 4 | import { generateSecureToken } from "@/shared/lib/tokens";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+  6 | export const dynamic = 'force-dynamic';
+  7 |
+
+Import map: aliased to relative './src/shared/lib/tokens' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./api/src/app/api/version/route.ts:2:1
+Module not found: Can't resolve '@/shared/lib/versions'
+  1 | import { NextResponse } from "next/server";
+> 2 | import { API_VERSION } from "@/shared/lib/versions";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 |
+  4 | export const dynamic = 'force-dynamic';
+  5 |
+
+Import map: aliased to relative './src/shared/lib/versions' inside of [project]/api
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./api/src/app/api/admin/bulk-import/route.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/admin/config/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/admin/document-types/route.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/admin/users/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/auth/login/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/auth/me/route.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/auth/register/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/auth/update-password/route.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/document-types/route.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/documents/[id]/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/documents/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/stats/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/subjects/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/user/preferences/route.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/user/profile/route.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/cron/reminders/route.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/cron/reminders/route.ts:4:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./api/src/app/api/version/route.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)

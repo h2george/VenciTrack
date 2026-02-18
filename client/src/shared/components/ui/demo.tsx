@@ -1,4 +1,4 @@
-import { LandingHero } from "@/shared/components/ui/landing-hero";
+import { Hero2 } from "@/shared/components/ui/hero-2-1";
 
 /**
  * Demo Component
@@ -7,7 +7,7 @@ import { LandingHero } from "@/shared/components/ui/landing-hero";
 const DemoOne = () => {
     return (
         <div className="bg-black">
-            <LandingHero />
+            <Hero2 />
         </div>
     );
 };

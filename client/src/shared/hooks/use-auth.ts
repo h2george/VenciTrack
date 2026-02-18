@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { checkAuth } from "@/shared/lib/auth";
+import { useState, useEffect } from 'react';
+import { checkAuth } from '../../features/auth/auth-api';
 
 export function useAuth() {
     const [user, setUser] = useState<any>(null);
@@ -7,7 +7,7 @@ export function useAuth() {
 
     useEffect(() => {
         checkAuth().then(res => {
-            if (res.success) setUser(res.data);
+            if (res && res.success) setUser(res.data);
             setLoading(false);
         });
     }, []);

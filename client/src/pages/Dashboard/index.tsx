@@ -1,73 +1,146 @@
-import Sidebar from "@/shared/components/layout/Sidebar";
-import { ShieldCheck, FileText, AlertTriangle, Bell } from "lucide-react";
+/**
+ * @file dashboard/page.tsx
+ * @description Master Dashboard of VenciTrack. 
+ * Refactored under Kaizen principles to use modular components and centralized queries.
+ */
 
-export default function Dashboard() {
+
+
+import { useEffect, useState } from "react";
+import Sidebar from "@/shared/components/Sidebar";
+import AddDocumentModal from "@/shared/components/AddDocumentModal";
+import StatsGrid from "@/shared/components/dashboard/StatsGrid";
+import DocumentTable from "@/shared/components/dashboard/DocumentTable";
+import { Plus, Search, Calendar, ChevronDown, Loader2 } from "lucide-react";
+
+export default function Dashboard(): React.ReactElement {
+  const [documents, setDocuments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDoc, setEditingDoc] = useState<any>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const docsRes = await fetch("/api/documents");
+      const docsJson = await docsRes.json();
+      if (docsJson.success) setDocuments(docsJson.data);
+    } catch (err) {
+      console.error("Fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEdit = (doc: any) => {
+    setEditingDoc(doc);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("¿Eliminar este documento?")) return;
+    try {
+      const res = await fetch(`/api/documents/${id}`, { method: "DELETE" });
+      if (res.ok) fetchData();
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  };
+
+  const filteredDocs = documents.filter(doc =>
+    (doc.alias || doc.documentType?.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (doc.subject?.name || "").toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const getStatus = (expiryDate: string) => {
+    const date = new Date(expiryDate);
+    const now = new Date();
+    const inAMonth = new Date();
+    inAMonth.setDate(now.getDate() + 30);
+    return date < inAMonth ? (date < now ? "Vencido" : "Próximo") : "Protegido";
+  };
+
+  const stats = [
+    { label: "Total Documentos", value: documents.length, change: "0%", color: "text-white" },
+    { label: "En Riesgo", value: documents.filter(d => getStatus(d.expiryDate) !== "Protegido").length, change: "+2", color: "text-brand-red" },
+    { label: "Próximo Mes", value: documents.filter(d => getStatus(d.expiryDate) === "Próximo").length, change: "-1", color: "text-brand-blue" }
+  ];
+
+  if (loading && documents.length === 0) {
     return (
-        <div className="flex min-h-screen bg-background text-foreground">
-            <Sidebar />
-            <main className="flex-1 pl-64 p-8">
-                <header className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-black tracking-tighter uppercase">Terminal de Control</h1>
-                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-emerald-500">
-                        <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                        Sistema Activo
-                    </div>
-                </header>
-
-                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div className="p-6 rounded-2xl bg-card border border-border shadow-sm">
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Documentos Activos</span>
-                            <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                                <FileText size={18} />
-                            </div>
-                        </div>
-                        <div className="flex items-baseline gap-2">
-                            <h3 className="text-3xl font-black">124</h3>
-                            <span className="text-xs font-bold text-green-500">+12%</span>
-                        </div>
-                    </div>
-
-                    <div className="p-6 rounded-2xl bg-card border border-border shadow-sm">
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Próx. Vencimientos</span>
-                            <div className="p-2 bg-amber-500/10 rounded-lg text-amber-500">
-                                <AlertTriangle size={18} />
-                            </div>
-                        </div>
-                        <div className="flex items-baseline gap-2">
-                            <h3 className="text-3xl font-black">7</h3>
-                            <span className="text-xs font-bold text-muted-foreground">En 30 días</span>
-                        </div>
-                    </div>
-
-                    <div className="p-6 rounded-2xl bg-card border border-border shadow-sm">
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Alertas Críticas</span>
-                            <div className="p-2 bg-red-500/10 rounded-lg text-red-500">
-                                <Bell size={18} />
-                            </div>
-                        </div>
-                        <div className="flex items-baseline gap-2">
-                            <h3 className="text-3xl font-black text-red-500">2</h3>
-                            <span className="text-xs font-bold text-red-500 animate-pulse">Acción Requerida</span>
-                        </div>
-                    </div>
-
-                    <div className="p-6 rounded-2xl bg-card border border-border shadow-sm">
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Cumplimiento</span>
-                            <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500">
-                                <ShieldCheck size={18} />
-                            </div>
-                        </div>
-                        <div className="flex items-baseline gap-2">
-                            <h3 className="text-3xl font-black text-emerald-500">98%</h3>
-                            <span className="text-xs font-bold text-muted-foreground">Nivel Óptimo</span>
-                        </div>
-                    </div>
-                </section>
-            </main>
-        </div>
+      <div className="flex items-center justify-center min-vh-100 bg-[var(--bg)]">
+        <Loader2 className="animate-spin text-brand-red size-10" />
+      </div>
     );
+  }
+
+  return (
+    <main className="flex min-h-screen bg-[var(--bg)] text-[var(--text)] font-sans">
+      <Sidebar />
+
+      <div className="flex-1 p-6 lg:p-12 overflow-y-auto">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+          <div className="space-y-1">
+            <h1 className="text-4xl font-black tracking-tighter uppercase">Dashboard</h1>
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-[var(--text-muted)] italic">
+              Gestión Unificada de Vencimientos
+            </p>
+          </div>
+          <button
+            onClick={() => { setEditingDoc(null); setIsModalOpen(true); }}
+            className="button-red px-8 py-4 flex items-center gap-3 active:scale-95 group transition-all shadow-premium"
+          >
+            <Plus size={20} className="group-hover:rotate-90 transition-transform" />
+            <span className="font-black uppercase tracking-widest text-sm">Registrar Documento</span>
+          </button>
+        </header>
+
+        <StatsGrid stats={stats} />
+
+        {/* Table Interface */}
+        <div className="glass-card border-white/5 overflow-visible">
+          {/* Controls */}
+          <div className="p-8 flex flex-col md:flex-row gap-6 justify-between items-center border-b border-white/5">
+            <div className="flex gap-4 w-full md:w-auto">
+              <button className="button-glass px-5 py-3 text-[10px] font-black uppercase flex items-center gap-2">
+                Asociado <ChevronDown size={14} />
+              </button>
+              <button className="button-glass px-5 py-3 text-[10px] font-black uppercase flex items-center gap-2">
+                Mes de Vencimiento <Calendar size={14} />
+              </button>
+            </div>
+
+            <div className="relative w-full md:w-80 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] group-focus-within:text-[var(--brand-red)] transition-colors" size={18} />
+              <input
+                type="text"
+                placeholder="Buscar documento..."
+                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-2xl pl-12 pr-6 py-3.5 text-sm font-medium focus:outline-none focus:border-brand-red/50 transition-all text-[var(--text)]"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <DocumentTable
+            documents={filteredDocs}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </div>
+      </div>
+
+      <AddDocumentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={fetchData}
+        editDocument={editingDoc}
+      />
+    </main>
+  );
 }

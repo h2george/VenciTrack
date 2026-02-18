@@ -1,0 +1,15 @@
+node_modules
+.next
+dist
+dist-web
+.git
+.vscode
+.idea
+*.log
+tmp
+coverage
+build
+api/node_modules
+client/node_modules
+api/.next
+client/dist

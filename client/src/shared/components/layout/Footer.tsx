@@ -1,53 +1,50 @@
+import { ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Send, Facebook, Instagram, Linkedin } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
-import { APP_VERSION } from "@/shared/lib/versions";
-import { useEffect, useState } from "react";
 
-export function Footer() {
-    const [apiVersion, setApiVersion] = useState<string>("...");
-
-    useEffect(() => {
-        fetch("/api/version")
-            .then(res => res.json())
-            .then(data => setApiVersion(data.version))
-            .catch(() => setApiVersion("?"));
-    }, []);
-
+export const Footer = () => {
     return (
-        <footer className="border-t border-border bg-background py-12">
+        <footer className="bg-white dark:bg-slate-900 border-t border-border py-20">
             <div className="container mx-auto px-6">
-                <div className="grid md:grid-cols-3 gap-12">
-                    <div>
-                        <Link href="/" className="flex items-center gap-2 font-black uppercase tracking-tighter text-xl mb-4">
-                            <ShieldCheck className="text-primary" size={24} />
-                            <span>VenciTrack</span>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+                    <div className="md:col-span-2">
+                        <Link to="/" className="flex items-center gap-2 mb-6">
+                            <div className="size-8 rounded-lg bg-brand-blue text-white flex items-center justify-center">
+                                <ShieldCheck size={20} />
+                            </div>
+                            <span className="text-lg font-black tracking-tighter uppercase text-foreground">VenciTrack</span>
                         </Link>
-                        <p className="text-muted-foreground text-sm">
-                            Gestión inteligente de vencimientos para evitar riesgos.
+                        <p className="text-muted max-w-sm font-medium leading-relaxed">
+                            Plataforma premium para el monitoreo y control de vencimientos críticos. Tecnología preventiva al servicio de tu tranquilidad.
                         </p>
                     </div>
+
                     <div>
-                        <h4 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4">Redes</h4>
-                        <div className="flex gap-4">
-                            <Facebook size={20} className="text-muted-foreground cursor-pointer hover:text-primary" />
-                            <Instagram size={20} className="text-muted-foreground cursor-pointer hover:text-primary" />
-                            <Linkedin size={20} className="text-muted-foreground cursor-pointer hover:text-primary" />
-                        </div>
+                        <h4 className="text-foreground font-black uppercase text-sm mb-6">Producto</h4>
+                        <ul className="space-y-4">
+                            <li><Link to="/features" className="text-muted hover:text-brand-blue font-bold text-sm transition-colors">Características</Link></li>
+                            <li><Link to="/pricing" className="text-muted hover:text-brand-blue font-bold text-sm transition-colors">Precios</Link></li>
+                        </ul>
                     </div>
+
                     <div>
-                        <h4 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-4">Preferencia</h4>
-                        <ThemeToggle />
+                        <h4 className="text-foreground font-black uppercase text-sm mb-6">Legal</h4>
+                        <ul className="space-y-4">
+                            <li><Link to="/privacy" className="text-muted hover:text-brand-blue font-bold text-sm transition-colors">Privacidad</Link></li>
+                            <li><Link to="/terms" className="text-muted hover:text-brand-blue font-bold text-sm transition-colors">Términos</Link></li>
+                        </ul>
                     </div>
                 </div>
-                <div className="mt-12 pt-8 border-t border-border flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-50">
-                    <p>© 2026 Vencitrack</p>
-                    <div className="flex gap-4">
-                        <span>Client v{APP_VERSION}</span>
-                        <span>API v{apiVersion}</span>
+
+                <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-muted text-xs font-bold uppercase tracking-widest">
+                        © 2026 VenciTrack. Todos los derechos reservados.
+                    </p>
+                    <div className="flex gap-6">
+                        <span className="size-2 rounded-full bg-emerald-500" />
+                        <span className="text-xs text-muted font-bold uppercase tracking-widest italic">Hecho con precisión digital</span>
                     </div>
                 </div>
             </div>
         </footer>
     );
-}
+};

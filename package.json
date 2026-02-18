@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
-    "dev:api": "next dev api -p 3001",
-    "dev:web": "vite client --port 3002",
+    "dev:api": "next dev api -p 3007",
+    "dev:web": "vite client --port 3006 --strictPort",
     "build": "npm run build:api && npm run build:web",
     "build:api": "next build api",
-    "build:web": "vite build client",
+    "build:web": "cd client && vite build",
     "start": "next start api",
     "lint": "next lint api"
   },
@@ -35,7 +35,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.22.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",

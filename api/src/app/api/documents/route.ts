@@ -1,16 +1,203 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/server/db/prisma";
+import { getSession } from "@/shared/lib/auth";
+import { DocumentSchema } from "@/shared/lib/schemas";
 
-export async function GET() {
-    return NextResponse.json({
-        success: true,
-        data: [
-            { id: 1, title: "Seguro Vehicular", expiry: "2026-05-01", status: "Active" },
-            { id: 2, title: "Licencia de Conducir", expiry: "2026-08-15", status: "Warning" }
-        ]
+export const dynamic = 'force-dynamic';
+
+/**
+ * GET /api/documents
+ * Lists all documents for the authenticated user with optional filters
+ * Query params:
+ * - status: ACTIVE | EXPIRED | INACTIVE
+ * - subjectId: Filter by subject
+ * - documentTypeId: Filter by document type
+ * - expiringSoon: true (next 30 days)
+ */
+export async function GET(request: NextRequest) {
+  try {
+    // Get authenticated user
+    const session = await getSession();
+    if (!session?.userId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get('status');
+    const subjectId = searchParams.get('subjectId');
+    const documentTypeId = searchParams.get('documentTypeId');
+    const expiringSoon = searchParams.get('expiringSoon') === 'true';
+
+    const where: any = {
+      userId: session.userId // Filter by authenticated user
+    };
+
+    if (status) {
+      where.status = status;
+    }
+
+    if (subjectId) {
+      where.subjectId = subjectId;
+    }
+
+    if (documentTypeId) {
+      where.documentTypeId = documentTypeId;
+    }
+
+    if (expiringSoon) {
+      const now = new Date();
+      const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+      where.expiryDate = {
+        lte: thirtyDaysFromNow,
+        gte: now
+      };
+    }
+
+    const documents = await prisma.document.findMany({
+      where,
+      include: {
+        subject: true,
+        documentType: true,
+        reminders: {
+          orderBy: { sentAt: 'desc' },
+          take: 1
+        }
+      },
+      orderBy: {
+        expiryDate: 'asc'
+      }
     });
+
+    // Calculate days until expiry for each document
+    const documentsWithDays = documents.map((doc: any) => {
+      const now = new Date();
+      const daysUntilExpiry = Math.ceil(
+        (doc.expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      return {
+        ...doc,
+        daysUntilExpiry,
+        isExpired: daysUntilExpiry < 0,
+        isExpiringSoon: daysUntilExpiry >= 0 && daysUntilExpiry <= 30
+      };
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: documentsWithDays,
+      count: documentsWithDays.length
+    });
+
+  } catch (error) {
+    console.error('Error fetching documents:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch documents' },
+      { status: 500 }
+    );
+  }
 }
 
-export async function POST(req: Request) {
-    const body = await req.json();
-    return NextResponse.json({ success: true, data: { id: Math.random(), ...body } });
+/**
+ * POST /api/documents
+ * Creates a new document for the authenticated user
+ * Body:
+ * - documentTypeId: string
+ * - subjectId: string
+ * - expiryDate: ISO date string
+ * - status?: ACTIVE (default)
+ */
+export async function POST(request: NextRequest) {
+  try {
+    // Get authenticated user
+    const session = await getSession();
+    if (!session?.userId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+
+    // 1. Strict Schema Validation (SEC-006)
+    const result = DocumentSchema.safeParse(body);
+    if (!result.success) {
+      return NextResponse.json(
+        { success: false, error: "Datos del documento inválidos" },
+        { status: 400 }
+      );
+    }
+
+    const { documentTypeId, subjectId, expiryDate, alias, status = 'ACTIVE' } = result.data;
+
+    // Verify that documentType exists
+    const documentType = await prisma.documentType.findUnique({
+      where: { id: documentTypeId }
+    });
+
+    if (!documentType) {
+      return NextResponse.json(
+        { success: false, error: 'Document type not found' },
+        { status: 404 }
+      );
+    }
+
+    // Verify that subject exists AND belongs to the user
+    const subject = await prisma.subject.findFirst({
+      where: {
+        id: subjectId,
+        userId: session.userId
+      }
+    });
+
+    if (!subject) {
+      return NextResponse.json(
+        { success: false, error: 'Subject not found or access denied' },
+        { status: 404 }
+      );
+    }
+
+    // Create document
+    const document = await prisma.document.create({
+      data: {
+        userId: session.userId,
+        documentTypeId,
+        subjectId,
+        expiryDate: new Date(expiryDate),
+        alias,
+        status
+      },
+      include: {
+        subject: true,
+        documentType: true
+      }
+    });
+
+    // Audit log
+    await prisma.auditLog.create({
+      data: {
+        entityType: 'DOCUMENT',
+        entityId: document.id,
+        action: 'CREATE',
+        description: `Document ${documentType.name} created for ${subject.name}`,
+        userId: session.userId
+      }
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: document
+    }, { status: 201 });
+
+  } catch (error) {
+    console.error('Error creating document:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to create document' },
+      { status: 500 }
+    );
+  }
 }

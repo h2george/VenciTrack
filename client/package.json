@@ -1,0 +1,10 @@
+{
+    "name": "vencitrack-client",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "vite --port 3002",
+        "build": "vite build",
+        "preview": "vite preview"
+    }
+}

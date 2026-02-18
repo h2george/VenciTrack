@@ -45,3 +45,6 @@ next-env.d.ts
 /src/generated/prisma
 
 web.tar
+/dist-web
+*.csv
+*.log

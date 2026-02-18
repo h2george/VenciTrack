@@ -9,7 +9,7 @@ function getKey() {
     return new TextEncoder().encode(secret);
 }
 
-export const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
+export const SESSION_DURATION = 15 * 60 * 1000; // 15 minutes (SEC-011)
 
 /**
  * Encrypts a payload into a JWT token
@@ -18,7 +18,7 @@ export async function encrypt(payload: any) {
     return await new SignJWT(payload)
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
-        .setExpirationTime("7d")
+        .setExpirationTime("15m")
         .sign(getKey());
 }
 

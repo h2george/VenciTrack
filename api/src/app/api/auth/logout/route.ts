@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-export async function POST() {
-    return NextResponse.json({ success: true });
+export async function POST(request: Request) {
+    const cookieStore = await cookies();
+    cookieStore.delete("session");
+
+    // Use the absolute URL for redirection
+    const url = new URL("/", request.url);
+    return NextResponse.redirect(url, { status: 303 });
 }
