@@ -1,4 +1,4 @@
-// No top-level db import to avoid loading pg during build
+import { db } from "./client";
 
 const isBuild = process.env['NEXT_PHASE'] === 'phase-production-build' || (process.env['NODE_ENV'] === 'production' && !process.env['DATABASE_URL']);
 
@@ -11,7 +11,6 @@ class TableBridge {
 
     async findUnique({ where }: any) {
         if (isBuild) return { id: 'dummy', createdAt: new Date(), updatedAt: new Date() };
-        const { db } = require("./client");
         try {
             const keys = Object.keys(where);
             const values = Object.values(where);
@@ -30,7 +29,6 @@ class TableBridge {
 
     async findMany({ where, orderBy }: any = {}) {
         if (isBuild) return [{ id: 'dummy', createdAt: new Date(), updatedAt: new Date() }];
-        const { db } = require("./client");
         try {
             const tableName = this.tableName.charAt(0).toUpperCase() + this.tableName.slice(1);
             let query = `SELECT * FROM "${tableName}"`;
@@ -59,9 +57,7 @@ class TableBridge {
     }
 
     async create({ data }: any) {
-        const { db } = require("./client");
         const tableName = this.tableName.charAt(0).toUpperCase() + this.tableName.slice(1);
-        // Filter out nested relations (objects like { create: ... })
         const keys = Object.keys(data).filter(k => typeof data[k] !== 'object' || data[k] instanceof Date || data[k] === null);
         const values = keys.map(k => data[k]);
         const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
@@ -71,15 +67,12 @@ class TableBridge {
     }
 
     async update({ where, data }: any) {
-        const { db } = require("./client");
         const tableName = this.tableName.charAt(0).toUpperCase() + this.tableName.slice(1);
         const whereKeys = Object.keys(where);
         const whereValues = Object.values(where);
-        // Filter out nested relations
         const dataKeys = Object.keys(data).filter(k => typeof data[k] !== 'object' || data[k] instanceof Date || data[k] === null);
         const dataValues = dataKeys.map(k => data[k]);
 
-        // If no data to update, just return the existing record
         if (dataKeys.length === 0) {
             const query = `SELECT * FROM "${tableName}" WHERE ${whereKeys.map((k, i) => `"${k}" = $${i + 1}`).join(' AND ')} LIMIT 1`;
             const res = await db.query(query, whereValues);
@@ -95,7 +88,6 @@ class TableBridge {
     }
 
     async delete({ where }: any) {
-        const { db } = require("./client");
         const keys = Object.keys(where);
         const values = Object.values(where);
         const tableName = this.tableName.charAt(0).toUpperCase() + this.tableName.slice(1);
@@ -113,8 +105,8 @@ class TableBridge {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async count({ where }: any = {}) {
-        const { db } = require("./client");
         const tableName = this.tableName.charAt(0).toUpperCase() + this.tableName.slice(1);
         let query = `SELECT COUNT(*) FROM "${tableName}"`;
         const params: any[] = [];
@@ -130,32 +122,28 @@ class TableBridge {
     }
 }
 
-/**
- * Proxy-based bridge to emulate Prisma's structure for existing models.
- */
 export const prisma = new Proxy({} as any, {
     get(_target, prop) {
         if (typeof prop !== 'string') return undefined;
         const propStr = prop;
 
-        // Build-phase safe-guard
         if (isBuild) {
             const dummy: any = () => Promise.resolve([{ id: 'dummy', createdAt: new Date() }]);
-            dummy.findUnique = () => Promise.resolve({ id: 'dummy', createdAt: new Date() });
-            dummy.findFirst = () => Promise.resolve({ id: 'dummy', createdAt: new Date() });
-            dummy.findMany = () => Promise.resolve([{ id: 'dummy', createdAt: new Date() }]);
-            dummy.count = () => Promise.resolve(1);
-            dummy.create = () => Promise.resolve({ id: 'dummy' });
-            dummy.update = () => Promise.resolve({ id: 'dummy' });
-            dummy.upsert = () => Promise.resolve({ id: 'dummy' });
-            dummy.delete = () => Promise.resolve({ id: 'dummy' });
+            Object.assign(dummy, {
+                findUnique: () => Promise.resolve({ id: 'dummy', createdAt: new Date() }),
+                findFirst: () => Promise.resolve({ id: 'dummy', createdAt: new Date() }),
+                findMany: () => Promise.resolve([{ id: 'dummy', createdAt: new Date() }]),
+                count: () => Promise.resolve(1),
+                create: () => Promise.resolve({ id: 'dummy' }),
+                update: () => Promise.resolve({ id: 'dummy' }),
+                upsert: () => Promise.resolve({ id: 'dummy' }),
+                delete: () => Promise.resolve({ id: 'dummy' })
+            });
             return dummy;
         }
 
-        // Standard Prisma utility methods
         if (propStr === '$queryRaw') {
             return async (strings: TemplateStringsArray, ...values: any[]) => {
-                const { db } = require("./client");
                 const query = strings.reduce((acc, str, i) => acc + str + (values[i] !== undefined ? `$${i + 1}` : ''), '');
                 const res = await db.query(query, values);
                 return res.rows;
@@ -164,11 +152,11 @@ export const prisma = new Proxy({} as any, {
 
         if (propStr === '$transaction') {
             return async (callback: any) => {
-                const { db } = require("./client");
                 const client = await db.connect();
                 try {
                     await client.query('BEGIN');
-                    const result = await callback(prisma); // Simplified transaction
+                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+                    const result = await callback(prisma);
                     await client.query('COMMIT');
                     return result;
                 } catch (e) {
@@ -184,7 +172,6 @@ export const prisma = new Proxy({} as any, {
             return async () => { };
         }
 
-        // Dynamic model bridges
         return new TableBridge(prop);
     }
 });
