@@ -12,7 +12,6 @@ export default function LandingPage() {
         <div className="min-h-screen flex flex-col font-sans bg-background transition-colors duration-300">
             <LandingHero />
             <main className="flex-1">
-                <DashboardPreview />
                 <Features />
                 <ComparisonSection />
                 <DocumentShowcase />
