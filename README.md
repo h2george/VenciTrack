@@ -34,7 +34,7 @@ Una vez iniciado, el sistema estará disponible en:
 
 | Módulo | Dirección | Credenciales por Defecto |
 | :--- | :--- | :--- |
-| **Plataforma Web** | [http://localhost:3006](http://localhost:3006) | `vencitrack_admin@example.com`<br>`VenciTrack2025!` |
+| **Plataforma Web** | [http://localhost:3006](http://localhost:3006) | Registro disponible en `/register` |
 | **API Backend** | [http://localhost:3007/api](http://localhost:3007/api) | - |
 | **Base de Datos** | Puerto `5435` | Ver archivo `.env` generado |
 

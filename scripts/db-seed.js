@@ -12,6 +12,10 @@ const pool = new Pool({
 });
 
 async function seed() {
+    if (process.env.NODE_ENV === 'production') {
+        console.log('🛑 Production environment detected. Skipping default seed data.');
+        return;
+    }
     console.log('🌱 Seeding database (Native SQL)...');
     const client = await pool.connect();
 
