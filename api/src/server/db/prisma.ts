@@ -1,4 +1,5 @@
 import { db } from "./client";
+import crypto from "crypto";
 
 const isBuild = process.env['NEXT_PHASE'] === 'phase-production-build' || (process.env['NODE_ENV'] === 'production' && !process.env['DATABASE_URL']);
 
@@ -58,6 +59,12 @@ class TableBridge {
 
     async create({ data }: any) {
         const tableName = this.tableName.charAt(0).toUpperCase() + this.tableName.slice(1);
+
+        // Polyfill Prisma defaults
+        if (!data.id) data.id = crypto.randomUUID();
+        if (!data.createdAt) data.createdAt = new Date();
+        if (!data.updatedAt) data.updatedAt = new Date();
+
         const keys = Object.keys(data).filter(k => typeof data[k] !== 'object' || data[k] instanceof Date || data[k] === null);
         const values = keys.map(k => data[k]);
         const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
@@ -68,6 +75,10 @@ class TableBridge {
 
     async update({ where, data }: any) {
         const tableName = this.tableName.charAt(0).toUpperCase() + this.tableName.slice(1);
+
+        // Polyfill updatedAt
+        if (!data.updatedAt) data.updatedAt = new Date();
+
         const whereKeys = Object.keys(where);
         const whereValues = Object.values(where);
         const dataKeys = Object.keys(data).filter(k => typeof data[k] !== 'object' || data[k] instanceof Date || data[k] === null);
