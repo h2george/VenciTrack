@@ -26,7 +26,9 @@ export const Footer = () => {
                             <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
                             <span className="text-[10px] text-muted font-black uppercase tracking-tighter">Sistemas 100% Operativos</span>
                         </div>
-                        <span className="text-[10px] text-muted font-black uppercase tracking-widest opacity-50">Hecho con precisión digital</span>
+                        <span className="text-[10px] text-muted font-black uppercase tracking-widest opacity-50">
+                            Hecho por <a href="https://www.boosterperu.com/" target="_blank" rel="noopener noreferrer" className="hover:text-brand-blue transition-colors underline underline-offset-4" aria-label="Visitar Booster Perú">Booster</a>
+                        </span>
                     </div>
                 </div>
             </div>
