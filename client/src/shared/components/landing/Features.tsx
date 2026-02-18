@@ -4,7 +4,7 @@ const features = [
     {
         icon: Shield,
         title: "Panel Digital Seguro",
-        description: "Almacenamiento centralizado con Protocolo VenciTrack v2.0. Tu información, organizada y segura.",
+        description: "Almacenamiento centralizado con Protocolo VenciTrack. Tu información, organizada y segura.",
         color: "text-blue-600 dark:text-blue-400"
     },
     {
