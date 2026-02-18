@@ -9,10 +9,10 @@ VenciTrack es un sistema de grado empresarial para la gestión preventiva de ven
 | :--- | :--- |
 | **GUID** | `vt-spec-df8a21-9922` |
 | **Project Name** | VenciTrack |
-| **Version** | 1.0.0 |
-| **Status** | Spec-anchored |
+| **Version** | 1.1.0 |
+| **Status** | Audited & Standardized |
 | **Stakeholders** | Antigravity AI, User/Client |
-| **Last Updated** | 2026-02-17 |
+| **Last Updated** | 2026-02-18 |
 
 ---
 
@@ -79,6 +79,7 @@ VenciTrack es un sistema de grado empresarial para la gestión preventiva de ven
 - [x] **TASK-002:** Configurar `Prisma Bridge` para emular ORM con consultas parametrizadas directas. -> **Vínculo [SEC-002]**
 - [x] **TASK-003:** Implementar validación de Zod en todos los endpoints de `api/src/app/api`. -> **Vínculo [SEC-006]**
 - [x] **TASK-004:** Migrar expiración de tokens de 7d a 15m para cumplimiento estricto. -> **Vínculo [SEC-011]**
+- [x] **TASK-005:** Ejecución de Auditoría Técnica 360° (Estructura, Código, Docker, Config). -> **Vínculo [SEC-AUDIT]**
 
 ---
 

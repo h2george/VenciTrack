@@ -16,27 +16,26 @@
 - **Containerización:** Docker + Docker Compose
 
 **Arquitectura:**
-- `/client` - Frontend (React + Vite) → Puerto 3002 (dev) / 3004 (prod)
-- `/api` - Backend (Next.js API) → Puerto 3001 (interno) / 3003 (externo)
+- `/client` - Frontend (React + Vite) → Puerto 3006 (Host) / 80 (Container)
+- `/api` - Backend (Next.js API) → Puerto 3007 (Host) / 3000 (Container)
 - `/prisma` - Schema de base de datos y migraciones
-- `/scripts` - Utilidades de deployment y setup
+- `/scripts` - Utilidades de deployment y setup (Legacy/Maintenance)
 
 ## 2. Comandos Operativos (Usa estos EXACTAMENTE)
 
 El agente debe usar estos comandos para validar su trabajo:
 
 **Desarrollo:**
-- **Instalar dependencias:** `npm install --legacy-peer-deps`
-- **Iniciar servidor dev completo:** `npm run dev` (Frontend + Backend concurrentemente)
-- **Iniciar solo frontend:** `npm run dev:web` (Puerto 3002)
-- **Iniciar solo backend:** `npm run dev:api` (Puerto 3001)
+- **Instalar dependencias (Root):** `npm install --legacy-peer-deps`
+- **Instalar dependencias (Sub-packages):** `cd api && npm install` / `cd client && npm install`
+- **Iniciar entorno Dev (Docker):** `docker-compose up -d` (Recomendado)
+- **Iniciar entorno Dev (Local):** `npm run dev` (Requiere .env local configurado)
 
 **Build y Deploy:**
-- **Build completo:** `npm run build`
-- **Build frontend:** `npm run build:web`
-- **Build backend:** `npm run build:api`
-- **Docker (Producción):** `docker-compose up --build -d`
-- **Docker (Solo Frontend):** `docker-compose up --build -d frontend`
+- **Build completo (Local):** `npm run build`
+- **Build frontend (Local):** `npm run build:web`
+- **Build backend (Local):** `npm run build:api`
+- **Docker Rebuild:** `docker-compose up -d --build --force-recreate`
 
 **Testing y Calidad:**
 - **Linting:** `npm run lint` (Ejecutar siempre antes de confirmar cambios)
