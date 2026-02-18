@@ -20,7 +20,7 @@ const testimonials = [
 
 export const Testimonials = () => {
     return (
-        <section className="py-24 bg-slate-50 dark:bg-slate-950/50">
+        <section className="py-24 bg-surface-soft">
             <div className="container mx-auto px-6 text-center">
                 <h2 className="text-3xl md:text-5xl font-black uppercase mb-16 text-foreground">
                     Confianza <span className="text-brand-blue">Operativa</span>
@@ -28,7 +28,7 @@ export const Testimonials = () => {
 
                 <div className="grid md:grid-cols-3 gap-8">
                     {testimonials.map((t, idx) => (
-                        <div key={idx} className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-border shadow-sm flex flex-col items-center text-center">
+                        <div key={idx} className="p-8 rounded-3xl bg-surface border border-border shadow-sm flex flex-col items-center text-center">
                             <div className="flex gap-1 mb-6 text-amber-500">
                                 <Star size={20} fill="currentColor" />
                                 <Star size={20} fill="currentColor" />

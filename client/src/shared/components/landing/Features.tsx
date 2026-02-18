@@ -29,12 +29,12 @@ const features = [
 
 export const Features = () => {
     return (
-        <section className="py-24 bg-white dark:bg-slate-900">
+        <section className="py-24 bg-background">
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                     {features.map((feature, idx) => (
                         <div key={idx} className="group">
-                            <div className={`size-14 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                            <div className={`size-14 rounded-2xl bg-surface-soft flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                                 <feature.icon size={28} className={feature.color} />
                             </div>
                             <h3 className="text-xl font-black uppercase tracking-tight mb-3 text-foreground">{feature.title}</h3>

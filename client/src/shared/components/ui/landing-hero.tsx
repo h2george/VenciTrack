@@ -5,7 +5,7 @@ import ThemeToggle from "@/shared/components/layout/ThemeToggle";
 
 const LandingHero = () => {
     return (
-        <div className="relative overflow-hidden bg-background">
+        <div className="relative overflow-hidden bg-background text-foreground">
             {/* Minimal Decorative Elements */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-brand-blue/5 rounded-full blur-[120px] -z-10" />
 

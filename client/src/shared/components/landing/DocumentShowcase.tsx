@@ -37,7 +37,7 @@ const categories = [
 
 export const DocumentShowcase = () => {
     return (
-        <section className="py-24 bg-slate-50 dark:bg-slate-950/50">
+        <section className="py-24 bg-background">
             <div className="container mx-auto px-6">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 text-foreground">
@@ -50,7 +50,7 @@ export const DocumentShowcase = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {categories.map((cat, idx) => (
-                        <div key={idx} className={`p-8 rounded-3xl bg-white dark:bg-slate-900 border ${cat.border} shadow-sm transition-all hover:shadow-md flex flex-col`}>
+                        <div key={idx} className={`p-8 rounded-3xl bg-surface border ${cat.border} shadow-sm transition-all hover:shadow-md flex flex-col`}>
                             <div className={`size-12 rounded-2xl ${cat.bg} ${cat.color} flex items-center justify-center mb-6`}>
                                 <cat.icon size={24} />
                             </div>

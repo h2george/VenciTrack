@@ -9,18 +9,21 @@
   --color-foreground: var(--text);
   --color-muted: var(--text-muted);
   --color-border: var(--border);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
 
   --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
   --radius-mega: 1.5rem;
 }
 
 :root {
-  /* LIGHT MODE - CLEAN & PROFESSIONAL */
+  /* LIGHT MODE - CLEAN & PROFESSIONAL (Slate/Zinc Base) */
   --bg: #FFFFFF;
   --bg-soft: #F8FAFC;
-  /* Clean slate-50, ensuring no blue tint */
+  --surface: #FFFFFF;
+  --surface-soft: #F1F5F9;
   --text: #0F172A;
-  --text-muted: #475569;
+  --text-muted: #64748B;
   --border: #E2E8F0;
 
   --brand-blue: #2563EB;
@@ -32,9 +35,11 @@
 }
 
 .dark {
-  /* DARK MODE - DEEP & CONTRASTED */
+  /* DARK MODE - DEEP & CONTRASTED (Slate 950 Base) */
   --bg: #020617;
   --bg-soft: #0F172A;
+  --surface: #0F172A;
+  --surface-soft: #1E293B;
   --text: #F8FAFC;
   --text-muted: #94A3B8;
   --border: #1E293B;

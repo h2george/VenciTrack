@@ -11,7 +11,7 @@ export const DashboardPreview = () => {
                     viewport={{ once: true }}
                     className="relative max-w-5xl mx-auto rounded-3xl overflow-hidden border-8 border-slate-100 dark:border-slate-800 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] dark:shadow-none"
                 >
-                    <div className="aspect-[16/10] bg-slate-100 dark:bg-slate-900">
+                    <div className="aspect-[16/10] bg-background">
                         <img
                             src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070"
                             alt="Dashboard Preview"
