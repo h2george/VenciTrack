@@ -48,3 +48,6 @@ web.tar
 /dist-web
 *.csv
 *.log
+
+# internal documentation
+docs-internal/
