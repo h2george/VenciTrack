@@ -70,7 +70,8 @@ export async function POST(request: NextRequest) {
             sameSite: "lax",
         });
 
-        // 7. Log Action
+        // 7. Log Action (Temporarily disabled - AuditLog table missing)
+        /*
         await prisma.auditLog.create({
             data: {
                 entityType: "USER",
@@ -80,6 +81,7 @@ export async function POST(request: NextRequest) {
                 userId: user.id,
             },
         });
+        */
 
         return NextResponse.json({
             success: true,
